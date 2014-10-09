@@ -1,4 +1,4 @@
-package FishTradeCompany;
+package ftcApp;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;

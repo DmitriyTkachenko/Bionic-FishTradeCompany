@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Thu Oct 09 00:07:26 EEST 2014:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.1 - (1616546): instance a816c00e-0148-f196-8221-000005faa1a8 
+Thu Oct 09 22:06:24 EEST 2014:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.11.1.1 - (1616546): instance a816c00e-0148-f64e-11eb-000006b76c48 
 on database directory D:\Dropbox\IdeaProjects\FTCDB with class loader sun.misc.Launcher$AppClassLoader@677327b6 
 Loaded from file:/C:/Users/Dmitriy/.m2/repository/org/apache/derby/derby/10.11.1.1/derby-10.11.1.1.jar
 java.vendor=Oracle Corporation
