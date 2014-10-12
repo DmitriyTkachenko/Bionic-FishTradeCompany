@@ -1,8 +1,8 @@
 package ftcApp.model.enums;
 
 public enum OrderStatus {
-    PENDINGPREPAYMENT(0),
-    PENDINGSHIPPING(1),
+    PENDING_PREPAYMENT(0),
+    PENDING_SHIPPING(1),
     COMPLETED(2);
 
     private final int value;

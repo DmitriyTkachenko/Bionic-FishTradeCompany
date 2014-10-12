@@ -1,9 +1,9 @@
 package ftcApp.model.enums;
 
 public enum ParcelStatus {
-    REGISTEREDBYGM(0),
-    REGISTEREDBYCSM(1),
-    PUTUPFORSALE(2);
+    REGISTERED_BY_GM(0),
+    REGISTERED_BY_CSM(1),
+    PUT_UP_FOR_SALE(2);
 
     private final int value;
 

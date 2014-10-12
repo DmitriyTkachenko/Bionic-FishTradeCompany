@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component name="dataSourceStorage">
-  <data-source name="Derby -" uuid="f1a80eda-217d-4ef1-af23-dec34a978db1">
+  <data-source name="Derby Database" uuid="f1a80eda-217d-4ef1-af23-dec34a978db1">
     <database-info product="Apache Derby" version="10.11.1.1 - (1616546)" jdbc-version="4.2" driver-name="Apache Derby Embedded JDBC Driver" driver-version="10.11.1.1 - (1616546)">
       <identifier-quote-string>&quot;</identifier-quote-string>
     </database-info>
@@ -21,20 +21,21 @@
       <column name="LOGIN" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="PASSWORD" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="PREPAYMENTSHAREREQUIRED" sqlType="DOUBLE" precision="52" scale="0" nullable="true" jdbcType="8"/>
-      <primary-key name="SQL141009215944130" columns="ID"/>
+      <primary-key name="SQL141010140830040" columns="ID"/>
     </table>
     <table name="EMPLOYEE" schema="APP" catalog="" type="TABLE">
       <column name="ID" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="LOGIN" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="PASSWORD" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="ROLE" sqlType="INTEGER" precision="10" scale="0" nullable="true" jdbcType="4"/>
-      <primary-key name="SQL141009215945060" columns="ID"/>
+      <primary-key name="SQL141010140830140" columns="ID"/>
     </table>
     <table name="F_ORDER" schema="APP" catalog="" type="TABLE">
       <column name="ID" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="DELIVERYPRICE" sqlType="DOUBLE" precision="52" scale="0" nullable="true" jdbcType="8"/>
       <column name="STATUS" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <primary-key name="SQL141009220524000" columns="ID"/>
+      <primary-key name="SQL141010140830290" columns="ID"/>
+      <exported-key name="ORDEREDITEMORDERID" table="ORDEREDITEM" schema="APP" catalog="" columns="ORDERID"/>
       <exported-key name="FK_PAYMENT_ORDERID" table="PAYMENT" schema="APP" catalog="" columns="ORDERID"/>
     </table>
     <table name="ITEM" schema="APP" catalog="" type="TABLE">
@@ -45,7 +46,8 @@
       <column name="SELLINGPRICE" sqlType="DOUBLE" precision="52" scale="0" nullable="true" jdbcType="8"/>
       <column name="WEIGHT" sqlType="DOUBLE" precision="52" scale="0" nullable="false" jdbcType="8"/>
       <column name="PARCELID" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <primary-key name="SQL141009215945250" columns="ID"/>
+      <primary-key name="SQL141010140830180" columns="ID"/>
+      <foreign-key name="FK_ITEM_PARCELID" columns="PARCELID" ref-table="PARCEL" ref-schema="APP" ref-catalog="" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <exported-key name="ORDEREDITEM_ITEMID" table="ORDEREDITEM" schema="APP" catalog="" columns="ITEMID"/>
     </table>
     <table name="ORDEREDITEM" schema="APP" catalog="" type="TABLE">
@@ -53,7 +55,8 @@
       <column name="WEIGHT" sqlType="DOUBLE" precision="52" scale="0" nullable="true" jdbcType="8"/>
       <column name="ITEMID" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="ORDERID" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <primary-key name="SQL141009215945500" columns="ID"/>
+      <primary-key name="SQL141010140830220" columns="ID"/>
+      <foreign-key name="ORDEREDITEMORDERID" columns="ORDERID" ref-table="F_ORDER" ref-schema="APP" ref-catalog="" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
       <foreign-key name="ORDEREDITEM_ITEMID" columns="ITEMID" ref-table="ITEM" ref-schema="APP" ref-catalog="" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
     </table>
     <table name="PARCEL" schema="APP" catalog="" type="TABLE">
@@ -62,19 +65,20 @@
       <column name="PURCHASENUMBER" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="REGISTERED" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>
       <column name="STATUS" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <primary-key name="SQL141009220224140" columns="ID"/>
+      <primary-key name="SQL141010140830300" columns="ID"/>
+      <exported-key name="FK_ITEM_PARCELID" table="ITEM" schema="APP" catalog="" columns="PARCELID"/>
     </table>
     <table name="PAYMENT" schema="APP" catalog="" type="TABLE">
       <column name="ID" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="PAYMENTSUM" sqlType="DOUBLE" precision="52" scale="0" nullable="true" jdbcType="8"/>
       <column name="ORDERID" sqlType="INTEGER" precision="10" scale="0" nullable="false" jdbcType="4"/>
-      <primary-key name="SQL141009220524610" columns="ID"/>
+      <primary-key name="SQL141010140830330" columns="ID"/>
       <foreign-key name="FK_PAYMENT_ORDERID" columns="ORDERID" ref-table="F_ORDER" ref-schema="APP" ref-catalog="" ref-columns="ID" update-rule="3" delete-rule="3" deferrability="2"/>
     </table>
     <table name="SEQUENCE" schema="APP" catalog="" type="TABLE">
       <column name="SEQ_NAME" sqlType="VARCHAR" precision="50" scale="0" nullable="false" jdbcType="12"/>
       <column name="SEQ_COUNT" sqlType="DECIMAL" precision="15" scale="0" nullable="true" jdbcType="3"/>
-      <primary-key name="SQL141009215946320" columns="SEQ_NAME"/>
+      <primary-key name="SQL141010140830470" columns="SEQ_NAME"/>
     </table>
     <table name="SYSALIASES" schema="SYS" catalog="" type="SYSTEM TABLE">
       <column name="ALIASID" sqlType="CHAR" precision="36" scale="0" nullable="false" jdbcType="1"/>
@@ -295,7 +299,6 @@
       <column name="REFERENCINGNEW" sqlType="BOOLEAN" precision="1" scale="0" nullable="true" jdbcType="16"/>
       <column name="OLDREFERENCINGNAME" sqlType="VARCHAR" precision="128" scale="0" nullable="true" jdbcType="12"/>
       <column name="NEWREFERENCINGNAME" sqlType="VARCHAR" precision="128" scale="0" nullable="true" jdbcType="12"/>
-      <column name="WHENCLAUSETEXT" sqlType="LONG VARCHAR" precision="2147483647" scale="0" nullable="true" jdbcType="-1"/>
       <index name="SYSTRIGGERS_INDEX1" unique="true" columns="TRIGGERID"/>
       <index name="SYSTRIGGERS_INDEX2" unique="true" columns="TRIGGERNAME,SCHEMAID"/>
       <index name="SYSTRIGGERS_INDEX3" unique="false" columns="TABLEID,CREATIONTIMESTAMP"/>

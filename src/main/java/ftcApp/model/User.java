@@ -1,9 +1,6 @@
 package ftcApp.model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
 
 @MappedSuperclass
 public abstract class User {
@@ -11,9 +8,14 @@ public abstract class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @Column(nullable = false)
     private String login;
 
+    // bcrypt
+    @Column(length = 60, nullable = false)
     private String password;
+
+    private String name;
 
     public Integer getId() {
         return id;
