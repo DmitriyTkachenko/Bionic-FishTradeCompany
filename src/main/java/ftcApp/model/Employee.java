@@ -7,7 +7,7 @@ import javax.persistence.Entity;
 import java.io.Serializable;
 
 @Entity
-public class Employee extends User implements Serializable {
+public class Employee extends User {
     @Column(nullable = false)
     private EmployeeRole role;
 
@@ -20,5 +20,25 @@ public class Employee extends User implements Serializable {
 
     public void setRole(EmployeeRole role) {
         this.role = role;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        Employee employee = (Employee) o;
+
+        if (role != employee.role) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + role.hashCode();
+        return result;
     }
 }

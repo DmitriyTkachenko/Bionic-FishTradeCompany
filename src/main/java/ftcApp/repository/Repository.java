@@ -1,4 +1,4 @@
-package ftcApp;
+package ftcApp.repository;
 
 import java.io.Serializable;
 

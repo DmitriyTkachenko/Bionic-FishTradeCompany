@@ -1,9 +1,10 @@
 package ftcApp.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @MappedSuperclass
-public abstract class User {
+public abstract class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -39,5 +40,29 @@ public abstract class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (!id.equals(user.id)) return false;
+        if (!login.equals(user.login)) return false;
+        if (name != null ? !name.equals(user.name) : user.name != null) return false;
+        if (!password.equals(user.password)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + login.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
     }
 }
