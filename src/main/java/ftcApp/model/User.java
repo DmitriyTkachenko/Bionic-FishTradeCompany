@@ -6,10 +6,10 @@ import java.io.Serializable;
 @MappedSuperclass
 public abstract class User implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String login;
 
     // bcrypt
@@ -42,6 +42,14 @@ public abstract class User implements Serializable {
         this.password = password;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -49,7 +57,6 @@ public abstract class User implements Serializable {
 
         User user = (User) o;
 
-        if (!id.equals(user.id)) return false;
         if (!login.equals(user.login)) return false;
         if (name != null ? !name.equals(user.name) : user.name != null) return false;
         if (!password.equals(user.password)) return false;
@@ -59,8 +66,7 @@ public abstract class User implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = id.hashCode();
-        result = 31 * result + login.hashCode();
+        int result = login.hashCode();
         result = 31 * result + password.hashCode();
         result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;

@@ -4,7 +4,6 @@ import ftcApp.model.enums.EmployeeRole;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import java.io.Serializable;
 
 @Entity
 public class Employee extends User {

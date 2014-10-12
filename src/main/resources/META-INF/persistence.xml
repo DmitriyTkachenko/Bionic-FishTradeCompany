@@ -6,9 +6,9 @@
         <class>ftcApp.model.Employee</class>
         <class>ftcApp.model.Item</class>
         <class>ftcApp.model.OrderedItem</class>
+        <class>ftcApp.model.Payment</class>
         <class>ftcApp.model.Order</class>
         <class>ftcApp.model.Parcel</class>
-        <class>ftcApp.model.Payment</class>
         <properties>
             <property name="javax.persistence.jdbc.url" value="jdbc:derby:..//FTCDB"/>
             <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>

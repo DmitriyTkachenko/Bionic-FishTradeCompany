@@ -7,6 +7,7 @@ import ftcApp.repository.CustomerRepository;
 import ftcApp.repository.CustomerRepositoryImpl;
 import ftcApp.repository.EmployeeRepository;
 import ftcApp.repository.EmployeeRepositoryImpl;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class UserServiceImpl implements UserService {
     EmployeeRepository employeeRepository = new EmployeeRepositoryImpl();
@@ -18,9 +19,11 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("User with this login already exists.");
         } else {
             if (user instanceof Customer) {
+                user.setPassword(this.getHashedPassword(user.getPassword()));
                 customerRepository.save((Customer)user);
             }
             if (user instanceof Employee) {
+                user.setPassword(this.getHashedPassword(user.getPassword()));
                 employeeRepository.save((Employee)user);
             }
         }
@@ -38,5 +41,10 @@ public class UserServiceImpl implements UserService {
             return customer;
         }
         return null;
+    }
+
+    private String getHashedPassword(String password) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        return encoder.encode(password);
     }
 }

@@ -6,10 +6,10 @@ import java.io.Serializable;
 @Entity
 public class Payment implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "orderId", nullable = false)
     private Order order;
 

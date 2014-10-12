@@ -29,15 +29,32 @@ public class RepositoryImpl<T, ID extends Serializable> implements Repository<T,
     }
 
     @Override
+    public void deleteAll() {
+        em.createQuery("DELETE FROM " + entityClass.getName() + " e").executeUpdate();
+    }
+
+    @Override
     public Iterable<T> findAll() {
-        TypedQuery<T> query = em.createQuery("SELECT e FROM " + entityClass.getName() + " e", entityClass);
-        return query.getResultList();
+        Iterable<T> result = null;
+        try {
+            TypedQuery<T> query = em.createQuery("SELECT e FROM " + entityClass.getName() + " e", entityClass);
+            result = query.getResultList();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
     public T findOne(ID id) {
-        TypedQuery<T> query = em.createQuery("SELECT e FROM " + entityClass.getName() + " e WHERE e.id = :identifier", entityClass).setParameter("identifier", id);
-        return query.getSingleResult();
+        T result = null;
+        try {
+            TypedQuery<T> query = em.createQuery("SELECT e FROM " + entityClass.getName() + " e WHERE e.id = :identifier", entityClass).setParameter("identifier", id);
+            result = query.getSingleResult();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override
@@ -50,5 +67,10 @@ public class RepositoryImpl<T, ID extends Serializable> implements Repository<T,
     public long count() {
         TypedQuery<Long> query = em.createQuery("SELECT COUNT(e) FROM " + entityClass.getName() + " e", Long.class);
         return query.getSingleResult();
+    }
+
+    @Override
+    public void merge(T entity) {
+        em.merge(entity);
     }
 }

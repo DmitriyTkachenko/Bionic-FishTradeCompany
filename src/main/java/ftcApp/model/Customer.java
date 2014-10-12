@@ -2,12 +2,11 @@ package ftcApp.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import java.io.Serializable;
 
 @Entity
 public class Customer extends User {
     @Column(nullable = false)
-    private double prepaymentShareRequired;
+    private double prepaymentShareRequired = 1.0;
 
     private String shippingAddress;
 

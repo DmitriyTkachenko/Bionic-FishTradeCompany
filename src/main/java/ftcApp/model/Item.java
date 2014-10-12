@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Entity
 public class Item implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false)
@@ -19,15 +19,67 @@ public class Item implements Serializable {
 
     private String description;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "parcelId", nullable = false)
     private Parcel parcel;
 
-    private double buyingPrice;
+    private Double buyingPrice;
 
-    private double sellingPrice;
+    private Double sellingPrice;
 
     public Item() {
+    }
+
+    public Item(String name, double weight, String description, Parcel parcel, Double buyingPrice, Double sellingPrice) {
+        this.name = name;
+        this.weight = weight;
+        this.description = description;
+        this.parcel = parcel;
+        if (!parcel.getItems().contains(this)) {
+            parcel.getItems().add(this);
+        }
+        this.buyingPrice = buyingPrice;
+        this.sellingPrice = sellingPrice;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Item item = (Item) o;
+
+        if (Double.compare(item.weight, weight) != 0) return false;
+        if (buyingPrice != null ? !buyingPrice.equals(item.buyingPrice) : item.buyingPrice != null) return false;
+        if (description != null ? !description.equals(item.description) : item.description != null) return false;
+        if (!name.equals(item.name)) return false;
+        if (sellingPrice != null ? !sellingPrice.equals(item.sellingPrice) : item.sellingPrice != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = name.hashCode();
+        temp = Double.doubleToLongBits(weight);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (buyingPrice != null ? buyingPrice.hashCode() : 0);
+        result = 31 * result + (sellingPrice != null ? sellingPrice.hashCode() : 0);
+        return result;
+    }
+
+    public Parcel getParcel() {
+        return parcel;
+    }
+
+    public void setParcel(Parcel parcel) {
+        this.parcel = parcel;
+        if (!parcel.getItems().contains(this)) {
+            parcel.getItems().add(this);
+        }
     }
 
     public Integer getId() {
@@ -62,27 +114,19 @@ public class Item implements Serializable {
         this.description = description;
     }
 
-    public Parcel getParcel() {
-        return parcel;
-    }
-
-    public void setParcel(Parcel parcel) {
-        this.parcel = parcel;
-    }
-
-    public double getBuyingPrice() {
+    public Double getBuyingPrice() {
         return buyingPrice;
     }
 
-    public void setBuyingPrice(double buyingPrice) {
+    public void setBuyingPrice(Double buyingPrice) {
         this.buyingPrice = buyingPrice;
     }
 
-    public double getSellingPrice() {
+    public Double getSellingPrice() {
         return sellingPrice;
     }
 
-    public void setSellingPrice(double sellingPrice) {
+    public void setSellingPrice(Double sellingPrice) {
         this.sellingPrice = sellingPrice;
     }
 }
