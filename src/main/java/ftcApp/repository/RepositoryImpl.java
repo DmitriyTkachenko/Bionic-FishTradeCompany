@@ -1,6 +1,7 @@
 package ftcApp.repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.TypedQuery;
 import java.io.Serializable;
@@ -9,28 +10,40 @@ import java.lang.reflect.ParameterizedType;
 public class RepositoryImpl<T, ID extends Serializable> implements Repository<T, ID> {
     EntityManager em = Persistence.createEntityManagerFactory("FTC").createEntityManager();
     protected Class<T> entityClass;
+    private EntityTransaction etx;
 
     public RepositoryImpl() {
         ParameterizedType genericSuperclass = (ParameterizedType) getClass().getGenericSuperclass();
         this.entityClass = (Class<T>) genericSuperclass.getActualTypeArguments()[0];
+        etx = em.getTransaction();
     }
 
     @Override
     public T save(T entity) {
-        em.getTransaction().begin();
+        if (!etx.isActive()) {
+            etx.begin();
+        }
         em.persist(entity);
-        em.getTransaction().commit();
+        etx.commit();
         return entity;
     }
 
     @Override
     public void delete(ID id) {
+        if (!etx.isActive()) {
+            etx.begin();
+        }
         em.createQuery("DELETE FROM " + entityClass.getName() + " e WHERE e.id = :identifier").setParameter("identifier", id).executeUpdate();
+        etx.commit();
     }
 
     @Override
     public void deleteAll() {
+        if (!etx.isActive()) {
+            etx.begin();
+        }
         em.createQuery("DELETE FROM " + entityClass.getName() + " e").executeUpdate();
+        etx.commit();
     }
 
     @Override
@@ -69,8 +82,4 @@ public class RepositoryImpl<T, ID extends Serializable> implements Repository<T,
         return query.getSingleResult();
     }
 
-    @Override
-    public void merge(T entity) {
-        em.merge(entity);
-    }
 }

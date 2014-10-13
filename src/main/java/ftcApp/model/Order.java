@@ -27,14 +27,6 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public List<Payment> getPayments() {
-        return payments;
-    }
-
-    public void setPayments(List<Payment> payments) {
-        this.payments = payments;
-    }
-
     public Order(OrderStatus status, Double deliveryPrice, List<OrderedItem> orderedItems, List<Payment> payments) {
         this.status = status;
         this.deliveryPrice = deliveryPrice;
@@ -49,7 +41,8 @@ public class Order implements Serializable {
 
         Order order = (Order) o;
 
-        if (Double.compare(order.deliveryPrice, deliveryPrice) != 0) return false;
+        if (deliveryPrice != null ? !deliveryPrice.equals(order.deliveryPrice) : order.deliveryPrice != null)
+            return false;
         if (status != order.status) return false;
 
         return true;
@@ -57,11 +50,8 @@ public class Order implements Serializable {
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = status.hashCode();
-        temp = Double.doubleToLongBits(deliveryPrice);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        int result = status.hashCode();
+        result = 31 * result + (deliveryPrice != null ? deliveryPrice.hashCode() : 0);
         return result;
     }
 
@@ -76,9 +66,23 @@ public class Order implements Serializable {
     public double getTotalPrice() {
         double totalPrice = 0.0;
         for (OrderedItem orderedItem : orderedItems) {
-            totalPrice += orderedItem.getItem().getSellingPrice();
+            totalPrice += orderedItem.getItem().getSellingPrice() * orderedItem.getWeight();
         }
         return totalPrice;
+    }
+
+    public double getTotalPaymentSum() {
+        double totalPaymentSum = 0.0;
+        for (Payment payment : payments) {
+            totalPaymentSum += payment.getSum();
+        }
+        return totalPaymentSum;
+    }
+
+    public double getPercentagePaid() {
+        double totalPrice = this.getTotalPrice();
+        double totalPaymentSum = this.getTotalPaymentSum();
+        return (totalPaymentSum / totalPrice) * 100;
     }
 
     public List<OrderedItem> getOrderedItems() {
@@ -111,5 +115,13 @@ public class Order implements Serializable {
 
     public void setDeliveryPrice(Double deliveryPrice) {
         this.deliveryPrice = deliveryPrice;
+    }
+
+    public List<Payment> getPayments() {
+        return payments;
+    }
+
+    public void setPayments(List<Payment> payments) {
+        this.payments = payments;
     }
 }

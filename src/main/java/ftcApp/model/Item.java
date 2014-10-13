@@ -27,6 +27,9 @@ public class Item implements Serializable {
 
     private Double sellingPrice;
 
+    @Column(nullable = false)
+    boolean writtenOff = false;
+
     public Item() {
     }
 
@@ -42,6 +45,17 @@ public class Item implements Serializable {
         this.sellingPrice = sellingPrice;
     }
 
+    public Parcel getParcel() {
+        return parcel;
+    }
+
+    public void setParcel(Parcel parcel) {
+        this.parcel = parcel;
+        if (!parcel.getItems().contains(this)) {
+            parcel.getItems().add(this);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -50,6 +64,7 @@ public class Item implements Serializable {
         Item item = (Item) o;
 
         if (Double.compare(item.weight, weight) != 0) return false;
+        if (writtenOff != item.writtenOff) return false;
         if (buyingPrice != null ? !buyingPrice.equals(item.buyingPrice) : item.buyingPrice != null) return false;
         if (description != null ? !description.equals(item.description) : item.description != null) return false;
         if (!name.equals(item.name)) return false;
@@ -68,18 +83,8 @@ public class Item implements Serializable {
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (buyingPrice != null ? buyingPrice.hashCode() : 0);
         result = 31 * result + (sellingPrice != null ? sellingPrice.hashCode() : 0);
+        result = 31 * result + (writtenOff ? 1 : 0);
         return result;
-    }
-
-    public Parcel getParcel() {
-        return parcel;
-    }
-
-    public void setParcel(Parcel parcel) {
-        this.parcel = parcel;
-        if (!parcel.getItems().contains(this)) {
-            parcel.getItems().add(this);
-        }
     }
 
     public Integer getId() {
@@ -128,5 +133,13 @@ public class Item implements Serializable {
 
     public void setSellingPrice(Double sellingPrice) {
         this.sellingPrice = sellingPrice;
+    }
+
+    public boolean isWrittenOff() {
+        return writtenOff;
+    }
+
+    public void setWrittenOff(boolean writtenOff) {
+        this.writtenOff = writtenOff;
     }
 }

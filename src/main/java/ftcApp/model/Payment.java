@@ -19,6 +19,14 @@ public class Payment implements Serializable {
     public Payment() {
     }
 
+    public Payment(Order order, double sum) {
+        this.order = order;
+        if (!order.getPayments().contains(this)) {
+            order.getPayments().add(this);
+        }
+        this.sum = sum;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -41,5 +49,8 @@ public class Payment implements Serializable {
 
     public void setOrder(Order order) {
         this.order = order;
+        if (!order.getPayments().contains(this)) {
+            order.getPayments().add(this);
+        }
     }
 }

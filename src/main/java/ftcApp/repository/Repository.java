@@ -10,5 +10,4 @@ public interface Repository<T, ID extends Serializable> {
     T findOne(ID id);
     boolean exists(ID id);
     long count();
-    void merge(T entity);
 }
