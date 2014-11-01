@@ -9,9 +9,20 @@ import ftcApp.repository.EmployeeRepository;
 import ftcApp.repository.EmployeeRepositoryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
+@Named
 public class UserServiceImpl implements UserService {
-    EmployeeRepository employeeRepository = new EmployeeRepositoryImpl();
-    CustomerRepository customerRepository = new CustomerRepositoryImpl();
+    @Inject
+    EmployeeRepository employeeRepository;
+
+    @Inject
+    CustomerRepository customerRepository;
+
+    public UserServiceImpl() {
+
+    }
 
     @Override
     public User save(User user) {

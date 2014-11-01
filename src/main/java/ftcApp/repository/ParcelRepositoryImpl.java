@@ -2,10 +2,15 @@ package ftcApp.repository;
 
 import ftcApp.model.Parcel;
 import ftcApp.model.enums.ParcelStatus;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.TypedQuery;
 
+@org.springframework.stereotype.Repository
+@Transactional
 public class ParcelRepositoryImpl extends RepositoryImpl<Parcel, Integer> implements ParcelRepository {
+    public ParcelRepositoryImpl() { super(Parcel.class); }
+
     @Override
     public Integer generatePurchaseNumber() {
         TypedQuery<Integer> query = em.createQuery("SELECT COALESCE(MAX(p.purchaseNumber), 0) FROM Parcel p", Integer.class);
@@ -16,6 +21,6 @@ public class ParcelRepositoryImpl extends RepositoryImpl<Parcel, Integer> implem
     public void updateParcelStatus(Integer id, ParcelStatus status) {
         Parcel parcel = this.findOne(id);
         parcel.setStatus(status);
-        this.save(parcel);
+        this.update(parcel);
     }
 }

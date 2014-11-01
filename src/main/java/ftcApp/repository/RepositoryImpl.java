@@ -1,49 +1,45 @@
 package ftcApp.repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.PostConstruct;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 
+@org.springframework.stereotype.Repository
+@Transactional
 public class RepositoryImpl<T, ID extends Serializable> implements Repository<T, ID> {
-    EntityManager em = Persistence.createEntityManagerFactory("FTC").createEntityManager();
-    protected Class<T> entityClass;
-    private EntityTransaction etx;
+    @PersistenceContext
+    EntityManager em;
 
-    public RepositoryImpl() {
-        ParameterizedType genericSuperclass = (ParameterizedType) getClass().getGenericSuperclass();
-        this.entityClass = (Class<T>) genericSuperclass.getActualTypeArguments()[0];
-        etx = em.getTransaction();
+    protected Class<T> entityClass;
+
+    public RepositoryImpl() { }
+
+    public RepositoryImpl(Class<T> entityClass) {
+        this.entityClass = entityClass;
     }
 
     @Override
     public T save(T entity) {
-        if (!etx.isActive()) {
-            etx.begin();
-        }
         em.persist(entity);
-        etx.commit();
         return entity;
     }
 
     @Override
+    public T update(T entity) {
+        return em.merge(entity);
+    }
+
+    @Override
     public void delete(ID id) {
-        if (!etx.isActive()) {
-            etx.begin();
-        }
         em.createQuery("DELETE FROM " + entityClass.getName() + " e WHERE e.id = :identifier").setParameter("identifier", id).executeUpdate();
-        etx.commit();
     }
 
     @Override
     public void deleteAll() {
-        if (!etx.isActive()) {
-            etx.begin();
-        }
         em.createQuery("DELETE FROM " + entityClass.getName() + " e").executeUpdate();
-        etx.commit();
     }
 
     @Override

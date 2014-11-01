@@ -1,11 +1,20 @@
 package ftcApp.repository;
 
 import ftcApp.model.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.TypedQuery;
 import java.io.Serializable;
 
+@org.springframework.stereotype.Repository
+@Transactional
 public class UserRepositoryImpl<T extends User, ID extends Serializable> extends RepositoryImpl<T, ID> implements UserRepository<T, ID> {
+    public UserRepositoryImpl() { }
+
+    public UserRepositoryImpl(Class<T> entityClass) {
+        super(entityClass);
+    }
+
     @Override
     public T findByLogin(String login) {
         T result = null;

@@ -9,13 +9,18 @@ import ftcApp.service.UserService;
 import ftcApp.service.UserServiceImpl;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
+@Named
 public class RepositoryTest {
     CustomerRepository customerRepository;
     EmployeeRepository employeeRepository;
@@ -28,14 +33,15 @@ public class RepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-        customerRepository = new CustomerRepositoryImpl();
-        employeeRepository = new EmployeeRepositoryImpl();
-        itemRepository = new ItemRepositoryImpl();
-        parcelRepository = new ParcelRepositoryImpl();
-        userService = new UserServiceImpl();
-        orderRepository = new OrderRepositoryImpl();
-        orderedItemRepository = new OrderedItemRepositoryImpl();
-        paymentRepository = new PaymentRepositoryImpl();
+        ApplicationContext context = new ClassPathXmlApplicationContext("META-INF/spring/app-context.xml");
+        customerRepository = context.getBean(CustomerRepository.class);
+        employeeRepository = context.getBean(EmployeeRepository.class);
+        itemRepository = context.getBean(ItemRepository.class);
+        parcelRepository = context.getBean(ParcelRepository.class);
+        userService = context.getBean(UserService.class);
+        orderRepository = context.getBean(OrderRepository.class);
+        orderedItemRepository = context.getBean(OrderedItemRepository.class);
+        paymentRepository = context.getBean(PaymentRepository.class);
     }
 
     @Test
@@ -76,7 +82,7 @@ public class RepositoryTest {
         itemRepository.save(item);
         Item fetched = itemRepository.findOne(item.getId());
         fetched.setWeight(950);
-        itemRepository.save(fetched);
+        itemRepository.update(fetched);
         Item fetched2 = itemRepository.findOne(item.getId());
 
         assertEquals(950.0, fetched2.getWeight(), 0.001);
