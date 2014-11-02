@@ -1,23 +1,20 @@
 package ftcApp.repository;
 
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Repository;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
 
-@org.springframework.stereotype.Repository
-@Transactional
-public class RepositoryImpl<T, ID extends Serializable> implements Repository<T, ID> {
+@Repository
+public class GenericRepositoryImpl<T, ID extends Serializable> implements GenericRepository<T, ID> {
     @PersistenceContext
     EntityManager em;
 
     protected Class<T> entityClass;
 
-    public RepositoryImpl() { }
+    public GenericRepositoryImpl() { }
 
-    public RepositoryImpl(Class<T> entityClass) {
+    public GenericRepositoryImpl(Class<T> entityClass) {
         this.entityClass = entityClass;
     }
 

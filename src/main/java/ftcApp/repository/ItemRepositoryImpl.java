@@ -1,9 +1,9 @@
 package ftcApp.repository;
 
 import ftcApp.model.Item;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Repository;
 
-@org.springframework.stereotype.Repository
-public class ItemRepositoryImpl extends RepositoryImpl<Item, Integer> implements ItemRepository {
+@Repository
+public class ItemRepositoryImpl extends GenericRepositoryImpl<Item, Integer> implements ItemRepository {
     public ItemRepositoryImpl() { super(Item.class); }
 }

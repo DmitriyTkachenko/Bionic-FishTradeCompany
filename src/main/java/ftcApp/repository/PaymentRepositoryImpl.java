@@ -1,9 +1,9 @@
 package ftcApp.repository;
 
 import ftcApp.model.Payment;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Repository;
 
-@org.springframework.stereotype.Repository
-public class PaymentRepositoryImpl extends RepositoryImpl<Payment, Integer> implements PaymentRepository {
+@Repository
+public class PaymentRepositoryImpl extends GenericRepositoryImpl<Payment, Integer> implements PaymentRepository {
     public PaymentRepositoryImpl() { super(Payment.class); }
 }

@@ -1,9 +1,9 @@
 package ftcApp.repository;
 
 import ftcApp.model.OrderedItem;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Repository;
 
-@org.springframework.stereotype.Repository
-public class OrderedItemRepositoryImpl extends RepositoryImpl<OrderedItem, Integer> implements OrderedItemRepository {
+@Repository
+public class OrderedItemRepositoryImpl extends GenericRepositoryImpl<OrderedItem, Integer> implements OrderedItemRepository {
     public OrderedItemRepositoryImpl() { super(OrderedItem.class); }
 }

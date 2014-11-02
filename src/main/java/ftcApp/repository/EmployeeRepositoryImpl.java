@@ -1,9 +1,9 @@
 package ftcApp.repository;
 
 import ftcApp.model.Employee;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Repository;
 
-@org.springframework.stereotype.Repository
+@Repository
 public class EmployeeRepositoryImpl extends UserRepositoryImpl<Employee, Integer> implements EmployeeRepository {
     public EmployeeRepositoryImpl() { super(Employee.class); }
 }

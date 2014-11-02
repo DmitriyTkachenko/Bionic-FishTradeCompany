@@ -1,14 +1,13 @@
 package ftcApp.repository;
 
 import ftcApp.model.User;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
 import java.io.Serializable;
 
-@org.springframework.stereotype.Repository
-@Transactional
-public class UserRepositoryImpl<T extends User, ID extends Serializable> extends RepositoryImpl<T, ID> implements UserRepository<T, ID> {
+@Repository
+public class UserRepositoryImpl<T extends User, ID extends Serializable> extends GenericRepositoryImpl<T, ID> implements UserRepository<T, ID> {
     public UserRepositoryImpl() { }
 
     public UserRepositoryImpl(Class<T> entityClass) {

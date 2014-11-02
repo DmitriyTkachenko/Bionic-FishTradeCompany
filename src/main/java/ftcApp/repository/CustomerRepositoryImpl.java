@@ -1,10 +1,9 @@
 package ftcApp.repository;
 
 import ftcApp.model.Customer;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Repository;
 
-@org.springframework.stereotype.Repository
-@Transactional
+@Repository
 public class CustomerRepositoryImpl extends UserRepositoryImpl<Customer, Integer> implements CustomerRepository {
 
     public CustomerRepositoryImpl() {

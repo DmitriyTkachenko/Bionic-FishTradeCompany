@@ -2,16 +2,10 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:webflow="http://www.springframework.org/schema/webflow-config"
-       xmlns:faces="http://www.springframework.org/schema/faces"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd
-       http://www.springframework.org/schema/webflow-config
-       http://www.springframework.org/schema/webflow-config/spring-webflow-config-2.4.xsd
-       http://www.springframework.org/schema/faces
-       http://www.springframework.org/schema/faces/spring-faces-2.4.xsd
        http://www.springframework.org/schema/tx
        http://www.springframework.org/schema/tx/spring-tx.xsd">
 
@@ -53,32 +47,5 @@
     <bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor"/>
 
     <tx:annotation-driven transaction-manager="transactionManager"/>
-
-    <!-- Web Flow -->
-
-    <!-- Executes flows: the central entry point into the Spring Web Flow system -->
-    <webflow:flow-executor id="flowExecutor">
-        <webflow:flow-execution-listeners>
-            <webflow:listener ref="facesContextListener"/>
-        </webflow:flow-execution-listeners>
-    </webflow:flow-executor>
-
-    <!-- The registry of executable flow definitions -->
-    <webflow:flow-registry id="flowRegistry" flow-builder-services="flowBuilderServices" base-path="/WEB-INF">
-        <webflow:flow-location-pattern value="**/*-flow.xml" />
-    </webflow:flow-registry>
-
-    <!-- Configures the Spring Web Flow JSF integration -->
-    <faces:flow-builder-services id="flowBuilderServices" />
-
-    <!-- A listener maintain one FacesContext instance per Web Flow request. -->
-    <bean id="facesContextListener"
-          class="org.springframework.faces.webflow.FlowFacesContextLifecycleListener" />
-
-    <faces:resources />
-
-    <bean class="org.springframework.faces.webflow.JsfFlowHandlerAdapter">
-        <property name="flowExecutor" ref="flowExecutor" />
-    </bean>
 
 </beans>

@@ -1,9 +1,9 @@
-package ftcApp.repository;
+package ftcApp.service;
 
 import ftcApp.model.Parcel;
 import ftcApp.model.enums.ParcelStatus;
 
-public interface ParcelRepository extends GenericRepository<Parcel, Integer> {
+public interface ParcelService extends GenericService<Parcel, Integer> {
     Integer generatePurchaseNumber();
     void updateParcelStatus(Integer id, ParcelStatus status);
 }

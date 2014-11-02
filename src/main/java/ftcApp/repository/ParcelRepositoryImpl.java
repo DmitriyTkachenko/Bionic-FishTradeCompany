@@ -2,13 +2,12 @@ package ftcApp.repository;
 
 import ftcApp.model.Parcel;
 import ftcApp.model.enums.ParcelStatus;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
 
-@org.springframework.stereotype.Repository
-@Transactional
-public class ParcelRepositoryImpl extends RepositoryImpl<Parcel, Integer> implements ParcelRepository {
+@Repository
+public class ParcelRepositoryImpl extends GenericRepositoryImpl<Parcel, Integer> implements ParcelRepository {
     public ParcelRepositoryImpl() { super(Parcel.class); }
 
     @Override

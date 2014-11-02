@@ -4,15 +4,15 @@ import ftcApp.model.Customer;
 import ftcApp.model.Employee;
 import ftcApp.model.User;
 import ftcApp.repository.CustomerRepository;
-import ftcApp.repository.CustomerRepositoryImpl;
 import ftcApp.repository.EmployeeRepository;
-import ftcApp.repository.EmployeeRepositoryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
-@Named
+@Service
+@Transactional
 public class UserServiceImpl implements UserService {
     @Inject
     EmployeeRepository employeeRepository;
@@ -20,9 +20,7 @@ public class UserServiceImpl implements UserService {
     @Inject
     CustomerRepository customerRepository;
 
-    public UserServiceImpl() {
-
-    }
+    public UserServiceImpl() { }
 
     @Override
     public User save(User user) {

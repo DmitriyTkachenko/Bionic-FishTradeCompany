@@ -7,6 +7,7 @@
         <setting name="provider-name" value="EclipseLink" />
         <datasource-mapping>
           <factory-entry name="CashM" />
+          <factory-entry name="FTC" value="dataSource" />
           <factory-entry name="NewPersistenceUnit" />
         </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />
@@ -16,6 +17,8 @@
       <configuration>
         <fileset id="fileset" name="Spring Application Context" removed="false">
           <file>file://$MODULE_DIR$/src/main/resources/META-INF/spring/app-context.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/META-INF/spring/swf-config.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/META-INF/spring/swf-config.xml</file>
         </fileset>
       </configuration>
     </facet>
