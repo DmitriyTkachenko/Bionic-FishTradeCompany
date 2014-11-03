@@ -9,6 +9,44 @@
     <ui:define name="title">Index page</ui:define>
     <ui:define name="content">
 
+        <p:dataTable var="item" value="${itemView.items}">
+            <p:column headerText="#{msg['name']}" sortBy="${item.name}">
+                <h:outputText value="${item.name}"/>
+            </p:column>
+            <p:column headerText="#{msg['amountAvailable']}" sortBy="${item.weight}">
+                <h:outputText value="${item.weight}"/>
+            </p:column>
+            <p:column headerText="#{msg['description']}" sortBy="${item.weight}">
+                <h:outputText value="${item.description}"/>
+            </p:column>
+            <p:column headerText="#{msg['price']}" sortBy="${item.sellingPrice}">
+                <h:outputText value="${item.sellingPrice}"/>
+            </p:column>
+            <p:column headerText="#{msg['quantity']}">
+                <p:spinner value="${itemView.selectedWeight}" stepFactor="0.1" min="0" max="${item.weight}" suffix=" #{msg['t']}"/>
+            </p:column>
+            <p:column headerText="">
+                <p:commandButton value="#{msg['addToCart']}" action="${itemView.addItemToOrder()}" update=":cart">
+                    <f:setPropertyActionListener value="#{item}" target="#{itemView.selectedItem}" />
+                </p:commandButton>
+            </p:column>
+        </p:dataTable>
+        <br/>
+        <p:dataTable id="cart" var="orderedItem" value="${itemView.order.orderedItems}">
+            <p:column headerText="#{msg['name']}">
+                <h:outputText value="${orderedItem.item.name}"/>
+            </p:column>
+        </p:dataTable>
+
+        <h:form>
+            <h:panelGrid columns="2">
+                Language:
+                <h:selectOneMenu value="#{language.localeCode}" onchange="submit()"
+                                 valueChangeListener="#{language.countryLocaleCodeChanged}">
+                    <f:selectItems value="#{language.countriesInMap}" />
+                </h:selectOneMenu>
+            </h:panelGrid>
+        </h:form>
     </ui:define>
 </ui:composition>
 

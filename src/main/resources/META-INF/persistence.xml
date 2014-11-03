@@ -6,8 +6,11 @@
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:derby:..//FTCDB;create=true"/>
-            <property name="eclipselink.ddl-generation.output-mode" value="database"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:derby:D:/Dropbox/IdeaProjects/FTCDB;create=true"/>
+            <property name="eclipselink.logging.level.sql" value="FINEST"/>
+            <property name="eclipselink.logging.parameters" value="true"/>
+            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
+            <property name="eclipselink.ddl-generation.output-mode" value="both"/>
             <property name="eclipselink.weaving" value="static"/>
         </properties>
     </persistence-unit>

@@ -14,4 +14,5 @@ public class ItemServiceImpl extends GenericServiceImpl<Item, Integer> implement
     public ItemServiceImpl(ItemRepository repository) {
         super(repository, Item.class);
     }
+
 }

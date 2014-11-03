@@ -30,6 +30,11 @@ public class GenericRepositoryImpl<T, ID extends Serializable> implements Generi
     }
 
     @Override
+    public void delete(T entity) {
+        em.remove(entity);
+    }
+
+    @Override
     public void delete(ID id) {
         em.createQuery("DELETE FROM " + entityClass.getName() + " e WHERE e.id = :identifier").setParameter("identifier", id).executeUpdate();
     }

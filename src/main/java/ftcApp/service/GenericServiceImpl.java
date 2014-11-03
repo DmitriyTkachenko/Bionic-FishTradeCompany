@@ -36,6 +36,11 @@ public class GenericServiceImpl<T, ID extends Serializable> implements GenericSe
     }
 
     @Override
+    public void delete(T entity) {
+        repository.delete(entity);
+    }
+
+    @Override
     public void deleteAll() {
         repository.deleteAll();
     }
