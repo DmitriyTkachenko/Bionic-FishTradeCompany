@@ -3,51 +3,121 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:sec="http://www.springframework.org/security/tags">
 
 <ui:composition template="/templates/main.xhtml">
     <ui:define name="title">Index page</ui:define>
     <ui:define name="content">
 
-        <p:dataTable var="item" value="${itemView.items}">
-            <p:column headerText="#{msg['name']}" sortBy="${item.name}">
-                <h:outputText value="${item.name}"/>
-            </p:column>
-            <p:column headerText="#{msg['amountAvailable']}" sortBy="${item.weight}">
-                <h:outputText value="${item.weight}"/>
-            </p:column>
-            <p:column headerText="#{msg['description']}" sortBy="${item.weight}">
-                <h:outputText value="${item.description}"/>
-            </p:column>
-            <p:column headerText="#{msg['price']}" sortBy="${item.sellingPrice}">
-                <h:outputText value="${item.sellingPrice}"/>
-            </p:column>
-            <p:column headerText="#{msg['quantity']}">
-                <p:spinner value="${itemView.selectedWeight}" stepFactor="0.1" min="0" max="${item.weight}" suffix=" #{msg['t']}"/>
-            </p:column>
-            <p:column headerText="">
-                <p:commandButton value="#{msg['addToCart']}" action="${itemView.addItemToOrder()}" update=":cart">
-                    <f:setPropertyActionListener value="#{item}" target="#{itemView.selectedItem}" />
-                </p:commandButton>
-            </p:column>
-        </p:dataTable>
+        <h:form>
+            <p:dataTable var="itemQuantity" value="${itemBean.items}">
+                <p:column headerText="#{msg['name']}" sortBy="${itemQuantity.item.name}">
+                    <h:outputText value="${itemQuantity.item.name}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['amountAvailable']}" sortBy="${itemQuantity.item.weight}">
+                    <h:outputText value="${itemQuantity.item.weight}">
+                        <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="#{msg['description']}" sortBy="${itemQuantity.item.description}">
+                    <h:outputText value="${itemQuantity.item.description}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['price']}" sortBy="${itemQuantity.item.sellingPrice}">
+                    <h:outputText value="${itemQuantity.item.sellingPrice}">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="#{msg['quantity']}">
+                    <p:spinner value="${itemQuantity.weight}" stepFactor="0.1"
+                               min="0" max="${itemQuantity.item.weight}"
+                               suffix=" #{msg['t']}"/>
+                </p:column>
+
+                <p:column headerText="">
+                    <p:commandButton value="#{msg['addToCart']}" action="${cartBean.addItemToOrder(itemQuantity)}"
+                                     update=":cart-form:cart"/>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+
         <br/>
-        <p:dataTable id="cart" var="orderedItem" value="${itemView.order.orderedItems}">
-            <p:column headerText="#{msg['name']}">
-                <h:outputText value="${orderedItem.item.name}"/>
-            </p:column>
-        </p:dataTable>
+
+        <p:commandButton id="show-cart" value="#{msg['cart']}" type="button"/>
+        <p:overlayPanel for="show-cart" styleClass="overlay-cart">
+            <h:form id="cart-form">
+                <p:dataTable id="cart" var="orderedItem" value="${cartBean.order.orderedItems}" rows="5"
+                             paginator="true">
+                    <p:column headerText="#{msg['name']}" sortBy="${orderedItem.item.name}">
+                        <h:outputText value="${orderedItem.item.name}"/>
+                    </p:column>
+
+                    <p:column headerText="#{msg['description']}" sortBy="${orderedItem.item.description}">
+                        <h:outputText value="${orderedItem.item.description}"/>
+                    </p:column>
+
+                    <p:column headerText="#{msg['quantity']}">
+                        <p:spinner value="${orderedItem.weight}" stepFactor="0.1" min="0">
+                            <p:ajax update="total" process="@this"/>
+                        </p:spinner>
+                    </p:column>
+
+                    <p:column headerText="#{msg['price']}" sortBy="${orderedItem.price}">
+                        <h:outputText value="${orderedItem.price}">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="#{msg['total']}">
+                        <h:outputText id="total" value="${orderedItem.weight * orderedItem.price}">
+                            <f:convertNumber maxFractionDigits="2"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column>
+                        <p:commandLink icon="ui-icon-closethick" title="Delete"
+                                         action="${cartBean.order.removeOrderedItem(orderedItem)}"
+                                         update="cart">
+                            <i class="fa fa-times"/>
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </p:overlayPanel>
+
+        <p:commandButton value="#{msg['login']}" type="button" onclick="PF('login-dialog').show()"/>
+        <p:dialog widgetVar="login-dialog" styleClass="overlay-login" minHeight="40">
+            <form id="login-form" action="/j_spring_security_check" method="POST">
+                <label for="j_username">Login: </label>
+                <input class="form-control" id="j_username" name="j_username" type="text" required="true"
+                       autofocus="true"/>
+                <label for="j_password">Password: </label>
+                <input class="form-control" id="j_password" name="j_password" type="password" required="true"/>
+                <input class="btn btn-lg btn-primary btn-block" type="submit" value="Submit"/>
+            </form>
+        </p:dialog>
+
+        <sec:authorize ifAnyGranted="SECURITY_OFFICER">
+            You have successfully logged in.
+        </sec:authorize>
+
+        <br/>
 
         <h:form>
             <h:panelGrid columns="2">
                 Language:
                 <h:selectOneMenu value="#{language.localeCode}" onchange="submit()"
                                  valueChangeListener="#{language.countryLocaleCodeChanged}">
-                    <f:selectItems value="#{language.countriesInMap}" />
+                    <f:selectItems value="#{language.countriesInMap}"/>
                 </h:selectOneMenu>
             </h:panelGrid>
         </h:form>
     </ui:define>
 </ui:composition>
 
-</html>  
+</html>

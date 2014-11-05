@@ -85,6 +85,10 @@ public class Order implements Serializable {
         return (totalPaymentSum / totalPrice) * 100;
     }
 
+    public void removeOrderedItem(OrderedItem orderedItem) {
+        orderedItems.remove(orderedItem);
+    }
+
     public List<OrderedItem> getOrderedItems() {
         return orderedItems;
     }

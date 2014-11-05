@@ -49,7 +49,7 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="D:\Dropbox\IdeaProjects\Bionic-FishTradeCompany2\target/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/target/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="FishTradeCompany/web/Web" />
     </root>

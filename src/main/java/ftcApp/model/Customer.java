@@ -1,5 +1,7 @@
 package ftcApp.model;
 
+import ftcApp.model.enums.UserRole;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
@@ -13,6 +15,12 @@ public class Customer extends User {
     private String contactInfo;
 
     public Customer() {
+    }
+
+    public Customer(String login, String password, UserRole userRole) {
+        setLogin(login);
+        setPassword(password);
+        setUserRole(userRole);
     }
 
     public String getShippingAddress() {

@@ -1,5 +1,7 @@
 package ftcApp.model;
 
+import ftcApp.model.enums.UserRole;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -17,6 +19,33 @@ public abstract class User implements Serializable {
     private String password;
 
     private String name;
+
+    @Column(nullable = false)
+    private UserRole userRole;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (!login.equals(user.login)) return false;
+        if (name != null ? !name.equals(user.name) : user.name != null) return false;
+        if (!password.equals(user.password)) return false;
+        if (userRole != user.userRole) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = login.hashCode();
+        result = 31 * result + password.hashCode();
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + userRole.hashCode();
+        return result;
+    }
 
     public Integer getId() {
         return id;
@@ -50,25 +79,13 @@ public abstract class User implements Serializable {
         this.name = name;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        User user = (User) o;
-
-        if (!login.equals(user.login)) return false;
-        if (name != null ? !name.equals(user.name) : user.name != null) return false;
-        if (!password.equals(user.password)) return false;
-
-        return true;
+    public UserRole getUserRole() {
+        return userRole;
     }
 
-    @Override
-    public int hashCode() {
-        int result = login.hashCode();
-        result = 31 * result + password.hashCode();
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        return result;
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
+
+
 }

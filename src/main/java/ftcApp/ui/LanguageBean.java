@@ -1,4 +1,4 @@
-package ftcApp.view;
+package ftcApp.ui;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;
@@ -20,7 +20,7 @@ public class LanguageBean implements Serializable {
 
     private static Map<String,Object> countries;
     static{
-        countries = new LinkedHashMap<String, Object>();
+        countries = new LinkedHashMap<>();
         countries.put("English", Locale.ENGLISH);
         countries.put("Russian", new Locale("ru", "RU"));
         countries.put("Ukrainian", new Locale("uk", "UA"));

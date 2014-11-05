@@ -1,8 +1,10 @@
 package ftcApp.service;
 
+import ftcApp.model.Employee;
 import ftcApp.model.Item;
 import ftcApp.model.Parcel;
 import ftcApp.model.enums.ParcelStatus;
+import ftcApp.model.enums.UserRole;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,13 +18,21 @@ public class TestServiceImpl implements TestService {
     @Inject
     private ParcelService parcelService;
 
-    private Parcel parcel;
+    @Inject
+    private UserService userService;
 
-    private boolean previousDataDeleted = true;
+    @Inject
+    private EmployeeService employeeService;
+
+    private Parcel parcel;
+    private Employee employee;
+
+    private boolean previousItemsDeleted = true;
+    private boolean previousUserDeleted = true;
 
     @Override
     public void addItemsData() {
-        if (!previousDataDeleted) {
+        if (!previousItemsDeleted) {
             return;
         }
         parcel = new Parcel(parcelService.generatePurchaseNumber(), ParcelStatus.REGISTERED_BY_GM, new Date(), new ArrayList<>(), 1000.0);
@@ -30,14 +40,29 @@ public class TestServiceImpl implements TestService {
         Item item2 = new Item("Tuna", 400, "Country of origin: Thailand", parcel, 3500.0, 407.0);
         Item item3 = new Item("Trout", 200, "Country of origin: Turkey", parcel, 6000.0, 202.5);
         parcelService.save(parcel);
-        previousDataDeleted = false;
+        previousItemsDeleted = false;
     }
 
     @Override
     public void removeItemsData() {
         parcelService.delete(parcel);
-        previousDataDeleted = true;
+        previousItemsDeleted = true;
     }
 
+    @Override
+    public void addUser() {
+        if (!previousUserDeleted) {
+            return;
+        }
+        employee = new Employee("Admin", "test", UserRole.SECURITY_OFFICER);
+        userService.save(employee);
+        previousUserDeleted = false;
+    }
+
+    @Override
+    public void removeUser() {
+        employeeService.delete(employee);
+        previousUserDeleted = true;
+    }
 
 }

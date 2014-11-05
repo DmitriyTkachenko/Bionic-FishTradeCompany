@@ -1,9 +1,9 @@
 package ftcApp;
 
 import ftcApp.model.*;
-import ftcApp.model.enums.EmployeeRole;
 import ftcApp.model.enums.OrderStatus;
 import ftcApp.model.enums.ParcelStatus;
+import ftcApp.model.enums.UserRole;
 import ftcApp.service.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -99,7 +99,7 @@ public class RepositoryTest {
         employee.setLogin("jenssecurity");
         employee.setPassword("strongPassword418");
         employee.setName("Jens Holder");
-        employee.setRole(EmployeeRole.SECURITY_OFFICER);
+        employee.setUserRole(UserRole.SECURITY_OFFICER);
         userService.save(customer);
         userService.save(employee);
 
@@ -134,8 +134,8 @@ public class RepositoryTest {
         Item item2 = new Item("Tuna", 400, "", parcel, 3500.0, 3600.0);
         parcelService.save(parcel);
         Order order = new Order(OrderStatus.PENDING_PREPAYMENT, null, new ArrayList<>(), new ArrayList<>());
-        OrderedItem orderedItem1 = new OrderedItem(item1, 100, order);
-        OrderedItem orderedItem2 = new OrderedItem(item2, 50, order);
+        OrderedItem orderedItem1 = new OrderedItem(item1, 100, item1.getSellingPrice(), order);
+        OrderedItem orderedItem2 = new OrderedItem(item2, 50, item1.getSellingPrice(), order);
         Payment p1 = new Payment(order, 100000.0);
         Payment p2 = new Payment(order, 50000.0);
         Payment p3 = new Payment(order, 25000.0);

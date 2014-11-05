@@ -15,6 +15,8 @@ public class OrderedItem implements Serializable {
 
     private double weight;
 
+    private double price;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "orderId", nullable = false)
     private Order order;
@@ -22,9 +24,10 @@ public class OrderedItem implements Serializable {
     public OrderedItem() {
     }
 
-    public OrderedItem(Item item, double weight, Order Order) {
+    public OrderedItem(Item item, double weight, double price, Order Order) {
         this.item = item;
         this.weight = weight;
+        this.price = price;
         this.order = Order;
         if (!order.getOrderedItems().contains(this)) {
             order.getOrderedItems().add(this);
@@ -89,4 +92,11 @@ public class OrderedItem implements Serializable {
         this.weight = weight;
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }
