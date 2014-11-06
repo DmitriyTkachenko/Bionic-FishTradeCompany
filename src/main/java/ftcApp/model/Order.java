@@ -4,6 +4,7 @@ import ftcApp.model.enums.OrderStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -24,8 +25,11 @@ public class Order implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<Payment> payments;
 
-    public Order() {
-    }
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    private Date created;
+
+    public Order() { }
 
     public Order(OrderStatus status, Double deliveryPrice, List<OrderedItem> orderedItems, List<Payment> payments) {
         this.status = status;
@@ -128,4 +132,13 @@ public class Order implements Serializable {
     public void setPayments(List<Payment> payments) {
         this.payments = payments;
     }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
 }

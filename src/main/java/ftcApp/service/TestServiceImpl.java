@@ -35,7 +35,7 @@ public class TestServiceImpl implements TestService {
         if (!previousItemsDeleted) {
             return;
         }
-        parcel = new Parcel(parcelService.generatePurchaseNumber(), ParcelStatus.REGISTERED_BY_GM, new Date(), new ArrayList<>(), 1000.0);
+        parcel = new Parcel(ParcelStatus.REGISTERED_BY_GM, new Date(), new ArrayList<>(), 1000.0);
         Item item1 = new Item("Cod", 300, "Country of origin: Norway", parcel, 5000.0, 305.0);
         Item item2 = new Item("Tuna", 400, "Country of origin: Thailand", parcel, 3500.0, 407.0);
         Item item3 = new Item("Trout", 200, "Country of origin: Turkey", parcel, 6000.0, 202.5);

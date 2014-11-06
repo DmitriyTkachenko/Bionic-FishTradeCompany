@@ -5,6 +5,7 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -24,6 +25,11 @@ public class LanguageBean implements Serializable {
         countries.put("English", Locale.ENGLISH);
         countries.put("Russian", new Locale("ru", "RU"));
         countries.put("Ukrainian", new Locale("uk", "UA"));
+    }
+
+    @PostConstruct
+    public void init() {
+        System.err.println("LanguageBean's init method called.");
     }
 
     public Map<String, Object> getCountriesInMap() {

@@ -44,7 +44,7 @@ public class RepositoryTest {
     @Test
     // User Story 8
     public void testParcelRegistration() throws Exception {
-        Parcel parcel = new Parcel(parcelService.generatePurchaseNumber(), ParcelStatus.REGISTERED_BY_GM, new Date(), new ArrayList<>(), 1000.0);
+        Parcel parcel = new Parcel(ParcelStatus.REGISTERED_BY_GM, new Date(), new ArrayList<>(), 1000.0);
         Item item1 = new Item("Cod", 300, "", parcel, 5000.0, null);
         Item item2 = new Item("Tuna", 400, "", parcel, 3500.0, null);
         Item item3 = new Item("Trout", 200, "", parcel, 6000.0, null);
@@ -61,7 +61,7 @@ public class RepositoryTest {
     @Test
     // User Story 10
     public void testParcelStatusChange() throws Exception {
-        Parcel parcel = new Parcel(parcelService.generatePurchaseNumber(), ParcelStatus.REGISTERED_BY_GM, new Date(), null, 2000.0);
+        Parcel parcel = new Parcel(ParcelStatus.REGISTERED_BY_GM, new Date(), null, 2000.0);
         parcelService.save(parcel);
         parcelService.updateParcelStatus(parcel.getId(), ParcelStatus.PUT_UP_FOR_SALE);
         Parcel fetched = parcelService.findOne(parcel.getId());
@@ -74,7 +74,7 @@ public class RepositoryTest {
     @Test
     // User Story 9, 11
     public void testItemEdit() throws Exception {
-        Parcel parcel = new Parcel(parcelService.generatePurchaseNumber(), ParcelStatus.REGISTERED_BY_GM, new Date(), new ArrayList<>(), 2000.0);
+        Parcel parcel = new Parcel(ParcelStatus.REGISTERED_BY_GM, new Date(), new ArrayList<>(), 2000.0);
         Item item = new Item("Whale", 1000, "", parcel, 10000.0, null);
         itemService.save(item);
         Item fetched = itemService.findOne(item.getId());
@@ -113,7 +113,7 @@ public class RepositoryTest {
     @Test
     // User Story 1
     public void testFindAllItems() throws Exception {
-        Parcel parcel = new Parcel(parcelService.generatePurchaseNumber(), ParcelStatus.REGISTERED_BY_GM, new Date(), new ArrayList<>(), 1000.0);
+        Parcel parcel = new Parcel(ParcelStatus.REGISTERED_BY_GM, new Date(), new ArrayList<>(), 1000.0);
         Item item1 = new Item("Cod", 300, "", parcel, 5000.0, null);
         Item item2 = new Item("Tuna", 400, "", parcel, 3500.0, null);
         Item item3 = new Item("Trout", 200, "", parcel, 6000.0, null);
@@ -129,7 +129,7 @@ public class RepositoryTest {
     @Test
     // User Story 2, 4, 22
     public void testSubmitOrder() throws Exception {
-        Parcel parcel = new Parcel(parcelService.generatePurchaseNumber(), ParcelStatus.REGISTERED_BY_GM, new Date(), new ArrayList<>(), 500.0);
+        Parcel parcel = new Parcel(ParcelStatus.REGISTERED_BY_GM, new Date(), new ArrayList<>(), 500.0);
         Item item1 = new Item("Cod", 300, "", parcel, 5000.0, 5200.0);
         Item item2 = new Item("Tuna", 400, "", parcel, 3500.0, 3600.0);
         parcelService.save(parcel);

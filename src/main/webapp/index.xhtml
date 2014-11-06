@@ -11,7 +11,7 @@
     <ui:define name="content">
 
         <h:form>
-            <p:dataTable var="itemQuantity" value="${itemBean.items}">
+            <p:dataTable var="itemQuantity" value="${itemsBean.items}">
                 <p:column headerText="#{msg['name']}" sortBy="${itemQuantity.item.name}">
                     <h:outputText value="${itemQuantity.item.name}"/>
                 </p:column>
@@ -27,7 +27,7 @@
                 </p:column>
 
                 <p:column headerText="#{msg['price']}" sortBy="${itemQuantity.item.sellingPrice}">
-                    <h:outputText value="${itemQuantity.item.sellingPrice}">
+                    <h:outputText value="$${itemQuantity.item.sellingPrice}">
                         <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
                     </h:outputText>
                 </p:column>

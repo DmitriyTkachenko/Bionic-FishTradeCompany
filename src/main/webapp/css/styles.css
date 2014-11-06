@@ -10,3 +10,12 @@ body {
 .fa-times {
     color:red;
 }
+
+.add-item-button, .add-parcel-button {
+    display: block;
+    margin: 5px auto;
+}
+
+#parcel-registration {
+    display: none;
+}

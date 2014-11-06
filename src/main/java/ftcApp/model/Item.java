@@ -23,6 +23,7 @@ public class Item implements Serializable {
     @JoinColumn(name = "parcelId", nullable = false)
     private Parcel parcel;
 
+    @Column(nullable = false)
     private Double buyingPrice;
 
     private Double sellingPrice;

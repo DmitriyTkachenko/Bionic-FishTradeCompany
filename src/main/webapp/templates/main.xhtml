@@ -5,45 +5,47 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets">
+<f:view locale="${language.localeCode}">
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+            <meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-<h:head>
-    <f:facet name="first">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>
+                <ui:insert name="title">Title</ui:insert>
+            </title>
+        </f:facet>
 
-        <title>
-            <ui:insert name="title">Title</ui:insert>
-        </title>
-    </f:facet>
+        <f:facet name="middle">
 
-    <f:facet name="middle">
+        </f:facet>
 
-    </f:facet>
+        <f:facet name="last">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"/>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css"/>
+            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/>
+            <link rel="stylesheet" href="../css/styles.css"/>
+        </f:facet>
 
-    <f:facet name="last">
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css"/>
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css"/>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css"/>
-        <link rel="stylesheet" href="../css/styles.css"/>
-    </f:facet>
+    </h:head>
 
-</h:head>
+    <h:body>
+        <ui:insert name="header">
+            <ui:include src="header.xhtml"/>
+        </ui:insert>
 
-<h:body>
-    <ui:insert name="header">
-        <ui:include src="header.xhtml" />
-    </ui:insert>
+        <ui:insert name="content"/>
 
-    <ui:insert name="content" />
+        <ui:insert name="footer">
+            <ui:include src="footer.xhtml"/>
+        </ui:insert>
 
-    <ui:insert name="footer">
-        <ui:include src="footer.xhtml" />
-    </ui:insert>
-
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <!--<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>-->
-    <script type="text/javascript" src="http://malsup.github.com/jquery.form.js"></script>
-    <script type="text/javascript" src="../js/scripts.js"></script>
-</h:body>
+        <script type="text/javascript"
+                src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+        <!--<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.1.min.js"></script>-->
+        <script type="text/javascript" src="http://malsup.github.com/jquery.form.js"></script>
+        <script type="text/javascript" src="../js/scripts.js"></script>
+    </h:body>
+</f:view>
 </html>

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 
 @ManagedBean
 @ViewScoped
-public class ItemBean implements Serializable {
+public class ItemsBean implements Serializable {
     @Inject
     private transient ItemService itemService;
 

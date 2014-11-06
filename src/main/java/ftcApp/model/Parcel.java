@@ -4,6 +4,7 @@ import ftcApp.model.enums.ParcelStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -15,9 +16,6 @@ public class Parcel implements Serializable {
     private Integer id;
 
     @Column(nullable = false)
-    private Integer purchaseNumber;
-
-    @Column(nullable = false)
     private ParcelStatus status;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -25,16 +23,15 @@ public class Parcel implements Serializable {
     private Date purchased;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parcel")
-    private List<Item> items;
+    private List<Item> items = new ArrayList<>();
 
-    private Double deliveryPrice;
+    private Double deliveryCost;
 
-    public Parcel(Integer purchaseNumber, ParcelStatus status, Date purchased, List<Item> items, Double deliveryPrice) {
-        this.purchaseNumber = purchaseNumber;
+    public Parcel(ParcelStatus status, Date purchased, List<Item> items, Double deliveryCost) {
         this.status = status;
         this.purchased = purchased;
         this.items = items;
-        this.deliveryPrice = deliveryPrice;
+        this.deliveryCost = deliveryCost;
     }
 
     public Parcel() {}
@@ -46,9 +43,8 @@ public class Parcel implements Serializable {
 
         Parcel parcel = (Parcel) o;
 
-        if (deliveryPrice != null ? !deliveryPrice.equals(parcel.deliveryPrice) : parcel.deliveryPrice != null)
+        if (deliveryCost != null ? !deliveryCost.equals(parcel.deliveryCost) : parcel.deliveryCost != null)
             return false;
-        if (!purchaseNumber.equals(parcel.purchaseNumber)) return false;
         if (!purchased.equals(parcel.purchased)) return false;
         if (status != parcel.status) return false;
 
@@ -57,10 +53,9 @@ public class Parcel implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = purchaseNumber.hashCode();
-        result = 31 * result + status.hashCode();
+        int result = status.hashCode();
         result = 31 * result + purchased.hashCode();
-        result = 31 * result + (deliveryPrice != null ? deliveryPrice.hashCode() : 0);
+        result = 31 * result + (deliveryCost != null ? deliveryCost.hashCode() : 0);
         return result;
     }
 
@@ -80,14 +75,6 @@ public class Parcel implements Serializable {
         this.id = id;
     }
 
-    public Integer getPurchaseNumber() {
-        return purchaseNumber;
-    }
-
-    public void setPurchaseNumber(Integer purchaseNumber) {
-        this.purchaseNumber = purchaseNumber;
-    }
-
     public ParcelStatus getStatus() {
         return status;
     }
@@ -104,11 +91,11 @@ public class Parcel implements Serializable {
         this.purchased = registered;
     }
 
-    public Double getDeliveryPrice() {
-        return deliveryPrice;
+    public Double getDeliveryCost() {
+        return deliveryCost;
     }
 
-    public void setDeliveryPrice(Double deliveryPrice) {
-        this.deliveryPrice = deliveryPrice;
+    public void setDeliveryCost(Double deliveryPrice) {
+        this.deliveryCost = deliveryPrice;
     }
 }

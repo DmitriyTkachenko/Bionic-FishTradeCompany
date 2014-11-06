@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<ui:composition template="/templates/main.xhtml">
+    <ui:define name="title">Dashboard</ui:define>
+    <ui:define name="content">
+
+        <p:commandButton id="register-parcel" value="#{msg['registerParcel']}"/>
+
+        <div id="parcel-registration">
+            <h:form id="addItemForm">
+                <p:panelGrid columns="2" cellpadding="5">
+                    <f:facet name="header">
+                        <h3>#{msg['itemInfo']}</h3>
+                    </f:facet>
+
+                    <p:outputLabel value="#{msg['name']}:"/>
+                    <p:inputText value="${parcelBean.item.name}" size="22"/>
+
+                    <p:outputLabel value="#{msg['description']}:"/>
+                    <p:inputTextarea value="#{parcelBean.item.description}" rows="5" cols="24"/>
+
+                    <p:outputLabel value="#{msg['buyingPrice']}:"/>
+                    <p:spinner min="0" stepFactor="1" value="${parcelBean.item.buyingPrice}" prefix="$" size="20">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                    </p:spinner>
+
+                    <p:outputLabel value="#{msg['sellingPrice']}:"/>
+                    <p:spinner min="0" stepFactor="1" value="${parcelBean.item.sellingPrice}" prefix="$" size="20">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                    </p:spinner>
+
+                    <p:outputLabel value="#{msg['weight']}:"/>
+                    <p:spinner min="0" stepFactor="0.1" value="${parcelBean.item.weight}" suffix=" #{msg['t']}"
+                               size="20"/>
+
+                    <f:facet name="footer">
+                        <p:commandButton styleClass="add-item-button" value="#{msg['add']}"
+                                         action="${parcelBean.addItemToParcel()}"
+                                         update="addItemForm, :addParcelForm:numberOfItems, :itemsEditable"/>
+                    </f:facet>
+                </p:panelGrid>
+            </h:form>
+
+            <br/>
+
+            <h:form id="itemsEditable">
+                <p:dataTable var="item" value="${parcelBean.parcel.items}" editable="true">
+                    <f:facet name="header">
+                        <h3>#{msg['parcelItems']}</h3>
+                    </f:facet>
+                    <p:column headerText="#{msg['name']}" sortBy="${item.name}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="${item.name}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="${item.name}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="#{msg['weight']}" sortBy="${item.weight}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="${item.weight}">
+                                    <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                                </h:outputText>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:spinner min="0" stepFactor="0.1" value="${item.weight}" suffix=" #{msg['t']}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="#{msg['description']}" sortBy="${item.description}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="${item.description}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:inputText value="${item.description}"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="#{msg['buyingPrice']}" sortBy="${item.buyingPrice}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="$${item.buyingPrice}">
+                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                </h:outputText>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:spinner min="0" stepFactor="1" value="${item.buyingPrice}" prefix="$">
+                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                </p:spinner>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="#{msg['sellingPrice']}" sortBy="${item.sellingPrice}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="$${item.sellingPrice}">
+                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                </h:outputText>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:spinner min="0" stepFactor="1" value="${item.sellingPrice}" prefix="$">
+                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                </p:spinner>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column style="width:32px">
+                        <p:rowEditor/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+
+            <br/>
+
+            <h:form id="addParcelForm">
+                <p:panelGrid columns="2" cellpadding="5">
+                    <f:facet name="header">
+                        <h3>#{msg['parcelInfo']}</h3>
+                    </f:facet>
+
+                    <p:outputLabel value="#{msg['deliveryCost']}:"/>
+                    <p:spinner min="0" stepFactor="1" value="${parcelBean.parcel.deliveryCost}" prefix="$">
+                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                    </p:spinner>
+
+                    <p:outputLabel value="#{msg['numberOfItems']}:"/>
+                    <p:outputLabel id="numberOfItems" value="${parcelBean.parcel.items.size()}"/>
+
+                    <f:facet name="footer">
+                        <p:commandButton styleClass="add-parcel-button" value="#{msg['save']}"
+                                         action="${parcelBean.saveParcel()}"
+                                         update="addParcelForm, :itemsEditable, :addItemForm"/>
+                    </f:facet>
+                </p:panelGrid>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>
