@@ -25,4 +25,15 @@ public class ParcelServiceImpl extends GenericServiceImpl<Parcel, Integer> imple
     public void updateParcelStatus(Integer id, ParcelStatus status) {
         ((ParcelRepository)repository).updateParcelStatus(id, status);
     }
+
+    @Override
+    public void updateParcels(Iterable<Parcel> parcels) {
+        parcels.forEach(this::update);
+    }
+
+    @Override
+    public void updateParcelColdStore(Parcel parcel) {
+        parcel.setStatus(ParcelStatus.REGISTERED_BY_CSM);
+        this.update(parcel);
+    }
 }

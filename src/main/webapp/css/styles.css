@@ -16,6 +16,6 @@ body {
     margin: 5px auto;
 }
 
-#parcel-registration, #parcel-editing, #parcel-item-editing, #parcel-item-editing-cs {
+#parcel-registration, #parcel-editing, #parcel-item-editing, #parcel-registration-cs, #parcel-item-editing-cs {
     display: none;
 }

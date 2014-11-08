@@ -2,6 +2,7 @@ package ftcApp.ui;
 
 import ftcApp.model.Item;
 import ftcApp.model.Parcel;
+import ftcApp.model.enums.ParcelStatus;
 import ftcApp.service.ItemService;
 import ftcApp.service.ParcelService;
 import ftcApp.service.TestService;
@@ -54,8 +55,15 @@ public class ItemsBean implements Serializable {
         items = parcel.getItems();
     }
 
-    public void prepareForEditingByCsm() {
-        items.forEach(Item::duplicateBoughtAndColdStoreProperties);
+    public void loadItemsForParcelForEditingByCsm(Parcel parcel) {
+        loadItemsForParcel(parcel);
+        for (Item item : items) {
+            item.duplicateBoughtAndColdStoreProperties();
+        }
+    }
+
+    public void saveChangesColdStore() {
+        parcelService.updateParcelColdStore(items.get(0).getParcel());
     }
 
     @PreDestroy

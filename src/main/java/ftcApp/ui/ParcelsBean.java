@@ -37,7 +37,7 @@ public class ParcelsBean {
     }
 
     public void saveChanges() {
-        parcels.forEach(parcelService::update);
+        parcelService.updateParcels(parcels);
     }
 
     public Iterable<Parcel> getParcels() {
