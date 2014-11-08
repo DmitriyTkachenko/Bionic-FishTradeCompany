@@ -17,6 +17,10 @@ public class Order implements Serializable {
     @Column(nullable = false)
     private OrderStatus status;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "customerId", nullable = false)
+    private Customer customer;
+
     private Double deliveryPrice;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
@@ -45,8 +49,12 @@ public class Order implements Serializable {
 
         Order order = (Order) o;
 
+        if (!created.equals(order.created)) return false;
+        if (!customer.equals(order.customer)) return false;
         if (deliveryPrice != null ? !deliveryPrice.equals(order.deliveryPrice) : order.deliveryPrice != null)
             return false;
+        if (orderedItems != null ? !orderedItems.equals(order.orderedItems) : order.orderedItems != null) return false;
+        if (payments != null ? !payments.equals(order.payments) : order.payments != null) return false;
         if (status != order.status) return false;
 
         return true;
@@ -56,6 +64,7 @@ public class Order implements Serializable {
     public int hashCode() {
         int result = status.hashCode();
         result = 31 * result + (deliveryPrice != null ? deliveryPrice.hashCode() : 0);
+        result = 31 * result + created.hashCode();
         return result;
     }
 
@@ -141,4 +150,11 @@ public class Order implements Serializable {
         this.created = created;
     }
 
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
 }

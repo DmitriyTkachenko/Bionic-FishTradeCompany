@@ -11,7 +11,7 @@
     <ui:define name="content">
 
         <h:form>
-            <p:dataTable var="itemQuantity" value="${itemsBean.items}">
+            <p:dataTable var="itemQuantity" value="${itemsBean.itemQuantities}">
                 <p:column headerText="#{msg['name']}" sortBy="${itemQuantity.item.name}">
                     <h:outputText value="${itemQuantity.item.name}"/>
                 </p:column>

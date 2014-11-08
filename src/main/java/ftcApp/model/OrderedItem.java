@@ -34,17 +34,6 @@ public class OrderedItem implements Serializable {
         }
     }
 
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-        if (!order.getOrderedItems().contains(this)) {
-            order.getOrderedItems().add(this);
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -52,8 +41,10 @@ public class OrderedItem implements Serializable {
 
         OrderedItem that = (OrderedItem) o;
 
+        if (Double.compare(that.price, price) != 0) return false;
         if (Double.compare(that.weight, weight) != 0) return false;
         if (!item.equals(that.item)) return false;
+        if (!order.equals(that.order)) return false;
 
         return true;
     }
@@ -65,7 +56,20 @@ public class OrderedItem implements Serializable {
         result = item.hashCode();
         temp = Double.doubleToLongBits(weight);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(price);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+        if (!order.getOrderedItems().contains(this)) {
+            order.getOrderedItems().add(this);
+        }
     }
 
     public Integer getId() {

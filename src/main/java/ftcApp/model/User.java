@@ -15,7 +15,7 @@ public abstract class User implements Serializable {
     private String login;
 
     // bcrypt
-    @Column(length = 60, nullable = false)
+    @Column(nullable = false, length = 60)
     private String password;
 
     private String name;

@@ -19,3 +19,7 @@ body {
 #parcel-registration {
     display: none;
 }
+
+#parcel-editing {
+    display: none;
+}

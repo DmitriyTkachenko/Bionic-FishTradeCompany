@@ -16,8 +16,7 @@ public class Payment implements Serializable {
     @Column(name = "paymentSum")
     private double sum;
 
-    public Payment() {
-    }
+    public Payment() { }
 
     public Payment(Order order, double sum) {
         this.order = order;
@@ -52,5 +51,24 @@ public class Payment implements Serializable {
         if (!order.getPayments().contains(this)) {
             order.getPayments().add(this);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Payment payment = (Payment) o;
+
+        if (Double.compare(payment.sum, sum) != 0) return false;
+        if (!order.equals(payment.order)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        long temp = Double.doubleToLongBits(sum);
+        return (int) (temp ^ (temp >>> 32));
     }
 }

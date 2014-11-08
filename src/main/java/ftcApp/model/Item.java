@@ -46,17 +46,6 @@ public class Item implements Serializable {
         this.sellingPrice = sellingPrice;
     }
 
-    public Parcel getParcel() {
-        return parcel;
-    }
-
-    public void setParcel(Parcel parcel) {
-        this.parcel = parcel;
-        if (!parcel.getItems().contains(this)) {
-            parcel.getItems().add(this);
-        }
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -66,9 +55,10 @@ public class Item implements Serializable {
 
         if (Double.compare(item.weight, weight) != 0) return false;
         if (writtenOff != item.writtenOff) return false;
-        if (buyingPrice != null ? !buyingPrice.equals(item.buyingPrice) : item.buyingPrice != null) return false;
+        if (!buyingPrice.equals(item.buyingPrice)) return false;
         if (description != null ? !description.equals(item.description) : item.description != null) return false;
         if (!name.equals(item.name)) return false;
+        if (!parcel.equals(item.parcel)) return false;
         if (sellingPrice != null ? !sellingPrice.equals(item.sellingPrice) : item.sellingPrice != null) return false;
 
         return true;
@@ -82,10 +72,21 @@ public class Item implements Serializable {
         temp = Double.doubleToLongBits(weight);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (buyingPrice != null ? buyingPrice.hashCode() : 0);
+        result = 31 * result + buyingPrice.hashCode();
         result = 31 * result + (sellingPrice != null ? sellingPrice.hashCode() : 0);
         result = 31 * result + (writtenOff ? 1 : 0);
         return result;
+    }
+
+    public Parcel getParcel() {
+        return parcel;
+    }
+
+    public void setParcel(Parcel parcel) {
+        this.parcel = parcel;
+        if (!parcel.getItems().contains(this)) {
+            parcel.getItems().add(this);
+        }
     }
 
     public Integer getId() {

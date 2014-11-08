@@ -1,7 +1,9 @@
 package ftcApp.ui;
 
 import ftcApp.model.Item;
+import ftcApp.model.Parcel;
 import ftcApp.service.ItemService;
+import ftcApp.service.ParcelService;
 import ftcApp.service.TestService;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -15,6 +17,7 @@ import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 @ManagedBean
 @ViewScoped
@@ -23,9 +26,14 @@ public class ItemsBean implements Serializable {
     private transient ItemService itemService;
 
     @Inject
+    private transient ParcelService parcelService;
+
+    @Inject
     private transient TestService testService;
 
-    private ArrayList<ItemQuantity> items;
+    private List<ItemQuantity> itemQuantities;
+
+    private List<Item> items;
 
     @PostConstruct
     public void init() {
@@ -38,8 +46,12 @@ public class ItemsBean implements Serializable {
         testService.addItemsData();
         Iterable<Item> items = itemService.findAll();
 
-        this.items = new ArrayList<>();
-        items.forEach((Item item) -> this.items.add(new ItemQuantity(item, 0.0)));
+        this.itemQuantities = new ArrayList<>();
+        items.forEach((Item item) -> this.itemQuantities.add(new ItemQuantity(item, 0.0)));
+    }
+
+    public void loadItemsForParcel(Parcel parcel) {
+        items = parcel.getItems();
     }
 
     @PreDestroy
@@ -47,11 +59,11 @@ public class ItemsBean implements Serializable {
         testService.removeItemsData();
     }
 
-    public ArrayList<ItemQuantity> getItems() {
-        return items;
+    public List<ItemQuantity> getItemQuantities() {
+        return itemQuantities;
     }
 
-    public void setItems(ArrayList<ItemQuantity> items) {
-        this.items = items;
+    public void setItemQuantities(List<ItemQuantity> itemQuantities) {
+        this.itemQuantities = itemQuantities;
     }
 }
