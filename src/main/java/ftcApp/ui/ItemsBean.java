@@ -66,4 +66,12 @@ public class ItemsBean implements Serializable {
     public void setItemQuantities(List<ItemQuantity> itemQuantities) {
         this.itemQuantities = itemQuantities;
     }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
 }

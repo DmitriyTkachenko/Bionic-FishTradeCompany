@@ -1,6 +1,7 @@
 package ftcApp.ui;
 
 import ftcApp.model.Parcel;
+import ftcApp.model.enums.ParcelStatus;
 import ftcApp.service.ParcelService;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -29,6 +30,10 @@ public class ParcelsBean {
                 autowireBean(this);
 
         parcels = parcelService.findAll();
+    }
+
+    public ParcelStatus[] getParcelStatuses() {
+        return ParcelStatus.values();
     }
 
     public Iterable<Parcel> getParcels() {
