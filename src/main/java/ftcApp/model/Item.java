@@ -1,7 +1,5 @@
 package ftcApp.model;
 
-import ftcApp.model.Parcel;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -12,12 +10,18 @@ public class Item implements Serializable {
     private Integer id;
 
     @Column(nullable = false)
-    private String name;
+    private String nameBought;
+
+    private String nameColdStore;
 
     @Column(nullable = false)
-    private double weight;
+    private double weightBought;
 
-    private String description;
+    private double weightColdStore;
+
+    private String descriptionBought;
+
+    private String descriptionColdStore;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "parcelId", nullable = false)
@@ -31,13 +35,12 @@ public class Item implements Serializable {
     @Column(nullable = false)
     boolean writtenOff = false;
 
-    public Item() {
-    }
+    public Item() { }
 
-    public Item(String name, double weight, String description, Parcel parcel, Double buyingPrice, Double sellingPrice) {
-        this.name = name;
-        this.weight = weight;
-        this.description = description;
+    public Item(String nameBought, double weightBought, String descriptionBought, Parcel parcel, Double buyingPrice, Double sellingPrice) {
+        this.nameBought = nameBought;
+        this.weightBought = weightBought;
+        this.descriptionBought = descriptionBought;
         this.parcel = parcel;
         if (!parcel.getItems().contains(this)) {
             parcel.getItems().add(this);
@@ -53,12 +56,18 @@ public class Item implements Serializable {
 
         Item item = (Item) o;
 
-        if (Double.compare(item.weight, weight) != 0) return false;
+        if (Double.compare(item.weightBought, weightBought) != 0) return false;
+        if (Double.compare(item.weightColdStore, weightColdStore) != 0) return false;
         if (writtenOff != item.writtenOff) return false;
         if (!buyingPrice.equals(item.buyingPrice)) return false;
-        if (description != null ? !description.equals(item.description) : item.description != null) return false;
-        if (!name.equals(item.name)) return false;
-        if (!parcel.equals(item.parcel)) return false;
+        if (descriptionBought != null ? !descriptionBought.equals(item.descriptionBought) : item.descriptionBought != null)
+            return false;
+        if (descriptionColdStore != null ? !descriptionColdStore.equals(item.descriptionColdStore) : item.descriptionColdStore != null)
+            return false;
+        if (!nameBought.equals(item.nameBought)) return false;
+        if (nameColdStore != null ? !nameColdStore.equals(item.nameColdStore) : item.nameColdStore != null)
+            return false;
+        if (parcel != null ? !parcel.equals(item.parcel) : item.parcel != null) return false;
         if (sellingPrice != null ? !sellingPrice.equals(item.sellingPrice) : item.sellingPrice != null) return false;
 
         return true;
@@ -68,14 +77,24 @@ public class Item implements Serializable {
     public int hashCode() {
         int result;
         long temp;
-        result = name.hashCode();
-        temp = Double.doubleToLongBits(weight);
+        result = nameBought.hashCode();
+        result = 31 * result + (nameColdStore != null ? nameColdStore.hashCode() : 0);
+        temp = Double.doubleToLongBits(weightBought);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (description != null ? description.hashCode() : 0);
+        temp = Double.doubleToLongBits(weightColdStore);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (descriptionBought != null ? descriptionBought.hashCode() : 0);
+        result = 31 * result + (descriptionColdStore != null ? descriptionColdStore.hashCode() : 0);
         result = 31 * result + buyingPrice.hashCode();
         result = 31 * result + (sellingPrice != null ? sellingPrice.hashCode() : 0);
         result = 31 * result + (writtenOff ? 1 : 0);
         return result;
+    }
+
+    public void duplicateBoughtAndColdStoreProperties() {
+        nameColdStore = nameBought;
+        weightColdStore = weightBought;
+        descriptionColdStore = descriptionBought;
     }
 
     public Parcel getParcel() {
@@ -89,6 +108,30 @@ public class Item implements Serializable {
         }
     }
 
+    public String getNameColdStore() {
+        return nameColdStore;
+    }
+
+    public void setNameColdStore(String nameColdStore) {
+        this.nameColdStore = nameColdStore;
+    }
+
+    public double getWeightColdStore() {
+        return weightColdStore;
+    }
+
+    public void setWeightColdStore(double weightColdStore) {
+        this.weightColdStore = weightColdStore;
+    }
+
+    public String getDescriptionColdStore() {
+        return descriptionColdStore;
+    }
+
+    public void setDescriptionColdStore(String descriptionColdStore) {
+        this.descriptionColdStore = descriptionColdStore;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -97,28 +140,28 @@ public class Item implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNameBought() {
+        return nameBought;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameBought(String name) {
+        this.nameBought = name;
     }
 
-    public double getWeight() {
-        return weight;
+    public double getWeightBought() {
+        return weightBought;
     }
 
-    public void setWeight(double weight) {
-        this.weight = weight;
+    public void setWeightBought(double weight) {
+        this.weightBought = weight;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDescriptionBought() {
+        return descriptionBought;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDescriptionBought(String description) {
+        this.descriptionBought = description;
     }
 
     public Double getBuyingPrice() {

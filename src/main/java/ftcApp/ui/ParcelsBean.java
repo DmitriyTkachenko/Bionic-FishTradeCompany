@@ -36,6 +36,10 @@ public class ParcelsBean {
         return ParcelStatus.values();
     }
 
+    public void saveChanges() {
+        parcels.forEach(parcelService::update);
+    }
+
     public Iterable<Parcel> getParcels() {
         return parcels;
     }

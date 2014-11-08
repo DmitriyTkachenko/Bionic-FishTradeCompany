@@ -11,11 +11,11 @@ body {
     color:red;
 }
 
-.add-item-button, .add-parcel-button, .submit-order-button {
+.add-item-button, .add-parcel-button, .submit-order-button, .save-parcel-changes-button {
     display: block;
     margin: 5px auto;
 }
 
-#parcel-registration, #parcel-editing, #parcel-item-editing {
+#parcel-registration, #parcel-editing, #parcel-item-editing, #parcel-item-editing-cs {
     display: none;
 }

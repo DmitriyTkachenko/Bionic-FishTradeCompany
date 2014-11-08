@@ -56,7 +56,7 @@ public class ParcelBean {
         item = new Item();
         item.setBuyingPrice(0.0);
         item.setSellingPrice(0.0);
-        item.setWeight(0.0);
+        item.setWeightBought(0.0);
     }
 
     public void initParcel() {

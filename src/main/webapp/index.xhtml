@@ -12,18 +12,18 @@
 
         <h:form>
             <p:dataTable var="itemQuantity" value="${itemsBean.itemQuantities}">
-                <p:column headerText="#{msg['name']}" sortBy="${itemQuantity.item.name}">
-                    <h:outputText value="${itemQuantity.item.name}"/>
+                <p:column headerText="#{msg['name']}" sortBy="${itemQuantity.item.nameBought}">
+                    <h:outputText value="${itemQuantity.item.nameBought}"/>
                 </p:column>
 
-                <p:column headerText="#{msg['amountAvailable']}" sortBy="${itemQuantity.item.weight}">
-                    <h:outputText value="${itemQuantity.item.weight}">
+                <p:column headerText="#{msg['amountAvailable']}" sortBy="${itemQuantity.item.weightBought}">
+                    <h:outputText value="${itemQuantity.item.weightBought}">
                         <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="#{msg['description']}" sortBy="${itemQuantity.item.description}">
-                    <h:outputText value="${itemQuantity.item.description}"/>
+                <p:column headerText="#{msg['description']}" sortBy="${itemQuantity.item.descriptionBought}">
+                    <h:outputText value="${itemQuantity.item.descriptionBought}"/>
                 </p:column>
 
                 <p:column headerText="#{msg['price']}" sortBy="${itemQuantity.item.sellingPrice}">
@@ -34,7 +34,7 @@
 
                 <p:column headerText="#{msg['quantity']}">
                     <p:spinner value="${itemQuantity.weight}" stepFactor="0.1"
-                               min="0" max="${itemQuantity.item.weight}"
+                               min="0" max="${itemQuantity.item.weightBought}"
                                suffix=" #{msg['t']}"/>
                 </p:column>
 
@@ -53,12 +53,12 @@
             <h:form id="cart-form">
                 <p:dataTable id="cart" var="orderedItem" value="${cartBean.order.orderedItems}" rows="5"
                              paginator="true">
-                    <p:column headerText="#{msg['name']}" sortBy="${orderedItem.item.name}">
-                        <h:outputText value="${orderedItem.item.name}"/>
+                    <p:column headerText="#{msg['name']}" sortBy="${orderedItem.item.nameBought}">
+                        <h:outputText value="${orderedItem.item.nameBought}"/>
                     </p:column>
 
-                    <p:column headerText="#{msg['description']}" sortBy="${orderedItem.item.description}">
-                        <h:outputText value="${orderedItem.item.description}"/>
+                    <p:column headerText="#{msg['description']}" sortBy="${orderedItem.item.descriptionBought}">
+                        <h:outputText value="${orderedItem.item.descriptionBought}"/>
                     </p:column>
 
                     <p:column headerText="#{msg['quantity']}">

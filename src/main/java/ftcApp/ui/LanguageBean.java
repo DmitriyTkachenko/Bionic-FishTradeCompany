@@ -20,27 +20,20 @@ public class LanguageBean implements Serializable {
     private String localeCode;
 
     private static Map<String,Object> countries;
-    static{
+    static {
         countries = new LinkedHashMap<>();
         countries.put("English", Locale.ENGLISH);
         countries.put("Russian", new Locale("ru", "RU"));
         countries.put("Ukrainian", new Locale("uk", "UA"));
     }
 
-    @PostConstruct
-    public void init() {
-        System.err.println("LanguageBean's init method called.");
-    }
-
     public Map<String, Object> getCountriesInMap() {
         return countries;
     }
 
-
     public String getLocaleCode() {
         return localeCode;
     }
-
 
     public void setLocaleCode(String localeCode) {
         this.localeCode = localeCode;

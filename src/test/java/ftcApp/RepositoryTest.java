@@ -78,11 +78,11 @@ public class RepositoryTest {
         Item item = new Item("Whale", 1000, "", parcel, 10000.0, null);
         itemService.save(item);
         Item fetched = itemService.findOne(item.getId());
-        fetched.setWeight(950);
+        fetched.setWeightBought(950);
         itemService.update(fetched);
         Item fetched2 = itemService.findOne(item.getId());
 
-        assertEquals(950.0, fetched2.getWeight(), 0.001);
+        assertEquals(950.0, fetched2.getWeightBought(), 0.001);
 
         itemService.deleteAll();
         parcelService.deleteAll();

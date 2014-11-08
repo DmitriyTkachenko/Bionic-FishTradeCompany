@@ -1,14 +1,10 @@
 package ftcApp.ui;
 
-import ftcApp.model.Customer;
 import ftcApp.model.Order;
 import ftcApp.model.OrderedItem;
-import ftcApp.model.User;
 import ftcApp.model.enums.OrderStatus;
-import ftcApp.service.CustomerService;
 import ftcApp.service.OrderService;
 import ftcApp.service.TestService;
-import ftcApp.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -20,8 +16,6 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
-import java.util.ArrayList;
-import java.util.Date;
 
 @ManagedBean
 @SessionScoped
@@ -41,13 +35,13 @@ public class CartBean {
         WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext).
                 getAutowireCapableBeanFactory().
                 autowireBean(this);
-        testService.addEmployee();
+        testService.addEmployees();
         testService.addCustomer();
     }
 
     @PreDestroy
     public void destroy() {
-        testService.removeEmployee();
+        testService.removeEmployees();
         testService.removeCustomer();
     }
 

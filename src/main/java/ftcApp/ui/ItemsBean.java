@@ -54,6 +54,10 @@ public class ItemsBean implements Serializable {
         items = parcel.getItems();
     }
 
+    public void prepareForEditingByCsm() {
+        items.forEach(Item::duplicateBoughtAndColdStoreProperties);
+    }
+
     @PreDestroy
     public void destroy() {
         testService.removeItemsData();

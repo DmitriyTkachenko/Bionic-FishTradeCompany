@@ -29,11 +29,14 @@ public class TestServiceImpl implements TestService {
     private CustomerService customerService;
 
     private Parcel parcel;
-    private Employee employee;
+    private Employee employee1;
+    private Employee employee2;
+    private Employee employee3;
+    private Employee employee4;
     private Customer customer;
 
     private boolean previousItemsDeleted = true;
-    private boolean previousEmployeeDeleted = true;
+    private boolean previousEmployeesDeleted = true;
     private boolean previousCustomerDeleted = true;
 
     @Override
@@ -56,19 +59,28 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public void addEmployee() {
-        if (!previousEmployeeDeleted) {
+    public void addEmployees() {
+        if (!previousEmployeesDeleted) {
             return;
         }
-        employee = new Employee("Admin", "test", UserRole.SECURITY_OFFICER);
-        userService.save(employee);
-        previousEmployeeDeleted = false;
+        employee1 = new Employee("GM", "pass", UserRole.GENERAL_MANAGER);
+        employee2 = new Employee("CSM", "pass", UserRole.COLD_STORE_MANAGER);
+        employee3 = new Employee("ACC", "pass", UserRole.ACCOUNTANT);
+        employee4 = new Employee("SO", "pass", UserRole.SECURITY_OFFICER);
+        userService.save(employee1);
+        userService.save(employee2);
+        userService.save(employee3);
+        userService.save(employee4);
+        previousEmployeesDeleted = false;
     }
 
     @Override
-    public void removeEmployee() {
-        employeeService.delete(employee);
-        previousEmployeeDeleted = true;
+    public void removeEmployees() {
+        employeeService.delete(employee1);
+        employeeService.delete(employee2);
+        employeeService.delete(employee3);
+        employeeService.delete(employee4);
+        previousEmployeesDeleted = true;
     }
 
     @Override
