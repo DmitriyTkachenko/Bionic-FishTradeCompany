@@ -17,7 +17,7 @@ public class Customer extends User {
 
     private String contactInfo;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
+    @OneToMany(mappedBy = "customer")
     private List<Order> orders;
 
     public Customer() {

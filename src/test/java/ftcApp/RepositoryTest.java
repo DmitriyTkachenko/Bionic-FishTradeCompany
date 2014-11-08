@@ -133,7 +133,7 @@ public class RepositoryTest {
         Item item1 = new Item("Cod", 300, "", parcel, 5000.0, 5200.0);
         Item item2 = new Item("Tuna", 400, "", parcel, 3500.0, 3600.0);
         parcelService.save(parcel);
-        Order order = new Order(OrderStatus.PENDING_PREPAYMENT, null, new ArrayList<>(), new ArrayList<>());
+        Order order = new Order(OrderStatus.PENDING_PREPAYMENT, null, null, new ArrayList<>(), new ArrayList<>(), null);
         OrderedItem orderedItem1 = new OrderedItem(item1, 100, item1.getSellingPrice(), order);
         OrderedItem orderedItem2 = new OrderedItem(item2, 50, item1.getSellingPrice(), order);
         Payment p1 = new Payment(order, 100000.0);

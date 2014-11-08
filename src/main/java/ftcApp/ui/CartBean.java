@@ -1,9 +1,15 @@
 package ftcApp.ui;
 
+import ftcApp.model.Customer;
 import ftcApp.model.Order;
 import ftcApp.model.OrderedItem;
+import ftcApp.model.User;
 import ftcApp.model.enums.OrderStatus;
+import ftcApp.service.CustomerService;
+import ftcApp.service.OrderService;
 import ftcApp.service.TestService;
+import ftcApp.service.UserService;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.annotation.PostConstruct;
@@ -15,12 +21,16 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import java.util.ArrayList;
+import java.util.Date;
 
 @ManagedBean
 @SessionScoped
 public class CartBean {
     @Inject
     private transient TestService testService;
+
+    @Inject
+    private transient OrderService orderService;
 
     private Order order;
 
@@ -31,12 +41,14 @@ public class CartBean {
         WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext).
                 getAutowireCapableBeanFactory().
                 autowireBean(this);
-        testService.addUser();
+        testService.addEmployee();
+        testService.addCustomer();
     }
 
     @PreDestroy
     public void destroy() {
-        testService.removeUser();
+        testService.removeEmployee();
+        testService.removeCustomer();
     }
 
     public Order getOrder() {
@@ -49,8 +61,15 @@ public class CartBean {
 
     public void addItemToOrder(ItemQuantity itemQuantity) {
         if (order == null) {
-            order = new Order(OrderStatus.PENDING_PREPAYMENT, null, new ArrayList<>(), new ArrayList<>());
+            order = new Order();
+            order.setStatus(OrderStatus.PENDING_PREPAYMENT);
         }
         OrderedItem orderedItem = new OrderedItem(itemQuantity.getItem(), itemQuantity.getWeight(), itemQuantity.getItem().getSellingPrice(), order);
+    }
+
+    public void saveOrder() {
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String login = user.getUsername();
+        orderService.saveOrderForCustomerWithLogin(order, login);
     }
 }

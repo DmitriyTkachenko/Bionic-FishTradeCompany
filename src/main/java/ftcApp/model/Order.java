@@ -4,6 +4,7 @@ import ftcApp.model.enums.OrderStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -17,17 +18,17 @@ public class Order implements Serializable {
     @Column(nullable = false)
     private OrderStatus status;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "customerId", nullable = false)
     private Customer customer;
 
     private Double deliveryPrice;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
-    private List<OrderedItem> orderedItems;
+    private List<OrderedItem> orderedItems = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
-    private List<Payment> payments;
+    private List<Payment> payments = new ArrayList<>();
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
@@ -35,11 +36,16 @@ public class Order implements Serializable {
 
     public Order() { }
 
-    public Order(OrderStatus status, Double deliveryPrice, List<OrderedItem> orderedItems, List<Payment> payments) {
+    public Order(OrderStatus status, Customer customer, Double deliveryPrice, List<OrderedItem> orderedItems, List<Payment> payments, Date created) {
         this.status = status;
+        this.customer = customer;
+        if (!customer.getOrders().contains(this)) {
+            customer.getOrders().add(this);
+        }
         this.deliveryPrice = deliveryPrice;
         this.orderedItems = orderedItems;
         this.payments = payments;
+        this.created = created;
     }
 
     @Override
@@ -66,6 +72,13 @@ public class Order implements Serializable {
         result = 31 * result + (deliveryPrice != null ? deliveryPrice.hashCode() : 0);
         result = 31 * result + created.hashCode();
         return result;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+        if (!customer.getOrders().contains(this)) {
+            customer.getOrders().add(this);
+        }
     }
 
     public double getTotalWeight() {
@@ -154,7 +167,5 @@ public class Order implements Serializable {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
+
 }

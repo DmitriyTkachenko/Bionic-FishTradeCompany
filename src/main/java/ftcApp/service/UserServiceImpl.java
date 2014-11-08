@@ -41,13 +41,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByLogin(String login) {
-        Employee employee = employeeRepository.findByLogin(login);
-        if (employee != null) {
-            return employee;
-        }
         Customer customer = customerRepository.findByLogin(login);
         if (customer != null) {
             return customer;
+        }
+        Employee employee = employeeRepository.findByLogin(login);
+        if (employee != null) {
+            return employee;
         }
         return null;
     }

@@ -1,5 +1,6 @@
 package ftcApp.service;
 
+import ftcApp.model.Customer;
 import ftcApp.model.Employee;
 import ftcApp.model.Item;
 import ftcApp.model.Parcel;
@@ -24,11 +25,16 @@ public class TestServiceImpl implements TestService {
     @Inject
     private EmployeeService employeeService;
 
+    @Inject
+    private CustomerService customerService;
+
     private Parcel parcel;
     private Employee employee;
+    private Customer customer;
 
     private boolean previousItemsDeleted = true;
-    private boolean previousUserDeleted = true;
+    private boolean previousEmployeeDeleted = true;
+    private boolean previousCustomerDeleted = true;
 
     @Override
     public void addItemsData() {
@@ -50,19 +56,35 @@ public class TestServiceImpl implements TestService {
     }
 
     @Override
-    public void addUser() {
-        if (!previousUserDeleted) {
+    public void addEmployee() {
+        if (!previousEmployeeDeleted) {
             return;
         }
         employee = new Employee("Admin", "test", UserRole.SECURITY_OFFICER);
         userService.save(employee);
-        previousUserDeleted = false;
+        previousEmployeeDeleted = false;
     }
 
     @Override
-    public void removeUser() {
+    public void removeEmployee() {
         employeeService.delete(employee);
-        previousUserDeleted = true;
+        previousEmployeeDeleted = true;
+    }
+
+    @Override
+    public void addCustomer() {
+        if (!previousCustomerDeleted) {
+            return;
+        }
+        customer = new Customer("WildSpirit", "pass", UserRole.CUSTOMER);
+        userService.save(customer);
+        previousCustomerDeleted = false;
+    }
+
+    @Override
+    public void removeCustomer() {
+        customerService.delete(customer);
+        previousCustomerDeleted = true;
     }
 
 }

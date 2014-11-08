@@ -86,6 +86,11 @@
                             <i class="fa fa-times"/>
                         </p:commandLink>
                     </p:column>
+
+                    <f:facet name="footer">
+                        <p:commandButton styleClass="submit-order-button" value="#{msg['submitOrder']}"
+                                         action="${cartBean.saveOrder()}"/>
+                    </f:facet>
                 </p:dataTable>
             </h:form>
         </p:overlayPanel>

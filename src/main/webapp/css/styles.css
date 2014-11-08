@@ -11,7 +11,7 @@ body {
     color:red;
 }
 
-.add-item-button, .add-parcel-button {
+.add-item-button, .add-parcel-button, .submit-order-button {
     display: block;
     margin: 5px auto;
 }
