@@ -22,6 +22,9 @@ public class Parcel implements Serializable {
     @Column(nullable = false)
     private Date purchased;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date arrived;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "parcel")
     private List<Item> items = new ArrayList<>();
 
@@ -58,6 +61,14 @@ public class Parcel implements Serializable {
         result = 31 * result + purchased.hashCode();
         result = 31 * result + (deliveryCost != null ? deliveryCost.hashCode() : 0);
         return result;
+    }
+
+    public Date getArrived() {
+        return arrived;
+    }
+
+    public void setArrived(Date arrived) {
+        this.arrived = arrived;
     }
 
     public List<Item> getItems() {

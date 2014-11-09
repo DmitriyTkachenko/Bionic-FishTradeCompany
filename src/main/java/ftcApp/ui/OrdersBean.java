@@ -37,7 +37,7 @@ public class OrdersBean implements Serializable {
     }
 
     public void markOrderAsShipped(Order order) {
-        orderService.updateOrderStatus(order, OrderStatus.SHIPPED);
+        orderService.markOrderAsShipped(order);
         ordersPendingShipment = orderService.findOrdersPendingShipment();
     }
 

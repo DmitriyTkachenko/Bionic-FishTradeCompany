@@ -34,6 +34,9 @@ public class Order implements Serializable {
     @Column(nullable = false)
     private Date created;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date shipped;
+
     public Order() { }
 
     public Order(OrderStatus status, Customer customer, Double deliveryPrice, List<OrderedItem> orderedItems, List<Payment> payments, Date created) {
@@ -109,6 +112,14 @@ public class Order implements Serializable {
         double totalPrice = this.getTotalPrice();
         double totalPaymentSum = this.getTotalPaymentSum();
         return (totalPaymentSum / totalPrice) * 100;
+    }
+
+    public Date getShipped() {
+        return shipped;
+    }
+
+    public void setShipped(Date shipped) {
+        this.shipped = shipped;
     }
 
     public double getRequiredPrepaymentSum() {

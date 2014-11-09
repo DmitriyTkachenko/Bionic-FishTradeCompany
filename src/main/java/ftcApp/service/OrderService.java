@@ -8,5 +8,6 @@ public interface OrderService extends GenericService<Order, Integer> {
     Iterable<Order> findOrdersPendingShipment();
     Iterable<Order> findOrdersNotPaidInFull();
     void updateOrderStatus(Order order, OrderStatus status);
+    void markOrderAsShipped(Order order);
     void addPaymentToOrder(Order order, double sum);
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.util.Date;
 
 @Service
 @Transactional
@@ -34,6 +35,7 @@ public class ParcelServiceImpl extends GenericServiceImpl<Parcel, Integer> imple
     @Override
     public void updateParcelColdStore(Parcel parcel) {
         parcel.setStatus(ParcelStatus.REGISTERED_BY_CSM);
+        parcel.setArrived(new Date());
         this.update(parcel);
     }
 }

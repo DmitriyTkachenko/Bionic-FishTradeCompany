@@ -3,6 +3,7 @@ package ftcApp.service;
 import ftcApp.model.Customer;
 import ftcApp.model.Employee;
 import ftcApp.model.User;
+import ftcApp.model.enums.UserRole;
 import ftcApp.repository.CustomerRepository;
 import ftcApp.repository.EmployeeRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,17 +25,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        if (employeeRepository.existsWithLogin(user.getLogin()) || customerRepository.existsWithLogin(user.getLogin())) {
-            throw new RuntimeException("User with this login already exists.");
-        } else {
-            if (user instanceof Customer) {
-                user.setPassword(this.getHashedPassword(user.getPassword()));
-                customerRepository.save((Customer)user);
-            }
-            if (user instanceof Employee) {
-                user.setPassword(this.getHashedPassword(user.getPassword()));
-                employeeRepository.save((Employee)user);
-            }
+        if (user instanceof Customer) {
+            user.setPassword(this.getHashedPassword(user.getPassword()));
+            user.setUserRole(UserRole.CUSTOMER);
+            customerRepository.save((Customer)user);
+            return user;
+        }
+        if (user instanceof Employee) {
+            user.setPassword(this.getHashedPassword(user.getPassword()));
+            employeeRepository.save((Employee)user);
         }
         return user;
     }
@@ -50,6 +49,11 @@ public class UserServiceImpl implements UserService {
             return employee;
         }
         return null;
+    }
+
+    @Override
+    public boolean existsWithLogin(String login) {
+        return employeeRepository.existsWithLogin(login) || customerRepository.existsWithLogin(login);
     }
 
     private String getHashedPassword(String password) {

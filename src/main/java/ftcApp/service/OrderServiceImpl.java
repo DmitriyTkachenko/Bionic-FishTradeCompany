@@ -53,6 +53,13 @@ public class OrderServiceImpl extends GenericServiceImpl<Order, Integer> impleme
     }
 
     @Override
+    public void markOrderAsShipped(Order order) {
+        order.setStatus(OrderStatus.SHIPPED);
+        order.setShipped(new Date());
+        repository.update(order);
+    }
+
+    @Override
     public void addPaymentToOrder(Order order, double sum) {
         order.getPayments().add(new Payment(order, sum));
         repository.update(order);

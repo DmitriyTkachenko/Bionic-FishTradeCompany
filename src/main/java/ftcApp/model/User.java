@@ -18,6 +18,7 @@ public abstract class User implements Serializable {
     @Column(nullable = false, length = 60)
     private String password;
 
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false)
@@ -31,7 +32,7 @@ public abstract class User implements Serializable {
         User user = (User) o;
 
         if (!login.equals(user.login)) return false;
-        if (name != null ? !name.equals(user.name) : user.name != null) return false;
+        if (!name.equals(user.name)) return false;
         if (!password.equals(user.password)) return false;
         if (userRole != user.userRole) return false;
 
@@ -42,7 +43,7 @@ public abstract class User implements Serializable {
     public int hashCode() {
         int result = login.hashCode();
         result = 31 * result + password.hashCode();
-        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + name.hashCode();
         result = 31 * result + userRole.hashCode();
         return result;
     }

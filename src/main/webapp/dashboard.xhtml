@@ -389,13 +389,19 @@
                             <p:column style="width:32px">
                                 <p:rowEditor/>
                             </p:column>
+
+                            <f:facet name="footer">
+                                <p:commandButton styleClass="save-parcel-changes-button" action="${itemsBean.saveChangesColdStore()}"
+                                                 value="#{msg['registerParcel']}" update=":parcelsTable"
+                                                 onclick="$('#parcel-item-editing-cs').hide()"/>
+                            </f:facet>
                         </p:dataTable>
                     </h:form>
+
+
                 </div>
 
-                <p:commandButton styleClass="save-parcel-changes-button" action="${itemsBean.saveChangesColdStore()}"
-                                 value="#{msg['registerParcel']}" update="parcelsTable"
-                                 onclick="$('#parcel-item-editing-cs').hide()"/>
+
             </div>
 
             <p:commandButton id="register-order-shipment" value="#{msg['registerOrderShipment']}"/>

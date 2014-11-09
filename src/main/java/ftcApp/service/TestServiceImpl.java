@@ -63,10 +63,10 @@ public class TestServiceImpl implements TestService {
         if (!previousEmployeesDeleted) {
             return;
         }
-        employee1 = new Employee("GM", "pass", UserRole.GENERAL_MANAGER);
-        employee2 = new Employee("CSM", "pass", UserRole.COLD_STORE_MANAGER);
-        employee3 = new Employee("ACC", "pass", UserRole.ACCOUNTANT);
-        employee4 = new Employee("SO", "pass", UserRole.SECURITY_OFFICER);
+        employee1 = new Employee("GM", "pass", "GM", UserRole.GENERAL_MANAGER);
+        employee2 = new Employee("CSM", "pass", "GM", UserRole.COLD_STORE_MANAGER);
+        employee3 = new Employee("ACC", "pass", "GM", UserRole.ACCOUNTANT);
+        employee4 = new Employee("SO", "pass", "GM", UserRole.SECURITY_OFFICER);
         userService.save(employee1);
         userService.save(employee2);
         userService.save(employee3);
@@ -88,8 +88,10 @@ public class TestServiceImpl implements TestService {
         if (!previousCustomerDeleted) {
             return;
         }
-        customer = new Customer("WildSpirit", "pass", UserRole.CUSTOMER);
+        customer = new Customer("WildSpirit", "pass", "Dmitriy", UserRole.CUSTOMER);
         customer.setPrepaymentShareRequired(0.2);
+        customer.setShippingAddress("51 Predslavinskaya str.");
+        customer.setEmail("wildspirit2009@gmail.com");
         userService.save(customer);
         previousCustomerDeleted = false;
     }

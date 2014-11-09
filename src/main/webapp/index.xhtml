@@ -81,8 +81,8 @@
 
                     <p:column>
                         <p:commandLink title="Delete"
-                                         action="${cartBean.order.removeOrderedItem(orderedItem)}"
-                                         update="cart">
+                                       action="${cartBean.order.removeOrderedItem(orderedItem)}"
+                                       update="cart">
                             <i class="fa fa-times"/>
                         </p:commandLink>
                     </p:column>
@@ -106,6 +106,56 @@
                 <input class="btn btn-lg btn-primary btn-block" type="submit" value="Submit"/>
             </form>
         </p:dialog>
+
+        <p:commandButton value="Register" type="button" onclick="PF('registrationDialog').show()"/>
+        <p:dialog widgetVar="registrationDialog" header="Registration" minWidth="700">
+            <h:form id="registration-form">
+                <p:messages id="msgs"/>
+
+                <h:panelGrid columns="3" cellpadding="5">
+                    <p:outputLabel for="login" value="Login:"/>
+                    <p:inputText id="login" value="${customerBean.customer.login}" required="true" label="Login">
+                        <f:validator validatorId="custom.loginValidator"/>
+                        <p:ajax update="msgLogin" event="change"/>
+                    </p:inputText>
+                    <p:message for="login" id="msgLogin"/>
+
+                    <p:outputLabel for="password" value="Password:"/>
+                    <p:password id="password" value="${customerBean.customer.password}" required="true" feedback="true" label="Password">
+                        <f:validateLength minimum="6"/>
+                        <p:ajax update="msgPassword" event="change"/>
+                    </p:password>
+                    <p:message for="password" id="msgPassword"/>
+
+                    <p:outputLabel for="name" value="Name:"/>
+                    <p:inputText id="name" value="${customerBean.customer.name}" required="true" label="Name">
+                        <f:validateLength minimum="2"/>
+                        <p:ajax update="msgName" event="change"/>
+                    </p:inputText>
+                    <p:message for="name" id="msgName"/>
+
+                    <p:outputLabel for="email" value="Email:"/>
+                    <p:inputText id="email" value="${customerBean.customer.email}" required="true" label="Email">
+                        <f:validator validatorId="custom.emailValidator"/>
+                        <p:ajax update="msgEmail" event="change"/>
+                    </p:inputText>
+                    <p:message for="email" id="msgEmail"/>
+
+                    <p:outputLabel for="shipping-address" value="Shipping address:"/>
+                    <p:inputText id="shipping-address" value="${customerBean.customer.shippingAddress}" required="true" label="Shipping address">
+                        <f:validateLength minimum="2"/>
+                        <p:ajax update="msgShippingAddress" event="change"/>
+                    </p:inputText>
+                    <p:message for="shipping-address" id="msgShippingAddress"/>
+
+                    <p:outputLabel for="contact-info" value="Contact information:"/>
+                    <p:inputText id="contact-info" value="${customerBean.customer.contactInfo}" label="Contact information"/>
+                </h:panelGrid>
+
+                <p:commandButton value="Save" update="registration-form" actionListener="#{customerBean.save()}" icon="ui-icon-check"/>
+            </h:form>
+        </p:dialog>
+
 
         <sec:authorize ifAnyGranted="SECURITY_OFFICER">
             You have successfully logged in.
