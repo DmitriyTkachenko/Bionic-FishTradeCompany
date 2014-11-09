@@ -12,7 +12,7 @@ import java.util.List;
 @Table(name = "F_ORDER")
 public class Order implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false)
@@ -92,7 +92,7 @@ public class Order implements Serializable {
     public double getTotalPrice() {
         double totalPrice = 0.0;
         for (OrderedItem orderedItem : orderedItems) {
-            totalPrice += orderedItem.getItem().getSellingPrice() * orderedItem.getWeight();
+            totalPrice += (orderedItem.getPrice() * orderedItem.getWeight());
         }
         return totalPrice;
     }
@@ -109,6 +109,10 @@ public class Order implements Serializable {
         double totalPrice = this.getTotalPrice();
         double totalPaymentSum = this.getTotalPaymentSum();
         return (totalPaymentSum / totalPrice) * 100;
+    }
+
+    public double getRequiredPrepaymentSum() {
+        return customer.getPrepaymentShareRequired() * getTotalPrice();
     }
 
     public void removeOrderedItem(OrderedItem orderedItem) {

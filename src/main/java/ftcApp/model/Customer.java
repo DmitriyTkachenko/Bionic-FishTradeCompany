@@ -2,7 +2,6 @@ package ftcApp.model;
 
 import ftcApp.model.enums.UserRole;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;

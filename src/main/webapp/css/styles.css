@@ -8,7 +8,7 @@ body {
 }
 
 .fa-times {
-    color:red;
+    color: red;
 }
 
 .add-item-button, .add-parcel-button, .submit-order-button, .save-parcel-changes-button {
@@ -16,6 +16,7 @@ body {
     margin: 5px auto;
 }
 
-#parcel-registration, #parcel-editing, #parcel-item-editing, #parcel-registration-cs, #parcel-item-editing-cs {
+#parcel-registration, #parcel-editing, #parcel-item-editing, #parcel-registration-cs, #parcel-item-editing-cs,
+#order-shipment-registration, #payment-registration, .add-payment {
     display: none;
 }

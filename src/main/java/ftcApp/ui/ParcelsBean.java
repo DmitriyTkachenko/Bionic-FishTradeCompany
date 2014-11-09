@@ -12,12 +12,13 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
+import java.io.Serializable;
 
 @ManagedBean
 @ViewScoped
-public class ParcelsBean {
+public class ParcelsBean implements Serializable {
     @Inject
-    private ParcelService parcelService;
+    private transient ParcelService parcelService;
 
     private Iterable<Parcel> parcels;
 

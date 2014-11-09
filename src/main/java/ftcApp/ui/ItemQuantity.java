@@ -2,7 +2,9 @@ package ftcApp.ui;
 
 import ftcApp.model.Item;
 
-public class ItemQuantity {
+import java.io.Serializable;
+
+public class ItemQuantity implements Serializable {
     private Item item;
     private double weight;
 

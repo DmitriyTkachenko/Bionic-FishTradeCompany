@@ -2,7 +2,6 @@ package ftcApp.ui;
 
 import ftcApp.model.Order;
 import ftcApp.model.OrderedItem;
-import ftcApp.model.enums.OrderStatus;
 import ftcApp.service.OrderService;
 import ftcApp.service.TestService;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,10 +15,11 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
+import java.io.Serializable;
 
 @ManagedBean
 @SessionScoped
-public class CartBean {
+public class CartBean implements Serializable {
     @Inject
     private transient TestService testService;
 
@@ -56,7 +56,6 @@ public class CartBean {
     public void addItemToOrder(ItemQuantity itemQuantity) {
         if (order == null) {
             order = new Order();
-            order.setStatus(OrderStatus.PENDING_PREPAYMENT);
         }
         OrderedItem orderedItem = new OrderedItem(itemQuantity.getItem(), itemQuantity.getWeight(), itemQuantity.getItem().getSellingPrice(), order);
     }

@@ -13,16 +13,17 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
+import java.io.Serializable;
 import java.util.Date;
 
 @ManagedBean
 @SessionScoped
-public class ParcelBean {
+public class ParcelBean implements Serializable {
     private Parcel parcel;
     private Item item;
 
     @Inject
-    private ParcelService parcelService;
+    private transient ParcelService parcelService;
 
     @PostConstruct
     public void init() {

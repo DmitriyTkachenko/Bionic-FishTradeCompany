@@ -89,6 +89,7 @@ public class TestServiceImpl implements TestService {
             return;
         }
         customer = new Customer("WildSpirit", "pass", UserRole.CUSTOMER);
+        customer.setPrepaymentShareRequired(0.2);
         userService.save(customer);
         previousCustomerDeleted = false;
     }

@@ -394,12 +394,124 @@
                 </div>
 
                 <p:commandButton styleClass="save-parcel-changes-button" action="${itemsBean.saveChangesColdStore()}"
-                                 value="#{msg['registerParcel']}" update="parcelsTable" onclick="$('#parcel-item-editing-cs').hide()"/>
+                                 value="#{msg['registerParcel']}" update="parcelsTable"
+                                 onclick="$('#parcel-item-editing-cs').hide()"/>
+            </div>
+
+            <p:commandButton id="register-order-shipment" value="#{msg['registerOrderShipment']}"/>
+
+            <div id="order-shipment-registration">
+                <p:dataTable id="ordersPendingShipmentTable" var="order" value="${ordersBean.ordersPendingShipment}">
+                    <f:facet name="header">
+                        <h3>#{msg['ordersPendingShipment']}</h3>
+                    </f:facet>
+
+                    <p:column headerText="#{msg['id']}">
+                        <h:outputText value="${order.id}"/>
+                    </p:column>
+
+                    <p:column headerText="#{msg['dateOrdered']}">
+                        <h:outputText value="${order.created}">
+                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="#{msg['shippingAddress']}">
+                        <h:outputText value="${order.customer.shippingAddress}"/>
+                    </p:column>
+
+                    <p:column headerText="#{msg['numberOfOrderedItems']}">
+                        <h:outputText value="${order.orderedItems.size()}"/>
+                    </p:column>
+
+                    <p:column>
+                        <p:commandButton value="#{msg['markAsShipped']}"
+                                         action="${ordersBean.markOrderAsShipped(order)}"
+                                         update="ordersPendingShipmentTable"/>
+                    </p:column>
+                </p:dataTable>
             </div>
         </sec:authorize>
 
         <sec:authorize ifAllGranted="ACCOUNTANT">
+            <p:commandButton id="register-payment" value="#{msg['registerPayment']}"/>
 
+            <div id="payment-registration">
+                <p:dataTable id="ordersPendingPaymentsTable" var="order" value="${ordersBean.ordersPendingPayments}">
+                    <f:facet name="header">
+                        <h3>#{msg['incompleteOrders']}</h3>
+                    </f:facet>
+
+                    <p:column headerText="#{msg['id']}">
+                        <h:outputText value="${order.id}"/>
+                    </p:column>
+
+                    <p:column headerText="#{msg['dateOrdered']}">
+                        <h:outputText value="${order.created}">
+                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="#{msg['orderStatus']}">
+                        <h:outputText value="#{msg[order.status.label]}"/>
+                    </p:column>
+
+                    <p:column headerText="#{msg['customerName']}">
+                        <h:outputText value="${order.customer.name}"/>
+                    </p:column>
+
+                    <p:column headerText="#{msg['prepaymentShareRequired']}">
+                        <h:outputText value="${order.customer.prepaymentShareRequired * 100}">
+                            <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                        </h:outputText>
+                        <h:outputText value="% ($"/>
+                        <h:outputText value="${order.requiredPrepaymentSum}">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                        </h:outputText>
+                        <h:outputText value=")"/>
+                    </p:column>
+
+                    <p:column headerText="#{msg['paid']}">
+                        <h:outputText value="${order.percentagePaid}">
+                            <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                        </h:outputText>
+                        <h:outputText value="% ($"/>
+                        <h:outputText value="${order.totalPaymentSum}">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                        </h:outputText>
+                        <h:outputText value=")"/>
+                    </p:column>
+
+                    <p:column headerText="#{msg['numberOfPayments']}">
+                        <h:outputText value="${order.payments.size()}"/>
+                    </p:column>
+
+                    <p:column>
+                        <p:commandButton value="#{msg['addPayment']}" onclick="$(this).parent().find('.add-payment').toggle()"/>
+
+                        <div class="add-payment">
+                            <h:form>
+                                <p:spinner min="0" max="${order.totalPrice}" stepFactor="1" prefix="$"
+                                           value="${ordersBean.sum}" size="5"/>
+                                <p:commandButton value="#{msg['save']}" action="${ordersBean.addPaymentToOrder(order)}"
+                                                 onclick="$('#add-payment').hide()"
+                                                 update=":ordersPendingPaymentsTable"/>
+                            </h:form>
+                        </div>
+
+                        <p:commandButton rendered="${order.status == 'PENDING_PREPAYMENT'}"
+                                         value="#{msg['markAsReadyForShipment']}"
+                                         action="${ordersBean.markOrderAsReadyForShipment(order)}"
+                                         update=":ordersPendingPaymentsTable"/>
+
+                        <p:commandButton rendered="${order.status == 'SHIPPED'}"
+                                         value="#{msg['markAsCompleted']}"
+                                         action="${ordersBean.markOrderAsCompleted(order)}"
+                                         update=":ordersPendingPaymentsTable"/>
+                    </p:column>
+
+                </p:dataTable>
+            </div>
         </sec:authorize>
 
         <sec:authorize ifAllGranted="SECURITY_OFFICER">
