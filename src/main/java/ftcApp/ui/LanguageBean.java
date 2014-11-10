@@ -26,6 +26,10 @@ public class LanguageBean implements Serializable {
         countries.put("Ukrainian", new Locale("uk", "UA"));
     }
 
+    public LanguageBean() {
+        this.localeCode = FacesContext.getCurrentInstance().getViewRoot().getLocale().toString();
+    }
+
     public Map<String, Object> getCountriesInMap() {
         return countries;
     }

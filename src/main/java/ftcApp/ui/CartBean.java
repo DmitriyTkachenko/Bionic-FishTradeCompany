@@ -4,6 +4,7 @@ import ftcApp.model.Order;
 import ftcApp.model.OrderedItem;
 import ftcApp.service.OrderService;
 import ftcApp.service.TestService;
+import ftcApp.service.UserService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
@@ -25,6 +26,9 @@ public class CartBean implements Serializable {
 
     @Inject
     private transient OrderService orderService;
+
+    @Inject
+    private transient UserService userService;
 
     private Order order;
 
@@ -61,8 +65,7 @@ public class CartBean implements Serializable {
     }
 
     public void saveOrder() {
-        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String login = user.getUsername();
+        String login = userService.getLoginOfCurrentlyLoggedUser();
         orderService.saveOrderForCustomerWithLogin(order, login);
     }
 }

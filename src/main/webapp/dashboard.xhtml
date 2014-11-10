@@ -12,7 +12,6 @@
 <ui:composition template="/templates/main.xhtml">
     <ui:define name="title">Dashboard</ui:define>
     <ui:define name="content">
-
         <sec:authorize ifAllGranted="GENERAL_MANAGER">
             <p:commandButton id="register-parcel" value="#{msg['registerParcel']}"/>
 
@@ -397,11 +396,7 @@
                             </f:facet>
                         </p:dataTable>
                     </h:form>
-
-
                 </div>
-
-
             </div>
 
             <p:commandButton id="register-order-shipment" value="#{msg['registerOrderShipment']}"/>

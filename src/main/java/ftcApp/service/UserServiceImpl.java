@@ -6,6 +6,7 @@ import ftcApp.model.User;
 import ftcApp.model.enums.UserRole;
 import ftcApp.repository.CustomerRepository;
 import ftcApp.repository.EmployeeRepository;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +41,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByLogin(String login) {
+        if (login == null) {
+            return null;
+        }
         Customer customer = customerRepository.findByLogin(login);
         if (customer != null) {
             return customer;
@@ -54,6 +58,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean existsWithLogin(String login) {
         return employeeRepository.existsWithLogin(login) || customerRepository.existsWithLogin(login);
+    }
+
+    @Override
+    public User getCurrentlyLoggedUser() {
+        return this.findByLogin(getLoginOfCurrentlyLoggedUser());
+    }
+
+    @Override
+    public String getLoginOfCurrentlyLoggedUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String login = null;
+        if (principal instanceof org.springframework.security.core.userdetails.User) {
+            org.springframework.security.core.userdetails.User springSecurityUser = (org.springframework.security.core.userdetails.User) principal;
+            login = springSecurityUser.getUsername();
+        }
+        return login;
     }
 
     private String getHashedPassword(String password) {

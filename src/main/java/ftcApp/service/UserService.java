@@ -6,4 +6,6 @@ public interface UserService {
     User save(User user);
     User findByLogin(String login);
     boolean existsWithLogin(String login);
+    User getCurrentlyLoggedUser();
+    String getLoginOfCurrentlyLoggedUser();
 }

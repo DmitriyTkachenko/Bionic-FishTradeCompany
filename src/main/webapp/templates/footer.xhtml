@@ -1,11 +1,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
 
 <ui:composition>
-    <div>
+    <footer>
+        <h:form>
+            <h:panelGrid columns="2" cellpadding="10" cellspacing="10">
+                <p:outputLabel for="language-select" value="#{msg['language']}:"/>
+                <p:selectOneMenu id="language-select" value="#{language.localeCode}" onchange="submit()"
+                                 valueChangeListener="#{language.countryLocaleCodeChanged}">
+                    <f:selectItems value="#{language.countriesInMap}"/>
+                </p:selectOneMenu>
+            </h:panelGrid>
+        </h:form>
 
-    </div>
+        <script src="http://maps.google.com/maps/api/js?sensor=true|false"
+                type="text/javascript"></script>
+        <p:gmap id="gmap" center="50.465107, 30.521178" zoom="17" type="ROADMAP" model="${markersBean.simpleModel}"/>
+    </footer>
 </ui:composition>
 </html>

@@ -19,7 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
-    // register UserDetailsService implementation and PasswordEncoder for SHA-1
+    // register UserDetailsService implementation and PasswordEncoder for BCrypt
     @Autowired
     public void registerGlobalAuthentication(AuthenticationManagerBuilder auth) throws Exception {
         auth

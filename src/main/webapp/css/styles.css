@@ -1,17 +1,23 @@
+footer {
+    display: block;
+    height: 200px;
+}
+
 .overlay-cart {
-    width: 40%;
+    width: 700px;
 }
 
 body {
-    width: 80%;
+    width: 1200px;
     margin: 0 auto;
+    background-color: #eff3f6;
 }
 
 .fa-times {
     color: red;
 }
 
-.add-item-button, .add-parcel-button, .submit-order-button, .save-parcel-changes-button {
+.add-item-button, .add-parcel-button, .submit-order-button, .save-parcel-changes-button, .complete-registration-button {
     display: block;
     margin: 5px auto;
 }
@@ -19,4 +25,30 @@ body {
 #parcel-registration, #parcel-editing, #parcel-item-editing, #parcel-registration-cs, #parcel-item-editing-cs,
 #order-shipment-registration, #payment-registration, .add-payment {
     display: none;
+}
+
+table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#gmap {
+    width: 200px;
+    height: 133px;
+}
+
+.centered {
+    text-align: center;
+}
+
+.ui-panelgrid td, .ui-panelgrid tr {
+    border-style: none !important
+}
+
+.delete-button, #register-parcel, #edit-parcel, #register-parcel-cs, #register-order-shipment {
+    display: block;
+}
+
+#register-parcel, #edit-parcel, #register-parcel-cs, #register-order-shipment {
+    margin: 10px auto;
 }
