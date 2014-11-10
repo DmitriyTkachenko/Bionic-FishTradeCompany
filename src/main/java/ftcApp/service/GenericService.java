@@ -5,6 +5,7 @@ import java.io.Serializable;
 public interface GenericService<T, ID extends Serializable> {
     T save(T entity);
     T update(T entity);
+    Iterable<T> updateAll(Iterable<T> entities);
     void delete(ID id);
     void delete(T entity);
     void deleteAll();

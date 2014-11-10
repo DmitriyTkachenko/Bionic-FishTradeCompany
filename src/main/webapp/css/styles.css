@@ -17,7 +17,9 @@ body {
     color: red;
 }
 
-.add-item-button, .add-parcel-button, .submit-order-button, .save-parcel-changes-button, .complete-registration-button {
+.add-item-button, .add-parcel-button, .submit-order-button, .save-parcel-changes-button, .complete-registration-button,
+.save-role-changes-button
+{
     display: block;
     margin: 5px auto;
 }
@@ -42,7 +44,7 @@ table {
 }
 
 .ui-panelgrid td, .ui-panelgrid tr {
-    border-style: none !important
+    border-style: none !important;
 }
 
 .delete-button, #register-parcel, #edit-parcel, #register-parcel-cs, #register-order-shipment {
@@ -51,4 +53,14 @@ table {
 
 #register-parcel, #edit-parcel, #register-parcel-cs, #register-order-shipment {
     margin: 10px auto;
+}
+
+.inside-table-select {
+    width: 95% !important;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ui-selectonemenu-label {
+    width: 100% !important;
 }

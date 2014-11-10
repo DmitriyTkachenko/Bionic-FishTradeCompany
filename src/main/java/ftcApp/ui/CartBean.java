@@ -5,7 +5,6 @@ import ftcApp.model.OrderedItem;
 import ftcApp.service.OrderService;
 import ftcApp.service.TestService;
 import ftcApp.service.UserService;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.annotation.PostConstruct;

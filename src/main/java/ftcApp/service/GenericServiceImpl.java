@@ -31,6 +31,12 @@ public class GenericServiceImpl<T, ID extends Serializable> implements GenericSe
     }
 
     @Override
+    public Iterable<T> updateAll(Iterable<T> entities) {
+        entities.forEach(repository::update);
+        return entities;
+    }
+
+    @Override
     public void delete(ID id) {
         repository.delete(id);
     }

@@ -390,7 +390,8 @@
                             </p:column>
 
                             <f:facet name="footer">
-                                <p:commandButton styleClass="save-parcel-changes-button" action="${itemsBean.saveChangesColdStore()}"
+                                <p:commandButton styleClass="save-parcel-changes-button"
+                                                 action="${itemsBean.saveChangesColdStore()}"
                                                  value="#{msg['registerParcel']}" update=":parcelsTable"
                                                  onclick="$('#parcel-item-editing-cs').hide()"/>
                             </f:facet>
@@ -488,7 +489,8 @@
                     </p:column>
 
                     <p:column>
-                        <p:commandButton value="#{msg['addPayment']}" onclick="$(this).parent().find('.add-payment').toggle()"/>
+                        <p:commandButton value="#{msg['addPayment']}"
+                                         onclick="$(this).parent().find('.add-payment').toggle()"/>
 
                         <div class="add-payment">
                             <h:form>
@@ -516,7 +518,45 @@
         </sec:authorize>
 
         <sec:authorize ifAllGranted="SECURITY_OFFICER">
+            <h:form>
+                <p:dataTable var="employee" value="${employeesBean.employees}" editable="true">
+                    <f:facet name="header">
+                        <h3>#{msg['employees']}</h3>
+                    </f:facet>
 
+                    <p:column headerText="#{msg['personName']}">
+                        <h:outputText value="${employee.name}"/>
+                    </p:column>
+
+                    <p:column headerText="#{msg['login']}">
+                        <h:outputText value="${employee.login}"/>
+                    </p:column>
+
+                    <p:column headerText="#{msg['role']}">
+                        <p:cellEditor>
+                            <f:facet name="output">
+                                <h:outputText value="#{msg[employee.userRole.label]}"/>
+                            </f:facet>
+                            <f:facet name="input">
+                                <p:selectOneMenu value="${employee.userRole}" styleClass="inside-table-select">
+                                    <f:selectItems value="${employeesBean.userRoles}" var="userRole"
+                                                   itemValue="${userRole}"
+                                                   itemLabel="#{msg[userRole.label]}"/>
+                                </p:selectOneMenu>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column style="width:32px">
+                        <p:rowEditor/>
+                    </p:column>
+
+                    <f:facet name="footer">
+                        <p:commandButton styleClass="save-role-changes-button" value="#{msg['saveChanges']}"
+                                         action="${employeesBean.saveChanges()}"/>
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
         </sec:authorize>
     </ui:define>
 </ui:composition>

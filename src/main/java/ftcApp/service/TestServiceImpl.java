@@ -63,10 +63,10 @@ public class TestServiceImpl implements TestService {
         if (!previousEmployeesDeleted) {
             return;
         }
-        employee1 = new Employee("GM", "pass", "GM", UserRole.GENERAL_MANAGER);
-        employee2 = new Employee("CSM", "pass", "GM", UserRole.COLD_STORE_MANAGER);
-        employee3 = new Employee("ACC", "pass", "GM", UserRole.ACCOUNTANT);
-        employee4 = new Employee("SO", "pass", "GM", UserRole.SECURITY_OFFICER);
+        employee1 = new Employee("GM", "pass", "John Smith", UserRole.GENERAL_MANAGER);
+        employee2 = new Employee("CSM", "pass", "Jens Eriksson", UserRole.COLD_STORE_MANAGER);
+        employee3 = new Employee("ACC", "pass", "Jessica Logan", UserRole.ACCOUNTANT);
+        employee4 = new Employee("SO", "pass", "Markus Rosenberg", UserRole.SECURITY_OFFICER);
         userService.save(employee1);
         userService.save(employee2);
         userService.save(employee3);

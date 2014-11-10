@@ -96,7 +96,7 @@
         </p:overlayPanel>
 
         <sec:authorize access="!isAuthenticated()">
-            <p:commandButton value="#{msg['login']}" type="button" onclick="PF('login-dialog').show()"/>
+            <p:commandButton value="#{msg['log_in']}" type="button" onclick="PF('login-dialog').show()"/>
             <p:dialog header="Login" widgetVar="login-dialog" styleClass="overlay-login" width="500" modal="true" resizable="false">
                 <form id="login-form" class="form-horizontal" action="/j_spring_security_check" method="POST">
                     <div class="form-group">

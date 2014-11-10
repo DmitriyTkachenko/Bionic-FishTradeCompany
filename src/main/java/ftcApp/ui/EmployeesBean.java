@@ -1,8 +1,8 @@
 package ftcApp.ui;
 
-import ftcApp.model.Parcel;
-import ftcApp.model.enums.ParcelStatus;
-import ftcApp.service.ParcelService;
+import ftcApp.model.Employee;
+import ftcApp.model.enums.UserRole;
+import ftcApp.service.EmployeeService;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.annotation.PostConstruct;
@@ -16,11 +16,11 @@ import java.io.Serializable;
 
 @ManagedBean
 @ViewScoped
-public class ParcelsBean implements Serializable {
+public class EmployeesBean implements Serializable {
     @Inject
-    private transient ParcelService parcelService;
+    private transient EmployeeService employeeService;
 
-    private Iterable<Parcel> parcels;
+    private Iterable<Employee> employees;
 
     @PostConstruct
     public void init() {
@@ -30,22 +30,22 @@ public class ParcelsBean implements Serializable {
                 getAutowireCapableBeanFactory().
                 autowireBean(this);
 
-        parcels = parcelService.findAll();
+        employees = employeeService.findAll();
     }
 
-    public ParcelStatus[] getParcelStatuses() {
-        return ParcelStatus.values();
+    public UserRole[] getUserRoles() {
+        return UserRole.values();
     }
 
     public void saveChanges() {
-        parcelService.updateAll(parcels);
+        employeeService.updateAll(employees);
     }
 
-    public Iterable<Parcel> getParcels() {
-        return parcels;
+    public Iterable<Employee> getEmployees() {
+        return employees;
     }
 
-    public void setParcels(Iterable<Parcel> parcels) {
-        this.parcels = parcels;
+    public void setEmployees(Iterable<Employee> employees) {
+        this.employees = employees;
     }
 }

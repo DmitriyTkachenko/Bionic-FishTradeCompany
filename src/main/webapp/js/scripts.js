@@ -17,5 +17,5 @@ $( document ).ready(function() {
 
     $('#register-payment').click(function() {
         $('#payment-registration').toggle();
-    })
+    });
 });

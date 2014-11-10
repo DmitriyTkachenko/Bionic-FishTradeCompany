@@ -28,11 +28,6 @@ public class ParcelServiceImpl extends GenericServiceImpl<Parcel, Integer> imple
     }
 
     @Override
-    public void updateParcels(Iterable<Parcel> parcels) {
-        parcels.forEach(this::update);
-    }
-
-    @Override
     public void updateParcelColdStore(Parcel parcel) {
         parcel.setStatus(ParcelStatus.REGISTERED_BY_CSM);
         parcel.setArrived(new Date());
