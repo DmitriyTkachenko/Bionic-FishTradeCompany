@@ -305,6 +305,20 @@
                 <p:commandButton styleClass="save-parcel-changes-button" action="${parcelsBean.saveChanges()}"
                                  value="#{msg['saveChanges']}"/>
             </div>
+
+            <p:commandButton id="show-report" update="daysIncomeBarChart, namesIncomeBarChart, namesIncomePieChart" value="#{msg['showReports']}"/>
+
+            <div id="report">
+                <p:chart styleClass="chart" id="daysIncomeBarChart" type="bar" model="#{daysIncomeBarChartBean.barModel}" style="height:300px"/>
+
+                <br/>
+
+                <p:chart styleClass="chart" id="namesIncomeBarChart" type="bar" model="#{fishNamesIncomeBarChartBean.barModel}" style="height:300px"/>
+
+                <br/>
+
+                <p:chart styleClass="chart" id="namesIncomePieChart" type="pie" model="#{fishNamesIncomePieChartBean.pieModel}" style="width:400px;height:300px" />
+            </div>
         </sec:authorize>
 
         <sec:authorize ifAllGranted="COLD_STORE_MANAGER">

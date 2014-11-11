@@ -29,7 +29,7 @@
 }
 
 #parcel-registration, #parcel-editing, #parcel-item-editing, #parcel-registration-cs, #parcel-item-editing-cs,
-#order-shipment-registration, #payment-registration, .add-payment {
+#order-shipment-registration, #payment-registration, .add-payment, #report {
     display: none;
 }
 
@@ -51,11 +51,11 @@ table {
     border-style: none !important;
 }
 
-.delete-button, #register-parcel, #edit-parcel, #register-parcel-cs, #register-order-shipment {
+.delete-button, #register-parcel, #edit-parcel, #register-parcel-cs, #register-order-shipment, #show-report {
     display: block;
 }
 
-#register-parcel, #edit-parcel, #register-parcel-cs, #register-order-shipment {
+#register-parcel, #edit-parcel, #register-parcel-cs, #register-order-shipment, #show-report {
     margin: 10px auto;
 }
 
@@ -63,6 +63,10 @@ table {
     width: 95% !important;
     margin-left: auto;
     margin-right: auto;
+}
+
+.chart {
+    margin: 0 auto 10px;
 }
 
 .ui-selectonemenu-label {

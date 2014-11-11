@@ -18,4 +18,8 @@ $( document ).ready(function() {
     $('#register-payment').click(function() {
         $('#payment-registration').toggle();
     });
+
+    $('#show-report').click(function() {
+        $('#report').toggle();
+    })
 });
