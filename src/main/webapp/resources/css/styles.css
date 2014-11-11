@@ -13,6 +13,11 @@
     src: url('#{resource["fonts/ProximaNova-Bold.otf"]}');
 }
 
+@font-face {
+    font-family: "Gotham Pro Medium";
+    src: url('#{resource["fonts/GothaProMed.otf"]}');
+}
+
 .overlay-cart {
     width: 700px;
 }
@@ -59,6 +64,11 @@ table {
     margin: 10px auto;
 }
 
+#show-cart {
+    float: right;
+    margin-top: 20px;
+}
+
 .inside-table-select {
     width: 95% !important;
     margin-left: auto;
@@ -77,6 +87,10 @@ header, footer, main {
     display: block;
 }
 
+header {
+    height: 205px;
+}
+
 body {
     background: #ffef42;
     width: 1200px;
@@ -92,6 +106,7 @@ a {
     margin-top: 25px;
     margin-bottom: 25px;
     margin-left: 50px;
+    float: left;
 }
 
 .full-width-line {
@@ -109,6 +124,15 @@ a {
     text-align: center;
     vertical-align:top;
     color: #000;
+}
+
+h1 {
+    font-family: "Gotham Pro Bold", Helvetica, Verdana, sans-serif;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: normal;
+    text-align: center;
+    text-transform: uppercase;
 }
 
 .adv h2 {
@@ -145,7 +169,26 @@ a {
     font-size: 80px;
 }
 
-/* Read more button */
+#language-selector {
+    margin-right: 50px;
+    float: right;
+}
+
+#gmap {
+    float: left;
+}
+
+#address {
+    margin-left: 50px;
+    float: left;
+}
+
+#address-text {
+    width: 200px;
+    float: left;
+}
+
+/* Go to shop button */
 .go-to-shop {
     background-color: #000000;
     width: 250px;
@@ -170,4 +213,51 @@ a.go-to-shop {
     position: relative;
     top: 50%;
     transform: translateY(-50%);
+}
+
+.clearfix:after{
+    content:'';
+    display:table;
+    clear:both;
+}
+
+.divider {
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    background: #000000;
+    margin: 0 14px;
+    /* vertical centering */
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+
+nav {
+    float: right;
+    /* vertical centering */
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+nav li {
+    display: inline;
+}
+
+nav li a {
+    text-transform: uppercase;
+    color: #000000;
+    font-family: "Gotham Pro Medium", Helvetica, Verdana, sans-serif;
+    font-size: 1.875em;
+    /* vertical centering */
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+nav li a:hover {
+    color:#adacac;
 }

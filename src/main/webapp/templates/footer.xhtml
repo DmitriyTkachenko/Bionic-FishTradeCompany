@@ -2,24 +2,126 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:sec="http://www.springframework.org/security/tags">
 
 <ui:composition>
     <footer>
         <hr class="full-width-line"/>
 
-        <h:form>
-            <h:panelGrid columns="2" cellpadding="10" cellspacing="10">
-                <p:outputLabel for="language-select" value="#{msg['language']}:"/>
-                <p:selectOneMenu id="language-select" value="#{language.localeCode}" onchange="submit()"
-                                 valueChangeListener="#{language.countryLocaleCodeChanged}">
-                    <f:selectItems value="#{language.countriesInMap}"/>
-                </p:selectOneMenu>
-            </h:panelGrid>
-        </h:form>
+        <div id="language-selector">
+            <h:form>
+                <h:panelGrid columns="2" cellpadding="10" cellspacing="10">
+                    <p:outputLabel for="language-select" value="#{msg['language']}:"/>
+                    <p:selectOneMenu id="language-select" value="#{language.localeCode}" onchange="submit()"
+                                     valueChangeListener="#{language.countryLocaleCodeChanged}">
+                        <f:selectItems value="#{language.countriesInMap}"/>
+                    </p:selectOneMenu>
+                </h:panelGrid>
+            </h:form>
 
-        <script src="http://maps.google.com/maps/api/js?sensor=true|false" type="text/javascript"></script>
-        <p:gmap id="gmap" center="50.465107, 30.521178" zoom="17" type="ROADMAP" model="${markersBean.simpleModel}"/>
+            <sec:authorize access="!isAuthenticated()">
+                <p:commandButton value="#{msg['log_in']}" type="button" onclick="PF('login-dialog').show()"/>
+                <p:dialog header="Login" widgetVar="login-dialog" styleClass="overlay-login" width="500" modal="true"
+                          resizable="false">
+                    <form id="login-form" class="form-horizontal" action="/j_spring_security_check" method="POST">
+                        <div class="form-group">
+                            <label class="col-xs-2 control-label" for="j_username">Login:</label>
+
+                            <div class="col-xs-10">
+                                <input class="form-control" id="j_username" name="j_username" type="text"
+                                       required="true" autofocus="true"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-xs-2 control-label" for="j_password">Password:</label>
+
+                            <div class="col-xs-10">
+                                <input class="form-control" id="j_password" name="j_password" type="password"
+                                       required="true"/>
+                            </div>
+                        </div>
+                        <div class="centered">
+                            <input class="btn btn-primary" type="submit" value="Login"/>
+                        </div>
+                    </form>
+                </p:dialog>
+
+                <p:commandButton value="#{msg['register']}" type="button" onclick="PF('registrationDialog').show()"/>
+                <p:dialog widgetVar="registrationDialog" header="Registration" minWidth="700" modal="true"
+                          resizable="false">
+                    <h:form id="registration-form">
+                        <p:messages id="msgs"/>
+
+                        <p:panelGrid columns="3" cellpadding="10" cellspacing="10">
+                            <p:outputLabel for="login" value="Login:"/>
+                            <p:inputText id="login" value="${customerBean.customer.login}" required="true"
+                                         label="Login">
+                                <f:validator validatorId="custom.loginValidator"/>
+                                <p:ajax update="msgLogin" event="change"/>
+                            </p:inputText>
+                            <p:message for="login" id="msgLogin"/>
+
+                            <p:outputLabel for="password" value="Password:"/>
+                            <p:password id="password" value="${customerBean.customer.password}" required="true"
+                                        feedback="true"
+                                        label="Password">
+                                <f:validateLength minimum="6"/>
+                                <p:ajax update="msgPassword" event="change"/>
+                            </p:password>
+                            <p:message for="password" id="msgPassword"/>
+
+                            <p:outputLabel for="name" value="Name:"/>
+                            <p:inputText id="name" value="${customerBean.customer.name}" required="true" label="Name">
+                                <f:validateLength minimum="2"/>
+                                <p:ajax update="msgName" event="change"/>
+                            </p:inputText>
+                            <p:message for="name" id="msgName"/>
+
+                            <p:outputLabel for="email" value="Email:"/>
+                            <p:inputText id="email" value="${customerBean.customer.email}" required="true"
+                                         label="Email">
+                                <f:validator validatorId="custom.emailValidator"/>
+                                <p:ajax update="msgEmail" event="change"/>
+                            </p:inputText>
+                            <p:message for="email" id="msgEmail"/>
+
+                            <p:outputLabel for="shipping-address" value="Shipping address:"/>
+                            <p:inputText id="shipping-address" value="${customerBean.customer.shippingAddress}"
+                                         required="true"
+                                         label="Shipping address">
+                                <f:validateLength minimum="2"/>
+                                <p:ajax update="msgShippingAddress" event="change"/>
+                            </p:inputText>
+                            <p:message for="shipping-address" id="msgShippingAddress"/>
+
+                            <p:outputLabel for="contact-info" value="Contact information:"/>
+                            <p:inputText id="contact-info" value="${customerBean.customer.contactInfo}"
+                                         label="Contact information"/>
+                        </p:panelGrid>
+
+                        <p:commandButton value="Save" update="registration-form" actionListener="#{customerBean.save()}"
+                                         icon="ui-icon-check" styleClass="complete-registration-button"/>
+                    </h:form>
+                </p:dialog>
+            </sec:authorize>
+
+            <sec:authorize access="isAuthenticated()">
+                <a href="/logout">
+                    <button type="button" class="btn btn-danger">#{msg['logout']}</button>
+                </a>
+                <h:outputText value="#{msg['loggedInAs']}"/>
+                <h:outputText value=" ${loginBean.user.name} (${loginBean.user.login})"/>
+            </sec:authorize>
+        </div>
+
+        <div id="address">
+            <script src="http://maps.google.com/maps/api/js?sensor=true|false" type="text/javascript"></script>
+            <div id="address-text">
+                <p>Our address: 01015, Kyiv, Ukraine, Lavrs'ka str., 20.</p>
+            </div>
+            <p:gmap id="gmap" center="50.465107, 30.521178" zoom="17" type="ROADMAP" model="${markersBean.simpleModel}"/>
+        </div>
     </footer>
 </ui:composition>
 </html>

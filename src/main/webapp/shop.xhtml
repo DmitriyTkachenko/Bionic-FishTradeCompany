@@ -11,174 +11,94 @@
 <ui:composition template="/templates/main.xhtml">
     <ui:define name="title">Shop</ui:define>
     <ui:define name="content">
-        <h:form>
-            <p:dataTable var="itemQuantity" value="${itemsBean.itemQuantities}">
-                <p:column headerText="#{msg['name']}" sortBy="${itemQuantity.item.nameBought}">
-                    <h:outputText value="${itemQuantity.item.nameBought}"/>
-                </p:column>
+        <main role="main" class="clearfix">
+            <p:commandButton id="show-cart" value="#{msg['cart']}" type="button"/>
+            <p:overlayPanel for="show-cart" styleClass="overlay-cart" dismissable="true">
+                <h:form id="cart-form">
+                    <p:dataTable id="cart" var="orderedItem" value="${cartBean.order.orderedItems}" rows="5"
+                                 paginator="true">
+                        <p:column headerText="#{msg['name']}" sortBy="${orderedItem.item.nameBought}">
+                            <h:outputText value="${orderedItem.item.nameBought}"/>
+                        </p:column>
 
-                <p:column headerText="#{msg['amountAvailable']}" sortBy="${itemQuantity.item.weightBought}">
-                    <h:outputText value="${itemQuantity.item.weightBought}">
-                        <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
-                    </h:outputText>
-                </p:column>
+                        <p:column headerText="#{msg['description']}" sortBy="${orderedItem.item.descriptionBought}">
+                            <h:outputText value="${orderedItem.item.descriptionBought}"/>
+                        </p:column>
 
-                <p:column headerText="#{msg['description']}" sortBy="${itemQuantity.item.descriptionBought}">
-                    <h:outputText value="${itemQuantity.item.descriptionBought}"/>
-                </p:column>
+                        <p:column headerText="#{msg['quantity']}">
+                            <p:spinner value="${orderedItem.weight}" stepFactor="0.1" min="0" size="5"
+                                       suffix=" #{msg['t']}">
+                                <p:ajax update="total" process="@this"/>
+                            </p:spinner>
+                        </p:column>
 
-                <p:column headerText="#{msg['price']}" sortBy="${itemQuantity.item.sellingPrice}">
-                    <h:outputText value="$${itemQuantity.item.sellingPrice}">
-                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
-                    </h:outputText>
-                </p:column>
+                        <p:column headerText="#{msg['price']}" sortBy="${orderedItem.price}">
+                            <h:outputText value="${orderedItem.price}">
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                            </h:outputText>
+                        </p:column>
 
-                <p:column headerText="#{msg['quantity']}">
-                    <p:spinner value="${itemQuantity.weight}" stepFactor="0.1"
-                               min="0" max="${itemQuantity.item.weightBought}"
-                               suffix=" #{msg['t']}" size="15"/>
-                </p:column>
+                        <p:column headerText="#{msg['total']}">
+                            <h:outputText id="total" value="${orderedItem.weight * orderedItem.price}">
+                                <f:convertNumber maxFractionDigits="2"/>
+                            </h:outputText>
+                        </p:column>
 
-                <p:column headerText="">
-                    <p:commandButton value="#{msg['addToCart']}" action="${cartBean.addItemToOrder(itemQuantity)}"
-                                     update=":cart-form:cart"/>
-                </p:column>
+                        <p:column width="40">
+                            <p:commandLink title="Delete"
+                                           action="${cartBean.order.removeOrderedItem(orderedItem)}"
+                                           update="cart" styleClass="delete-button">
+                                <i class="fa fa-times centered"/>
+                            </p:commandLink>
+                        </p:column>
 
-            </p:dataTable>
-        </h:form>
+                        <sec:authorize ifAllGranted="CUSTOMER">
+                            <f:facet name="footer">
+                                <p:commandButton styleClass="submit-order-button" value="#{msg['submitOrder']}"
+                                                 action="${cartBean.saveOrder()}"/>
+                            </f:facet>
+                        </sec:authorize>
+                    </p:dataTable>
+                </h:form>
+            </p:overlayPanel>
 
-        <br/>
-
-        <p:commandButton id="show-cart" value="#{msg['cart']}" type="button"/>
-        <p:overlayPanel for="show-cart" styleClass="overlay-cart" dismissable="true">
-            <h:form id="cart-form">
-                <p:dataTable id="cart" var="orderedItem" value="${cartBean.order.orderedItems}" rows="5"
-                             paginator="true">
-                    <p:column headerText="#{msg['name']}" sortBy="${orderedItem.item.nameBought}">
-                        <h:outputText value="${orderedItem.item.nameBought}"/>
+            <h1>#{msg['onSale']}</h1>
+            <h:form>
+                <p:dataTable var="itemQuantity" value="${itemsBean.itemQuantities}">
+                    <p:column headerText="#{msg['name']}" sortBy="${itemQuantity.item.nameBought}">
+                        <h:outputText value="${itemQuantity.item.nameBought}"/>
                     </p:column>
 
-                    <p:column headerText="#{msg['description']}" sortBy="${orderedItem.item.descriptionBought}">
-                        <h:outputText value="${orderedItem.item.descriptionBought}"/>
+                    <p:column headerText="#{msg['amountAvailable']}" sortBy="${itemQuantity.item.weightBought}">
+                        <h:outputText value="${itemQuantity.item.weightBought}">
+                            <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                        </h:outputText>
                     </p:column>
 
-                    <p:column headerText="#{msg['quantity']}">
-                        <p:spinner value="${orderedItem.weight}" stepFactor="0.1" min="0" size="5" suffix=" #{msg['t']}">
-                            <p:ajax update="total" process="@this"/>
-                        </p:spinner>
+                    <p:column headerText="#{msg['description']}" sortBy="${itemQuantity.item.descriptionBought}">
+                        <h:outputText value="${itemQuantity.item.descriptionBought}"/>
                     </p:column>
 
-                    <p:column headerText="#{msg['price']}" sortBy="${orderedItem.price}">
-                        <h:outputText value="${orderedItem.price}">
+                    <p:column headerText="#{msg['price']}" sortBy="${itemQuantity.item.sellingPrice}">
+                        <h:outputText value="$${itemQuantity.item.sellingPrice}">
                             <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="#{msg['total']}">
-                        <h:outputText id="total" value="${orderedItem.weight * orderedItem.price}">
-                            <f:convertNumber maxFractionDigits="2"/>
-                        </h:outputText>
+                    <p:column headerText="#{msg['quantity']}">
+                        <p:spinner value="${itemQuantity.weight}" stepFactor="0.1"
+                                   min="0" max="${itemQuantity.item.weightBought}"
+                                   suffix=" #{msg['t']}" size="15"/>
                     </p:column>
 
-                    <p:column width="40">
-                        <p:commandLink title="Delete"
-                                       action="${cartBean.order.removeOrderedItem(orderedItem)}"
-                                       update="cart" styleClass="delete-button">
-                            <i class="fa fa-times centered"/>
-                        </p:commandLink>
+                    <p:column headerText="">
+                        <p:commandButton value="#{msg['addToCart']}" action="${cartBean.addItemToOrder(itemQuantity)}"
+                                         update=":cart-form:cart"/>
                     </p:column>
 
-                    <f:facet name="footer">
-                        <p:commandButton styleClass="submit-order-button" value="#{msg['submitOrder']}"
-                                         action="${cartBean.saveOrder()}"/>
-                    </f:facet>
                 </p:dataTable>
             </h:form>
-        </p:overlayPanel>
-
-        <sec:authorize access="!isAuthenticated()">
-            <p:commandButton value="#{msg['log_in']}" type="button" onclick="PF('login-dialog').show()"/>
-            <p:dialog header="Login" widgetVar="login-dialog" styleClass="overlay-login" width="500" modal="true" resizable="false">
-                <form id="login-form" class="form-horizontal" action="/j_spring_security_check" method="POST">
-                    <div class="form-group">
-                        <label class="col-xs-2 control-label" for="j_username">Login:</label>
-                        <div class="col-xs-10">
-                            <input class="form-control" id="j_username" name="j_username" type="text" required="true" autofocus="true"/>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-xs-2 control-label" for="j_password">Password:</label>
-                        <div class="col-xs-10">
-                            <input class="form-control" id="j_password" name="j_password" type="password" required="true"/>
-                        </div>
-                    </div>
-                    <div class="centered">
-                        <input class="btn btn-primary" type="submit" value="Login"/>
-                    </div>
-                </form>
-            </p:dialog>
-
-            <p:commandButton value="#{msg['register']}" type="button" onclick="PF('registrationDialog').show()"/>
-            <p:dialog widgetVar="registrationDialog" header="Registration" minWidth="700" modal="true" resizable="false">
-                <h:form id="registration-form">
-                    <p:messages id="msgs"/>
-
-                    <p:panelGrid columns="3" cellpadding="10" cellspacing="10">
-                        <p:outputLabel for="login" value="Login:"/>
-                        <p:inputText id="login" value="${customerBean.customer.login}" required="true" label="Login">
-                            <f:validator validatorId="custom.loginValidator"/>
-                            <p:ajax update="msgLogin" event="change"/>
-                        </p:inputText>
-                        <p:message for="login" id="msgLogin"/>
-
-                        <p:outputLabel for="password" value="Password:"/>
-                        <p:password id="password" value="${customerBean.customer.password}" required="true"
-                                    feedback="true"
-                                    label="Password">
-                            <f:validateLength minimum="6"/>
-                            <p:ajax update="msgPassword" event="change"/>
-                        </p:password>
-                        <p:message for="password" id="msgPassword"/>
-
-                        <p:outputLabel for="name" value="Name:"/>
-                        <p:inputText id="name" value="${customerBean.customer.name}" required="true" label="Name">
-                            <f:validateLength minimum="2"/>
-                            <p:ajax update="msgName" event="change"/>
-                        </p:inputText>
-                        <p:message for="name" id="msgName"/>
-
-                        <p:outputLabel for="email" value="Email:"/>
-                        <p:inputText id="email" value="${customerBean.customer.email}" required="true" label="Email">
-                            <f:validator validatorId="custom.emailValidator"/>
-                            <p:ajax update="msgEmail" event="change"/>
-                        </p:inputText>
-                        <p:message for="email" id="msgEmail"/>
-
-                        <p:outputLabel for="shipping-address" value="Shipping address:"/>
-                        <p:inputText id="shipping-address" value="${customerBean.customer.shippingAddress}"
-                                     required="true"
-                                     label="Shipping address">
-                            <f:validateLength minimum="2"/>
-                            <p:ajax update="msgShippingAddress" event="change"/>
-                        </p:inputText>
-                        <p:message for="shipping-address" id="msgShippingAddress"/>
-
-                        <p:outputLabel for="contact-info" value="Contact information:"/>
-                        <p:inputText id="contact-info" value="${customerBean.customer.contactInfo}"
-                                     label="Contact information"/>
-                    </p:panelGrid>
-
-                    <p:commandButton value="Save" update="registration-form" actionListener="#{customerBean.save()}"
-                                     icon="ui-icon-check" styleClass="complete-registration-button"/>
-                </h:form>
-            </p:dialog>
-        </sec:authorize>
-
-        <sec:authorize access="isAuthenticated()">
-            <a href="/logout"><button type="button" class="btn btn-danger">#{msg['logout']}</button></a>
-            <h:outputText value="#{msg['loggedInAs']}"/>
-            <h:outputText value=" ${loginBean.user.name} (${loginBean.user.login})"/>
-        </sec:authorize>
+        </main>
     </ui:define>
 </ui:composition>
 </html>

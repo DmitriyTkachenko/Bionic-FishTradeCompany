@@ -12,6 +12,7 @@
 <ui:composition template="/templates/main.xhtml">
     <ui:define name="title">Dashboard</ui:define>
     <ui:define name="content">
+        <main role="main" class="clearfix">
         <sec:authorize ifAllGranted="GENERAL_MANAGER">
             <p:commandButton id="register-parcel" value="#{msg['registerParcel']}"/>
 
@@ -634,6 +635,7 @@
                 </p:dataTable>
             </h:form>
         </sec:authorize>
+        </main>
     </ui:define>
 </ui:composition>
 </html>

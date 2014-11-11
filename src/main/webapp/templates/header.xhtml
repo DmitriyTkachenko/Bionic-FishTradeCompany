@@ -1,17 +1,34 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:sec="http://www.springframework.org/security/tags">
 
 <ui:composition>
-    <div>
+    <header>
         <div id="logo">
             <p:link outcome="index">
                 <p:graphicImage value="../resources/images/logo.jpg"/>
             </p:link>
         </div>
-        <p:link value="Home" outcome="index"/>
-        <p:link value="Dashboard" outcome="dashboard"/>
+
+        <nav>
+            <ul>
+                <li>
+                    <h:link value="Shop" outcome="shop"/>
+                    <div class="divider"></div>
+                </li>
+                <li>
+                    <sec:authorize ifAnyGranted="GENERAL_MANAGER, COLD_STORE_MANAGER, ACCOUNTANT, SECURITY_OFFICER">
+                        <h:link value="Dashboard" outcome="dashboard"/>
+                    </sec:authorize>
+                    <sec:authorize access="!isAuthenticated()">
+                        <h:link value="Profile" outcome="profile"/>
+                    </sec:authorize>
+                </li>
+            </ul>
+        </nav>
         <hr class="full-width-line"/>
-    </div>
+    </header>
 </ui:composition>
 </html>
