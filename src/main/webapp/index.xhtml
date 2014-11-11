@@ -9,6 +9,39 @@
 <ui:composition template="/templates/main.xhtml">
     <ui:define name="title">Index page</ui:define>
     <ui:define name="content">
+        <hr class="full-width-line"/>
+
+        <div class="adv-wrapper">
+            <div class="adv adv-1">
+                <i class="fa fa-thumbs-up fa-5x"/>
+                <h2>Quality</h2>
+                <p>Our fish comes from carefully selected suppliers and undergoes a series of tests to ensure the best quality.</p>
+            </div>
+
+            <div class="adv adv-2">
+                <i class="fa fa-line-chart"/>
+                <h2>Reliability</h2>
+                <p>Our company is constantly growing since 2000, serving more happy customers each day.</p>
+            </div>
+
+            <div class="adv adv-3">
+                <i class="fa fa-truck"/>
+                <h2>Best in class shipping</h2>
+                <p>Every order gets delivered in less then 72 hours using state of the art trucks.</p>
+            </div>
+
+            <div class="adv">
+                <i class="fa fa-money"/>
+                <h2>Reasonable pricing</h2>
+                <p>We purchase our products directly from the fishing boats to assure the minimal markup.</p>
+            </div>
+
+            <a class="go-to-shop" href="">
+                <div class="go-to-shop">
+                    <p>Go to shop</p>
+                </div>
+            </a>
+        </div>
 
         <h:form>
             <p:dataTable var="itemQuantity" value="${itemsBean.itemQuantities}">
@@ -179,9 +212,6 @@
             <h:outputText value="#{msg['loggedInAs']}"/>
             <h:outputText value=" ${loginBean.user.name} (${loginBean.user.login})"/>
         </sec:authorize>
-
-        <br/>
-
 
     </ui:define>
 </ui:composition>

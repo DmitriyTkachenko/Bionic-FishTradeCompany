@@ -8,6 +8,8 @@
             org.springframework.web.jsf.el.SpringBeanFacesELResolver
         </el-resolver>
 
+        <resource-handler>org.omnifaces.resourcehandler.UnmappedResourceHandler</resource-handler>
+
         <locale-config>
             <default-locale>en</default-locale>
             <supported-locale>ru</supported-locale>
@@ -21,5 +23,4 @@
             <var>msg</var>
         </resource-bundle>
     </application>
-
 </faces-config>

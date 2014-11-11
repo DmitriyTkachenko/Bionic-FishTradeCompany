@@ -42,6 +42,7 @@
     <!--  JSF URL mapping  -->
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/javax.faces.resource/*</url-pattern>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
 
