@@ -29,7 +29,7 @@
 }
 
 #parcel-registration, #parcel-editing, #parcel-item-editing, #parcel-registration-cs, #parcel-item-editing-cs,
-#order-shipment-registration, #payment-registration, .add-payment, #report {
+#order-shipment-registration, #payment-registration, .add-payment, #report, #ordered-items {
     display: none;
 }
 

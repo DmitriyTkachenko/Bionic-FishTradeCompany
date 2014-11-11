@@ -52,6 +52,9 @@ public class ItemsBean implements Serializable {
 
     public void loadItemsForParcel(Parcel parcel) {
         items = parcel.getItems();
+        for (Item item : items) {
+            item.duplicateBoughtAndColdStoreProperties();
+        }
     }
 
     public void loadItemsForParcelForEditingByCsm(Parcel parcel) {
