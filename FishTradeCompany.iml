@@ -91,5 +91,15 @@
     <orderEntry type="library" name="Maven: javax.servlet:javax.servlet-api:3.1.0" level="project" />
     <orderEntry type="library" name="Maven: javax.servlet.jsp:jsp-api:2.2" level="project" />
     <orderEntry type="library" name="Maven: org.omnifaces:omnifaces:1.8.1" level="project" />
+    <orderEntry type="library" name="Maven: org.ocpsoft.rewrite:rewrite-servlet:2.0.12.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.ocpsoft.rewrite:rewrite-config-prettyfaces:2.0.12.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.ocpsoft.rewrite:rewrite-annotations-impl:2.0.12.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.ocpsoft.rewrite:rewrite-api:2.0.12.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.ocpsoft.common:common-api:1.0.5.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.ocpsoft.logging:logging-api:1.0.2.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.ocpsoft.rewrite:rewrite-api-servlet:2.0.12.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.ocpsoft.rewrite:rewrite-addressbuilder:2.0.12.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.ocpsoft.rewrite:rewrite-annotations-api:2.0.12.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.ocpsoft.rewrite:rewrite-integration-faces:2.0.12.Final" level="project" />
   </component>
 </module>

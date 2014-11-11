@@ -180,7 +180,7 @@
                                     <h:outputText value="#{msg[parcel.status.label]}"/>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:selectOneMenu value="${parcel.status}">
+                                    <p:selectOneMenu styleClass="inside-table-select" value="${parcel.status}">
                                         <f:selectItems value="${parcelsBean.parcelStatuses}" var="status"
                                                        itemValue="${status}"
                                                        itemLabel="#{msg[status.label]}"/>
@@ -199,7 +199,7 @@
                                     <h:outputText value="$${parcel.deliveryCost}"/>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:spinner min="0" stepFactor="1" value="${parcel.deliveryCost}" prefix="$">
+                                    <p:spinner min="0" stepFactor="1" value="${parcel.deliveryCost}" size="10" prefix="$">
                                         <f:convertNumber minFractionDigits="2" maxFractionDigits="2"
                                                          groupingUsed="false"/>
                                     </p:spinner>
