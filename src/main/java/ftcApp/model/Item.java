@@ -97,6 +97,10 @@ public class Item implements Serializable {
         descriptionColdStore = descriptionBought;
     }
 
+    public void reduceWeightInColdStoreBy(double weight) {
+        weightColdStore -= weight;
+    }
+
     public boolean weightsMatch() {
         return Double.compare(weightBought, weightColdStore) == 0;
     }

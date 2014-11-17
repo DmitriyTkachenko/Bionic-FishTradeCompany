@@ -18,11 +18,6 @@ public class ParcelServiceImpl extends GenericServiceImpl<Parcel, Integer> imple
     }
 
     @Override
-    public Integer generatePurchaseNumber() {
-        return ((ParcelRepository)repository).generatePurchaseNumber();
-    }
-
-    @Override
     public void updateParcelStatus(Integer id, ParcelStatus status) {
         ((ParcelRepository)repository).updateParcelStatus(id, status);
     }

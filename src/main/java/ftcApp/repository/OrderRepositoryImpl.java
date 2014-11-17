@@ -33,5 +33,4 @@ public class OrderRepositoryImpl extends GenericRepositoryImpl<Order, Integer> i
         }
         return result;
     }
-
 }

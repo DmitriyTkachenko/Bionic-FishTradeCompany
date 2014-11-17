@@ -58,12 +58,13 @@ public class Order implements Serializable {
 
         Order order = (Order) o;
 
-        if (!created.equals(order.created)) return false;
-        if (!customer.equals(order.customer)) return false;
+        if (created != null ? !created.equals(order.created) : order.created != null) return false;
+        if (customer != null ? !customer.equals(order.customer) : order.customer != null) return false;
         if (deliveryPrice != null ? !deliveryPrice.equals(order.deliveryPrice) : order.deliveryPrice != null)
             return false;
         if (orderedItems != null ? !orderedItems.equals(order.orderedItems) : order.orderedItems != null) return false;
         if (payments != null ? !payments.equals(order.payments) : order.payments != null) return false;
+        if (shipped != null ? !shipped.equals(order.shipped) : order.shipped != null) return false;
         if (status != order.status) return false;
 
         return true;

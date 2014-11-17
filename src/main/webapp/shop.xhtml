@@ -13,16 +13,16 @@
     <ui:define name="content">
         <main role="main" class="clearfix">
             <p:commandButton id="show-cart" value="#{msg['cart']}" type="button"/>
-            <p:overlayPanel for="show-cart" styleClass="overlay-cart" dismissable="true">
+            <p:overlayPanel for="show-cart" id="cartOverlayPanel" styleClass="overlay-cart" dismissable="true">
                 <h:form id="cart-form">
                     <p:dataTable id="cart" var="orderedItem" value="${cartBean.order.orderedItems}" rows="5"
                                  paginator="true">
-                        <p:column headerText="#{msg['name']}" sortBy="${orderedItem.item.nameBought}">
-                            <h:outputText value="${orderedItem.item.nameBought}"/>
+                        <p:column headerText="#{msg['name']}" sortBy="${orderedItem.item.nameColdStore}">
+                            <h:outputText value="${orderedItem.item.nameColdStore}"/>
                         </p:column>
 
-                        <p:column headerText="#{msg['description']}" sortBy="${orderedItem.item.descriptionBought}">
-                            <h:outputText value="${orderedItem.item.descriptionBought}"/>
+                        <p:column headerText="#{msg['description']}" sortBy="${orderedItem.item.descriptionColdStore}">
+                            <h:outputText value="${orderedItem.item.descriptionColdStore}"/>
                         </p:column>
 
                         <p:column headerText="#{msg['quantity']}">
@@ -55,7 +55,7 @@
                         <sec:authorize ifAllGranted="CUSTOMER">
                             <f:facet name="footer">
                                 <p:commandButton styleClass="submit-order-button" value="#{msg['submitOrder']}"
-                                                 action="${cartBean.saveOrder()}"/>
+                                                 action="${cartBean.saveOrder()}" update="cart" onclick="$('#cartOverlayPanel').hide()"/>
                             </f:facet>
                         </sec:authorize>
                     </p:dataTable>
@@ -63,20 +63,20 @@
             </p:overlayPanel>
 
             <h1>#{msg['onSale']}</h1>
-            <h:form>
-                <p:dataTable var="itemQuantity" value="${itemsBean.itemQuantities}">
-                    <p:column headerText="#{msg['name']}" sortBy="${itemQuantity.item.nameBought}">
-                        <h:outputText value="${itemQuantity.item.nameBought}"/>
+            <h:form id="chooseItemsForm">
+                <p:dataTable id="itemsOnSale" var="itemQuantity" value="${itemsBean.itemQuantities}">
+                    <p:column headerText="#{msg['name']}" sortBy="${itemQuantity.item.nameColdStore}">
+                        <h:outputText value="${itemQuantity.item.nameColdStore}"/>
                     </p:column>
 
-                    <p:column headerText="#{msg['amountAvailable']}" sortBy="${itemQuantity.item.weightBought}">
-                        <h:outputText value="${itemQuantity.item.weightBought}">
+                    <p:column headerText="#{msg['amountAvailable']}" sortBy="${itemQuantity.item.weightColdStore}">
+                        <h:outputText value="${itemQuantity.item.weightColdStore}">
                             <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="#{msg['description']}" sortBy="${itemQuantity.item.descriptionBought}">
-                        <h:outputText value="${itemQuantity.item.descriptionBought}"/>
+                    <p:column headerText="#{msg['description']}" sortBy="${itemQuantity.item.descriptionColdStore}">
+                        <h:outputText value="${itemQuantity.item.descriptionColdStore}"/>
                     </p:column>
 
                     <p:column headerText="#{msg['price']}" sortBy="${itemQuantity.item.sellingPrice}">
@@ -87,7 +87,7 @@
 
                     <p:column headerText="#{msg['quantity']}">
                         <p:spinner value="${itemQuantity.weight}" stepFactor="0.1"
-                                   min="0" max="${itemQuantity.item.weightBought}"
+                                   min="0" max="${itemQuantity.item.weightColdStore}"
                                    suffix=" #{msg['t']}" size="15"/>
                     </p:column>
 
@@ -98,6 +98,10 @@
 
                 </p:dataTable>
             </h:form>
+
+            <p:socket channel="/itemsChanged">
+                <p:ajax event="message" listener="${itemsBean.fetchItems()}" update="chooseItemsForm:itemsOnSale" />
+            </p:socket>
         </main>
     </ui:define>
 </ui:composition>

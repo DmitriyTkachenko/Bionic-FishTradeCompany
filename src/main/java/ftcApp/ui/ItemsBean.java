@@ -44,10 +44,7 @@ public class ItemsBean implements Serializable {
                 autowireBean(this);
 
         testService.addItemsData();
-        Iterable<Item> items = itemService.findAll();
-
-        this.itemQuantities = new ArrayList<>();
-        items.forEach((Item item) -> this.itemQuantities.add(new ItemQuantity(item, 0.0)));
+        fetchItems();
     }
 
     public void loadItemsForParcel(Parcel parcel) {
@@ -55,6 +52,13 @@ public class ItemsBean implements Serializable {
         for (Item item : items) {
             item.duplicateBoughtAndColdStoreProperties();
         }
+    }
+
+    public void fetchItems() {
+        Iterable<Item> items = itemService.findAll();
+
+        this.itemQuantities = new ArrayList<>();
+        items.forEach((Item item) -> this.itemQuantities.add(new ItemQuantity(item, 0.0)));
     }
 
     public void loadItemsForParcelForEditingByCsm(Parcel parcel) {

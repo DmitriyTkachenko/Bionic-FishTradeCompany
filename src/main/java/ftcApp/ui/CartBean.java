@@ -5,6 +5,8 @@ import ftcApp.model.OrderedItem;
 import ftcApp.service.OrderService;
 import ftcApp.service.TestService;
 import ftcApp.service.UserService;
+import org.primefaces.push.EventBus;
+import org.primefaces.push.EventBusFactory;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.annotation.PostConstruct;
@@ -66,5 +68,8 @@ public class CartBean implements Serializable {
     public void saveOrder() {
         String login = userService.getLoginOfCurrentlyLoggedUser();
         orderService.saveOrderForCustomerWithLogin(order, login);
+        order = null;
+        EventBus eventBus = EventBusFactory.getDefault().eventBus();
+        eventBus.publish("/itemsChanged", true);
     }
 }

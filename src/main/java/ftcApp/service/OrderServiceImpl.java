@@ -1,22 +1,25 @@
 package ftcApp.service;
 
-import ftcApp.model.Customer;
-import ftcApp.model.Order;
-import ftcApp.model.Payment;
+import ftcApp.model.*;
 import ftcApp.model.enums.OrderStatus;
 import ftcApp.repository.CustomerRepository;
+import ftcApp.repository.ItemRepository;
 import ftcApp.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Transactional
 public class OrderServiceImpl extends GenericServiceImpl<Order, Integer> implements OrderService {
     @Inject
     private CustomerRepository customerRepository;
+
+    @Inject
+    private ItemRepository itemRepository;
 
     @Inject
     OrderServiceImpl(OrderRepository repository) {
@@ -33,7 +36,17 @@ public class OrderServiceImpl extends GenericServiceImpl<Order, Integer> impleme
             order.setStatus(OrderStatus.PENDING_SHIPMENT);
         }
         order.setCreated(new Date());
+        this.updateItemsAccordingToOrderedQuantities(order);
         repository.save(order);
+    }
+
+    private void updateItemsAccordingToOrderedQuantities(Order order) {
+        List<OrderedItem> orderedItems = order.getOrderedItems();
+        for (OrderedItem orderedItem : orderedItems) {
+            Item item = orderedItem.getItem();
+            item.reduceWeightInColdStoreBy(orderedItem.getWeight());
+            itemRepository.update(item);
+        }
     }
 
     @Override
