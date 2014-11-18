@@ -13,219 +13,51 @@
     <ui:define name="title">Dashboard</ui:define>
     <ui:define name="content">
         <main role="main" class="clearfix">
-        <sec:authorize ifAllGranted="GENERAL_MANAGER">
-            <p:commandButton id="register-parcel" value="#{msg['registerParcel']}"/>
+            <sec:authorize ifAllGranted="GENERAL_MANAGER">
+                <p:commandButton id="register-parcel" value="#{msg['registerParcel']}"/>
 
-            <div id="parcel-registration">
-                <h:form id="addItemForm">
-                    <p:panelGrid columns="2" cellpadding="5">
-                        <f:facet name="header">
-                            <h3>#{msg['itemInfo']}</h3>
-                        </f:facet>
+                <div id="parcel-registration">
+                    <h:form id="addItemForm">
+                        <p:panelGrid columns="2" cellpadding="5">
+                            <f:facet name="header">
+                                <h3>#{msg['itemInfo']}</h3>
+                            </f:facet>
 
-                        <p:outputLabel value="#{msg['name']}:"/>
-                        <p:inputText value="${parcelBean.item.nameBought}" size="22"/>
+                            <p:outputLabel value="#{msg['name']}:"/>
+                            <p:inputText value="${parcelBean.item.nameBought}" size="22"/>
 
-                        <p:outputLabel value="#{msg['description']}:"/>
-                        <p:inputTextarea value="#{parcelBean.item.descriptionBought}" rows="5" cols="24"/>
+                            <p:outputLabel value="#{msg['description']}:"/>
+                            <p:inputTextarea value="#{parcelBean.item.descriptionBought}" rows="5" cols="24"/>
 
-                        <p:outputLabel value="#{msg['buyingPrice']}:"/>
-                        <p:spinner min="0" stepFactor="1" value="${parcelBean.item.buyingPrice}" prefix="$" size="20">
-                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" groupingUsed="false"/>
-                        </p:spinner>
+                            <p:outputLabel value="#{msg['buyingPrice']}:"/>
+                            <p:spinner min="0" stepFactor="1" value="${parcelBean.item.buyingPrice}" prefix="$"
+                                       size="20">
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2" groupingUsed="false"/>
+                            </p:spinner>
 
-                        <p:outputLabel value="#{msg['sellingPrice']}:"/>
-                        <p:spinner min="0" stepFactor="1" value="${parcelBean.item.sellingPrice}" prefix="$" size="20">
-                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" groupingUsed="false"/>
-                        </p:spinner>
+                            <p:outputLabel value="#{msg['sellingPrice']}:"/>
+                            <p:spinner min="0" stepFactor="1" value="${parcelBean.item.sellingPrice}" prefix="$"
+                                       size="20">
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2" groupingUsed="false"/>
+                            </p:spinner>
 
-                        <p:outputLabel value="#{msg['weight']}:"/>
-                        <p:spinner min="0" stepFactor="0.1" value="${parcelBean.item.weightBought}"
-                                   suffix=" #{msg['t']}"
-                                   size="20"/>
+                            <p:outputLabel value="#{msg['weight']}:"/>
+                            <p:spinner min="0" stepFactor="0.1" value="${parcelBean.item.weightBought}"
+                                       suffix=" #{msg['t']}"
+                                       size="20"/>
 
-                        <f:facet name="footer">
-                            <p:commandButton styleClass="add-item-button" value="#{msg['add']}"
-                                             action="${parcelBean.addItemToParcel()}"
-                                             update="addItemForm, :addParcelForm:numberOfItems, :itemsEditable"/>
-                        </f:facet>
-                    </p:panelGrid>
-                </h:form>
+                            <f:facet name="footer">
+                                <p:commandButton styleClass="add-item-button" value="#{msg['add']}"
+                                                 action="${parcelBean.addItemToParcel()}"
+                                                 update="addItemForm, :addParcelForm:numberOfItems, :itemsEditable"/>
+                            </f:facet>
+                        </p:panelGrid>
+                    </h:form>
 
-                <br/>
+                    <br/>
 
-                <h:form id="itemsEditable">
-                    <p:dataTable var="item" value="${parcelBean.parcel.items}" editable="true">
-                        <f:facet name="header">
-                            <h3>#{msg['parcelItems']}</h3>
-                        </f:facet>
-                        <p:column headerText="#{msg['name']}" sortBy="${item.nameBought}">
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="${item.nameBought}"/>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:inputText value="${item.nameBought}"/>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-
-                        <p:column headerText="#{msg['weight']}" sortBy="${item.weightBought}">
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="${item.weightBought}">
-                                        <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
-                                    </h:outputText>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:spinner min="0" stepFactor="0.1" value="${item.weightBought}"
-                                               suffix=" #{msg['t']}"/>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-
-                        <p:column headerText="#{msg['description']}" sortBy="${item.descriptionBought}">
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="${item.descriptionBought}"/>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:inputText value="${item.descriptionBought}"/>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-
-                        <p:column headerText="#{msg['buyingPrice']}" sortBy="${item.buyingPrice}">
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="$${item.buyingPrice}">
-                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
-                                    </h:outputText>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:spinner min="0" stepFactor="1" value="${item.buyingPrice}" prefix="$">
-                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
-                                    </p:spinner>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-
-                        <p:column headerText="#{msg['sellingPrice']}" sortBy="${item.sellingPrice}">
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="$${item.sellingPrice}">
-                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
-                                    </h:outputText>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:spinner min="0" stepFactor="1" value="${item.sellingPrice}" prefix="$">
-                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"
-                                                         groupingUsed="false"/>
-                                    </p:spinner>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-
-                        <p:column style="width:32px">
-                            <p:rowEditor/>
-                        </p:column>
-                    </p:dataTable>
-                </h:form>
-
-                <br/>
-
-                <h:form id="addParcelForm">
-                    <p:panelGrid columns="2" cellpadding="5">
-                        <f:facet name="header">
-                            <h3>#{msg['parcelInfo']}</h3>
-                        </f:facet>
-
-                        <p:outputLabel value="#{msg['deliveryCost']}:"/>
-                        <p:spinner min="0" stepFactor="1" value="${parcelBean.parcel.deliveryCost}" prefix="$">
-                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2" groupingUsed="false"/>
-                        </p:spinner>
-
-                        <p:outputLabel value="#{msg['numberOfItems']}:"/>
-                        <p:outputLabel id="numberOfItems" value="${parcelBean.parcel.items.size()}"/>
-
-                        <f:facet name="footer">
-                            <p:commandButton styleClass="add-parcel-button" value="#{msg['save']}"
-                                             action="${parcelBean.saveParcel()}"
-                                             update="addParcelForm, :itemsEditable, :addItemForm"/>
-                        </f:facet>
-                    </p:panelGrid>
-                </h:form>
-            </div>
-
-            <p:commandButton id="edit-parcel" value="#{msg['editParcel']}"/>
-
-            <div id="parcel-editing">
-                <h:form>
-                    <p:dataTable var="parcel" value="${parcelsBean.parcels}" editable="true">
-                        <f:facet name="header">
-                            <h3>#{msg['parcels']}</h3>
-                        </f:facet>
-                        <p:column headerText="#{msg['id']}" sortBy="${parcel.id}">
-                            <h:outputText value="${parcel.id}"/>
-                        </p:column>
-
-                        <p:column headerText="#{msg['datePurchased']}" sortBy="${parcel.purchased}">
-                            <h:outputText value="${parcel.purchased}">
-                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
-                            </h:outputText>
-                        </p:column>
-
-                        <p:column headerText="#{msg['parcelStatus']}">
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="#{msg[parcel.status.label]}"/>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:selectOneMenu styleClass="inside-table-select" value="${parcel.status}">
-                                        <f:selectItems value="${parcelsBean.parcelStatuses}" var="status"
-                                                       itemValue="${status}"
-                                                       itemLabel="#{msg[status.label]}"/>
-                                    </p:selectOneMenu>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-
-                        <p:column headerText="#{msg['numberOfItems']}" sortBy="${parcel.items.size()}">
-                            <h:outputText value="${parcel.items.size()}"/>
-                        </p:column>
-
-                        <p:column headerText="#{msg['deliveryCost']}" sortBy="${parcel.deliveryCost}">
-                            <p:cellEditor>
-                                <f:facet name="output">
-                                    <h:outputText value="$${parcel.deliveryCost}"/>
-                                </f:facet>
-                                <f:facet name="input">
-                                    <p:spinner min="0" stepFactor="1" value="${parcel.deliveryCost}" size="10"
-                                               prefix="$">
-                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"
-                                                         groupingUsed="false"/>
-                                    </p:spinner>
-                                </f:facet>
-                            </p:cellEditor>
-                        </p:column>
-
-                        <p:column style="width:32px">
-                            <p:rowEditor/>
-                        </p:column>
-
-                        <p:column>
-                            <p:commandButton id="edit-parcel-items" value="#{msg['editItems']}"
-                                             action="${itemsBean.loadItemsForParcel(parcel)}"
-                                             update=":parcelItemsEditable" onclick="$('#parcel-item-editing').show()"/>
-                        </p:column>
-                    </p:dataTable>
-                </h:form>
-
-                <br/>
-
-                <div id="parcel-item-editing">
-                    <h:form id="parcelItemsEditable">
-                        <p:dataTable var="item" value="${itemsBean.items}" editable="true">
+                    <h:form id="itemsEditable">
+                        <p:dataTable var="item" value="${parcelBean.parcel.items}" editable="true">
                             <f:facet name="header">
                                 <h3>#{msg['parcelItems']}</h3>
                             </f:facet>
@@ -233,19 +65,9 @@
                                 <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText value="${item.nameBought}"/>
-                                        <h:panelGroup rendered="${item.nameBought != item.nameColdStore}">
-                                            <br/>
-                                            <h:outputText value="#{msg['inColdStore']}: "/>
-                                            <h:outputText value="${item.nameColdStore}"/>
-                                        </h:panelGroup>
                                     </f:facet>
                                     <f:facet name="input">
                                         <p:inputText value="${item.nameBought}"/>
-                                        <h:panelGroup rendered="${item.nameBought != item.nameColdStore}">
-                                            <br/>
-                                            <h:outputText value="#{msg['inColdStore']}: "/>
-                                            <h:outputText value="${item.nameColdStore}"/>
-                                        </h:panelGroup>
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
@@ -256,24 +78,10 @@
                                         <h:outputText value="${item.weightBought}">
                                             <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
                                         </h:outputText>
-                                        <h:panelGroup rendered="${!item.weightsMatch()}">
-                                            <br/>
-                                            <h:outputText value="#{msg['inColdStore']}: "/>
-                                            <h:outputText value="${item.weightColdStore}">
-                                                <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
-                                            </h:outputText>
-                                        </h:panelGroup>
                                     </f:facet>
                                     <f:facet name="input">
                                         <p:spinner min="0" stepFactor="0.1" value="${item.weightBought}"
                                                    suffix=" #{msg['t']}"/>
-                                        <h:panelGroup rendered="${!item.weightsMatch()}">
-                                            <br/>
-                                            <h:outputText value="#{msg['inColdStore']}: "/>
-                                            <h:outputText value="${item.weightColdStore}">
-                                                <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
-                                            </h:outputText>
-                                        </h:panelGroup>
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
@@ -282,19 +90,9 @@
                                 <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText value="${item.descriptionBought}"/>
-                                        <h:panelGroup rendered="${item.descriptionBought != item.descriptionColdStore}">
-                                            <br/>
-                                            <h:outputText value="#{msg['inColdStore']}: "/>
-                                            <h:outputText value="${item.descriptionColdStore}"/>
-                                        </h:panelGroup>
                                     </f:facet>
                                     <f:facet name="input">
                                         <p:inputText value="${item.descriptionBought}"/>
-                                        <h:panelGroup rendered="${item.descriptionBought != item.descriptionColdStore}">
-                                            <br/>
-                                            <h:outputText value="#{msg['inColdStore']}: "/>
-                                            <h:outputText value="${item.descriptionColdStore}"/>
-                                        </h:panelGroup>
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
@@ -308,8 +106,7 @@
                                     </f:facet>
                                     <f:facet name="input">
                                         <p:spinner min="0" stepFactor="1" value="${item.buyingPrice}" prefix="$">
-                                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"
-                                                             groupingUsed="false"/>
+                                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
                                         </p:spinner>
                                     </f:facet>
                                 </p:cellEditor>
@@ -336,105 +133,80 @@
                             </p:column>
                         </p:dataTable>
                     </h:form>
+
+                    <br/>
+
+                    <h:form id="addParcelForm">
+                        <p:panelGrid columns="2" cellpadding="5">
+                            <f:facet name="header">
+                                <h3>#{msg['parcelInfo']}</h3>
+                            </f:facet>
+
+                            <p:outputLabel value="#{msg['deliveryCost']}:"/>
+                            <p:spinner min="0" stepFactor="1" value="${parcelBean.parcel.deliveryCost}" prefix="$">
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2" groupingUsed="false"/>
+                            </p:spinner>
+
+                            <p:outputLabel value="#{msg['numberOfItems']}:"/>
+                            <p:outputLabel id="numberOfItems" value="${parcelBean.parcel.items.size()}"/>
+
+                            <f:facet name="footer">
+                                <p:commandButton styleClass="add-parcel-button" value="#{msg['save']}"
+                                                 action="${parcelBean.saveParcel()}"
+                                                 update="addParcelForm, :itemsEditable, :addItemForm"/>
+                            </f:facet>
+                        </p:panelGrid>
+                    </h:form>
                 </div>
 
-                <p:commandButton styleClass="save-parcel-changes-button" action="${parcelsBean.saveChanges()}"
-                                 value="#{msg['saveChanges']}"/>
-            </div>
+                <p:commandButton id="edit-parcel" value="#{msg['editParcel']}"/>
 
-            <p:commandButton id="show-report" update="daysIncomeBarChart, namesIncomeBarChart, namesIncomePieChart"
-                             value="#{msg['showReports']}"/>
-
-            <div id="report">
-                <p:chart styleClass="chart" id="daysIncomeBarChart" type="bar"
-                         model="#{daysIncomeBarChartBean.barModel}" style="height:300px"/>
-
-                <br/>
-
-                <p:chart styleClass="chart" id="namesIncomeBarChart" type="bar"
-                         model="#{fishNamesIncomeBarChartBean.barModel}" style="height:300px"/>
-
-                <br/>
-
-                <p:chart styleClass="chart" id="namesIncomePieChart" type="pie"
-                         model="#{fishNamesIncomePieChartBean.pieModel}" style="width:400px;height:300px"/>
-            </div>
-        </sec:authorize>
-
-        <sec:authorize ifAllGranted="COLD_STORE_MANAGER">
-            <p:commandButton id="register-parcel-cs" value="#{msg['registerParcel']}"/>
-
-            <div id="parcel-registration-cs">
-                <p:dataTable id="parcelsTable" var="parcel" value="${parcelsBean.parcels}">
-                    <f:facet name="header">
-                        <h3>#{msg['parcels']}</h3>
-                    </f:facet>
-                    <p:column headerText="#{msg['id']}" sortBy="${parcel.id}">
-                        <h:outputText value="${parcel.id}"/>
-                    </p:column>
-
-                    <p:column headerText="#{msg['datePurchased']}" sortBy="${parcel.purchased}">
-                        <h:outputText value="${parcel.purchased}">
-                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
-                        </h:outputText>
-                    </p:column>
-
-                    <p:column headerText="#{msg['parcelStatus']}">
-                        <h:outputText value="#{msg[parcel.status.label]}"/>
-                    </p:column>
-
-                    <p:column headerText="#{msg['numberOfItems']}" sortBy="${parcel.items.size()}">
-                        <h:outputText value="${parcel.items.size()}"/>
-                    </p:column>
-
-                    <p:column>
-                        <p:commandButton id="edit-parcel-items-cs" value="#{msg['editItems']}"
-                                         action="${itemsBean.loadItemsForParcelForEditingByCsm(parcel)}"
-                                         update=":parcelItemsEditable-cs"
-                                         onclick="$('#parcel-item-editing-cs').show()"/>
-                    </p:column>
-                </p:dataTable>
-
-                <br/>
-
-                <div id="parcel-item-editing-cs">
-                    <h:form id="parcelItemsEditable-cs">
-                        <p:dataTable var="item" value="${itemsBean.items}" editable="true">
+                <div id="parcel-editing">
+                    <h:form>
+                        <p:dataTable id="parcelsEditTable" var="parcel" value="${parcelsBean.parcels}" editable="true">
                             <f:facet name="header">
-                                <h3>#{msg['parcelItems']}</h3>
+                                <h3>#{msg['parcels']}</h3>
                             </f:facet>
-                            <p:column headerText="#{msg['name']}" sortBy="${item.nameColdStore}">
+                            <p:column headerText="#{msg['id']}" sortBy="${parcel.id}">
+                                <h:outputText value="${parcel.id}"/>
+                            </p:column>
+
+                            <p:column headerText="#{msg['datePurchased']}" sortBy="${parcel.purchased}">
+                                <h:outputText value="${parcel.purchased}">
+                                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="#{msg['parcelStatus']}">
                                 <p:cellEditor>
                                     <f:facet name="output">
-                                        <h:outputText value="${item.nameColdStore}"/>
+                                        <h:outputText value="#{msg[parcel.status.label]}"/>
                                     </f:facet>
                                     <f:facet name="input">
-                                        <p:inputText value="${item.nameColdStore}"/>
+                                        <p:selectOneMenu styleClass="inside-table-select" value="${parcel.status}">
+                                            <f:selectItems value="${parcelsBean.parcelStatuses}" var="status"
+                                                           itemValue="${status}"
+                                                           itemLabel="#{msg[status.label]}"/>
+                                        </p:selectOneMenu>
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
 
-                            <p:column headerText="#{msg['weight']}" sortBy="${item.weightColdStore}">
-                                <p:cellEditor>
-                                    <f:facet name="output">
-                                        <h:outputText value="${item.weightColdStore}">
-                                            <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
-                                        </h:outputText>
-                                    </f:facet>
-                                    <f:facet name="input">
-                                        <p:spinner min="0" stepFactor="0.1" value="${item.weightColdStore}"
-                                                   suffix=" #{msg['t']}"/>
-                                    </f:facet>
-                                </p:cellEditor>
+                            <p:column headerText="#{msg['numberOfItems']}" sortBy="${parcel.items.size()}">
+                                <h:outputText value="${parcel.items.size()}"/>
                             </p:column>
 
-                            <p:column headerText="#{msg['description']}" sortBy="${item.descriptionColdStore}">
+                            <p:column headerText="#{msg['deliveryCost']}" sortBy="${parcel.deliveryCost}">
                                 <p:cellEditor>
                                     <f:facet name="output">
-                                        <h:outputText value="${item.descriptionColdStore}"/>
+                                        <h:outputText value="$${parcel.deliveryCost}"/>
                                     </f:facet>
                                     <f:facet name="input">
-                                        <p:inputText value="${item.descriptionColdStore}"/>
+                                        <p:spinner min="0" stepFactor="1" value="${parcel.deliveryCost}" size="10"
+                                                   prefix="$">
+                                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"
+                                                             groupingUsed="false"/>
+                                        </p:spinner>
                                     </f:facet>
                                 </p:cellEditor>
                             </p:column>
@@ -443,198 +215,501 @@
                                 <p:rowEditor/>
                             </p:column>
 
-                            <f:facet name="footer">
-                                <p:commandButton styleClass="save-parcel-changes-button"
-                                                 action="${itemsBean.saveChangesColdStore()}"
-                                                 value="#{msg['registerParcel']}" update=":parcelsTable"
-                                                 onclick="$('#parcel-item-editing-cs').hide()"/>
-                            </f:facet>
+                            <p:column>
+                                <p:commandButton id="edit-parcel-items" value="#{msg['editItems']}"
+                                                 rendered="${parcel.status == 'REGISTERED_BY_GM'}"
+                                                 action="${itemsBean.loadItemsForParcel(parcel)}"
+                                                 update=":parcelItemsEditable"
+                                                 onclick="$('#parcel-items-editing').show(); $('#parcel-items-show').hide()"/>
+
+                                <p:commandButton id="put-up-on-sale" value="#{msg['putUpOnSale']}"
+                                                 rendered="${parcel.status == 'REGISTERED_BY_CSM'}"
+                                                 update="parcelsEditTable">
+                                    <f:setPropertyActionListener target="#{parcel.status}" value="PUT_UP_FOR_SALE"/>
+                                </p:commandButton>
+
+                                <p:commandButton id="show-items-info" value="#{msg['showItems']}"
+                                                 rendered="${parcel.status == 'REGISTERED_BY_CSM' or parcel.status == 'PUT_UP_FOR_SALE'}"
+                                                 action="${itemsBean.loadItemsForParcel(parcel)}"
+                                                 update=":parcelItemsShow"
+                                                 onclick="$('#parcel-items-show').show(); $('#parcel-items-editing').hide()"/>
+                            </p:column>
                         </p:dataTable>
                     </h:form>
+
+                    <br/>
+
+                    <h:panelGroup id="parcel-items-show">
+                        <h:form id="parcelItemsShow">
+                            <p:dataTable var="item" value="${itemsBean.items}">
+                                <f:facet name="header">
+                                    <h3>#{msg['parcelItems']}</h3>
+                                </f:facet>
+
+                                <p:column headerText="#{msg['name']}" sortBy="${item.nameBought}">
+                                    <h:outputText value="${item.nameBought}"/>
+                                    <h:panelGroup rendered="${item.nameBought != item.nameColdStore}">
+                                        <br/>
+                                        <h:outputText value="#{msg['inColdStore']}: "/>
+                                        <h:outputText value="${item.nameColdStore}"/>
+                                    </h:panelGroup>
+                                </p:column>
+
+                                <p:column headerText="#{msg['weight']}" sortBy="${item.weightBought}">
+                                    <h:outputText value="${item.weightBought}">
+                                        <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                                    </h:outputText>
+                                    <h:panelGroup rendered="${!item.weightsMatch()}">
+                                        <br/>
+                                        <h:outputText value="#{msg['inColdStore']}: "/>
+                                        <h:outputText value="${item.weightColdStore}">
+                                            <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                                        </h:outputText>
+                                    </h:panelGroup>
+                                </p:column>
+
+                                <p:column headerText="#{msg['description']}" sortBy="${item.descriptionBought}">
+                                    <h:outputText value="${item.descriptionBought}"/>
+                                    <h:panelGroup
+                                            rendered="${item.descriptionBought != item.descriptionColdStore}">
+                                        <br/>
+                                        <h:outputText value="#{msg['inColdStore']}: "/>
+                                        <h:outputText value="${item.descriptionColdStore}"/>
+                                    </h:panelGroup>
+                                </p:column>
+
+                                <p:column headerText="#{msg['buyingPrice']}" sortBy="${item.buyingPrice}">
+                                    <h:outputText value="$${item.buyingPrice}">
+                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column headerText="#{msg['sellingPrice']}" sortBy="${item.sellingPrice}">
+                                    <h:outputText value="$${item.sellingPrice}">
+                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
+                    </h:panelGroup>
+
+                    <h:panelGroup id="parcel-items-editing">
+                        <h:form id="parcelItemsEditable">
+                            <p:dataTable var="item" value="${itemsBean.items}" editable="true">
+                                <f:facet name="header">
+                                    <h3>#{msg['parcelItems']}</h3>
+                                </f:facet>
+                                <p:column headerText="#{msg['name']}" sortBy="${item.nameBought}">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="${item.nameBought}"/>
+                                            <h:panelGroup rendered="${item.nameBought != item.nameColdStore}">
+                                                <br/>
+                                                <h:outputText value="#{msg['inColdStore']}: "/>
+                                                <h:outputText value="${item.nameColdStore}"/>
+                                            </h:panelGroup>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="${item.nameBought}"/>
+                                            <h:panelGroup rendered="${item.nameBought != item.nameColdStore}">
+                                                <br/>
+                                                <h:outputText value="#{msg['inColdStore']}: "/>
+                                                <h:outputText value="${item.nameColdStore}"/>
+                                            </h:panelGroup>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="#{msg['weight']}" sortBy="${item.weightBought}">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="${item.weightBought}">
+                                                <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                                            </h:outputText>
+                                            <h:panelGroup rendered="${!item.weightsMatch()}">
+                                                <br/>
+                                                <h:outputText value="#{msg['inColdStore']}: "/>
+                                                <h:outputText value="${item.weightColdStore}">
+                                                    <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                                                </h:outputText>
+                                            </h:panelGroup>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:spinner min="0" stepFactor="0.1" value="${item.weightBought}"
+                                                       suffix=" #{msg['t']}"/>
+                                            <h:panelGroup rendered="${!item.weightsMatch()}">
+                                                <br/>
+                                                <h:outputText value="#{msg['inColdStore']}: "/>
+                                                <h:outputText value="${item.weightColdStore}">
+                                                    <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                                                </h:outputText>
+                                            </h:panelGroup>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="#{msg['description']}" sortBy="${item.descriptionBought}">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="${item.descriptionBought}"/>
+                                            <h:panelGroup
+                                                    rendered="${item.descriptionBought != item.descriptionColdStore}">
+                                                <br/>
+                                                <h:outputText value="#{msg['inColdStore']}: "/>
+                                                <h:outputText value="${item.descriptionColdStore}"/>
+                                            </h:panelGroup>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="${item.descriptionBought}"/>
+                                            <h:panelGroup
+                                                    rendered="${item.descriptionBought != item.descriptionColdStore}">
+                                                <br/>
+                                                <h:outputText value="#{msg['inColdStore']}: "/>
+                                                <h:outputText value="${item.descriptionColdStore}"/>
+                                            </h:panelGroup>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="#{msg['buyingPrice']}" sortBy="${item.buyingPrice}">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="$${item.buyingPrice}">
+                                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                            </h:outputText>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:spinner min="0" stepFactor="1" value="${item.buyingPrice}" prefix="$">
+                                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2"
+                                                                 groupingUsed="false"/>
+                                            </p:spinner>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="#{msg['sellingPrice']}" sortBy="${item.sellingPrice}">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="$${item.sellingPrice}">
+                                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                            </h:outputText>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:spinner min="0" stepFactor="1" value="${item.sellingPrice}" prefix="$">
+                                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2"
+                                                                 groupingUsed="false"/>
+                                            </p:spinner>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column style="width:32px">
+                                    <p:rowEditor/>
+                                </p:column>
+                            </p:dataTable>
+                        </h:form>
+                    </h:panelGroup>
+
+                    <p:commandButton styleClass="save-parcel-changes-button" action="${parcelsBean.saveChanges()}"
+                                     value="#{msg['saveChanges']}"/>
                 </div>
-            </div>
 
-            <p:commandButton id="register-order-shipment" value="#{msg['registerOrderShipment']}"/>
+                <p:commandButton id="show-report" update="daysIncomeBarChart, namesIncomeBarChart, namesIncomePieChart"
+                                 value="#{msg['showReports']}"/>
 
-            <div id="order-shipment-registration">
-                <p:dataTable id="ordersPendingShipmentTable" var="order" value="${ordersBean.ordersPendingShipment}">
-                    <f:facet name="header">
-                        <h3>#{msg['ordersPendingShipment']}</h3>
-                    </f:facet>
+                <div id="report">
+                    <p:chart styleClass="chart" id="daysIncomeBarChart" type="bar"
+                             model="#{daysIncomeBarChartBean.barModel}" style="height:300px"/>
 
-                    <p:column headerText="#{msg['id']}">
-                        <h:outputText value="${order.id}"/>
-                    </p:column>
+                    <br/>
 
-                    <p:column headerText="#{msg['dateOrdered']}">
-                        <h:outputText value="${order.created}">
-                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
-                        </h:outputText>
-                    </p:column>
+                    <p:chart styleClass="chart" id="namesIncomeBarChart" type="bar"
+                             model="#{fishNamesIncomeBarChartBean.barModel}" style="height:300px"/>
 
-                    <p:column headerText="#{msg['shippingAddress']}">
-                        <h:outputText value="${order.customer.shippingAddress}"/>
-                    </p:column>
+                    <br/>
 
-                    <p:column headerText="#{msg['numberOfOrderedItems']}">
-                        <h:outputText value="${order.orderedItems.size()}"/>
-                    </p:column>
+                    <p:chart styleClass="chart" id="namesIncomePieChart" type="pie"
+                             model="#{fishNamesIncomePieChartBean.pieModel}" style="width:400px;height:300px"/>
+                </div>
+            </sec:authorize>
 
-                    <p:column>
-                        <p:commandButton value="#{msg['markAsShipped']}"
-                                         action="${ordersBean.markOrderAsShipped(order)}"
-                                         update="ordersPendingShipmentTable" onclick="$('#ordered-items').hide()"/>
+            <sec:authorize ifAllGranted="COLD_STORE_MANAGER">
+                <p:commandButton id="register-parcel-cs" value="#{msg['registerParcel']}"/>
 
-                        <p:commandButton id="show-ordered-items" value="#{msg['showOrderedItems']}"
-                                         action="${orderedItemsBean.loadOrderedItemsForOrder(order)}"
-                                         update=":orderedItems" onclick="$('#ordered-items').toggle()"/>
-                    </p:column>
-                </p:dataTable>
-
-
-                <div id="ordered-items">
-                    <p:dataTable id="orderedItems" var="orderedItem" value="${orderedItemsBean.orderedItems}">
-                        <p:column headerText="#{msg['name']}">
-                            <h:outputText value="${orderedItem.item.nameBought}"/>
+                <div id="parcel-registration-cs">
+                    <p:dataTable id="parcelsTable" var="parcel" value="${parcelsBean.parcels}">
+                        <f:facet name="header">
+                            <h3>#{msg['parcels']}</h3>
+                        </f:facet>
+                        <p:column headerText="#{msg['id']}" sortBy="${parcel.id}">
+                            <h:outputText value="${parcel.id}"/>
                         </p:column>
 
-                        <p:column headerText="#{msg['description']}">
-                            <h:outputText value="${orderedItem.item.descriptionBought}"/>
-                        </p:column>
-
-                        <p:column headerText="#{msg['quantity']}">
-                            <h:outputText value="${orderedItem.weight}">
-                                <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                        <p:column headerText="#{msg['datePurchased']}" sortBy="${parcel.purchased}">
+                            <h:outputText value="${parcel.purchased}">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
                             </h:outputText>
                         </p:column>
+
+                        <p:column headerText="#{msg['parcelStatus']}">
+                            <h:outputText value="#{msg[parcel.status.label]}"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['numberOfItems']}" sortBy="${parcel.items.size()}">
+                            <h:outputText value="${parcel.items.size()}"/>
+                        </p:column>
+
+                        <p:column>
+                            <p:commandButton id="edit-parcel-items-cs" value="#{msg['editItems']}"
+                                             action="${itemsBean.loadItemsForParcelForEditingByCsm(parcel)}"
+                                             update=":parcelItemsEditable-cs"
+                                             onclick="$('#parcel-items-editing-cs').show()"/>
+                        </p:column>
+                    </p:dataTable>
+
+                    <br/>
+
+                    <div id="parcel-items-editing-cs">
+                        <h:form id="parcelItemsEditable-cs">
+                            <p:dataTable var="item" value="${itemsBean.items}" editable="true">
+                                <f:facet name="header">
+                                    <h3>#{msg['parcelItems']}</h3>
+                                </f:facet>
+                                <p:column headerText="#{msg['name']}" sortBy="${item.nameColdStore}">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="${item.nameColdStore}"/>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="${item.nameColdStore}"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="#{msg['weight']}" sortBy="${item.weightColdStore}">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="${item.weightColdStore}">
+                                                <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                                            </h:outputText>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:spinner min="0" stepFactor="0.1" value="${item.weightColdStore}"
+                                                       suffix=" #{msg['t']}"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column headerText="#{msg['description']}" sortBy="${item.descriptionColdStore}">
+                                    <p:cellEditor>
+                                        <f:facet name="output">
+                                            <h:outputText value="${item.descriptionColdStore}"/>
+                                        </f:facet>
+                                        <f:facet name="input">
+                                            <p:inputText value="${item.descriptionColdStore}"/>
+                                        </f:facet>
+                                    </p:cellEditor>
+                                </p:column>
+
+                                <p:column style="width:32px">
+                                    <p:rowEditor/>
+                                </p:column>
+
+                                <f:facet name="footer">
+                                    <p:commandButton styleClass="save-parcel-changes-button"
+                                                     action="${itemsBean.saveChangesColdStore()}"
+                                                     value="#{msg['registerParcel']}" update=":parcelsTable"
+                                                     onclick="$('#parcel-items-editing-cs').hide()"/>
+                                </f:facet>
+                            </p:dataTable>
+                        </h:form>
+                    </div>
+                </div>
+
+                <p:commandButton id="register-order-shipment" value="#{msg['registerOrderShipment']}"/>
+
+                <div id="order-shipment-registration">
+                    <p:dataTable id="ordersPendingShipmentTable" var="order"
+                                 value="${ordersBean.ordersPendingShipment}">
+                        <f:facet name="header">
+                            <h3>#{msg['ordersPendingShipment']}</h3>
+                        </f:facet>
+
+                        <p:column headerText="#{msg['id']}">
+                            <h:outputText value="${order.id}"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['dateOrdered']}">
+                            <h:outputText value="${order.created}">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="#{msg['shippingAddress']}">
+                            <h:outputText value="${order.customer.shippingAddress}"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['numberOfOrderedItems']}">
+                            <h:outputText value="${order.orderedItems.size()}"/>
+                        </p:column>
+
+                        <p:column>
+                            <p:commandButton value="#{msg['markAsShipped']}"
+                                             action="${ordersBean.markOrderAsShipped(order)}"
+                                             update="ordersPendingShipmentTable" onclick="$('#ordered-items').hide()"/>
+
+                            <p:commandButton id="show-ordered-items" value="#{msg['showOrderedItems']}"
+                                             action="${orderedItemsBean.loadOrderedItemsForOrder(order)}"
+                                             update=":orderedItems" onclick="$('#ordered-items').toggle()"/>
+                        </p:column>
+                    </p:dataTable>
+
+
+                    <div id="ordered-items">
+                        <p:dataTable id="orderedItems" var="orderedItem" value="${orderedItemsBean.orderedItems}">
+                            <p:column headerText="#{msg['name']}">
+                                <h:outputText value="${orderedItem.item.nameBought}"/>
+                            </p:column>
+
+                            <p:column headerText="#{msg['description']}">
+                                <h:outputText value="${orderedItem.item.descriptionBought}"/>
+                            </p:column>
+
+                            <p:column headerText="#{msg['quantity']}">
+                                <h:outputText value="${orderedItem.weight}">
+                                    <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                                </h:outputText>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+                </div>
+            </sec:authorize>
+
+            <sec:authorize ifAllGranted="ACCOUNTANT">
+                <p:commandButton id="register-payment" value="#{msg['registerPayment']}"/>
+
+                <div id="payment-registration">
+                    <p:dataTable id="ordersPendingPaymentsTable" var="order"
+                                 value="${ordersBean.ordersPendingPayments}">
+                        <f:facet name="header">
+                            <h3>#{msg['incompleteOrders']}</h3>
+                        </f:facet>
+
+                        <p:column headerText="#{msg['id']}">
+                            <h:outputText value="${order.id}"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['dateOrdered']}">
+                            <h:outputText value="${order.created}">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="#{msg['orderStatus']}">
+                            <h:outputText value="#{msg[order.status.label]}"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['customerName']}">
+                            <h:outputText value="${order.customer.name}"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['prepaymentShareRequired']}">
+                            <h:outputText value="${order.customer.prepaymentShareRequired * 100}">
+                                <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                            </h:outputText>
+                            <h:outputText value="% ($"/>
+                            <h:outputText value="${order.requiredPrepaymentSum}">
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                            </h:outputText>
+                            <h:outputText value=")"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['paid']}">
+                            <h:outputText value="${order.percentagePaid}">
+                                <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                            </h:outputText>
+                            <h:outputText value="% ($"/>
+                            <h:outputText value="${order.totalPaymentSum}">
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                            </h:outputText>
+                            <h:outputText value=")"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['numberOfPayments']}">
+                            <h:outputText value="${order.payments.size()}"/>
+                        </p:column>
+
+                        <p:column>
+                            <p:commandButton value="#{msg['addPayment']}"
+                                             onclick="$(this).parent().find('.add-payment').toggle()"/>
+
+                            <div class="add-payment">
+                                <h:form>
+                                    <p:spinner min="0" max="${order.totalPrice}" stepFactor="1" prefix="$"
+                                               value="${ordersBean.sum}" size="5"/>
+                                    <p:commandButton value="#{msg['save']}"
+                                                     action="${ordersBean.addPaymentToOrder(order)}"
+                                                     onclick="$('#add-payment').hide()"
+                                                     update=":ordersPendingPaymentsTable"/>
+                                </h:form>
+                            </div>
+
+                            <p:commandButton rendered="${order.status == 'PENDING_PREPAYMENT'}"
+                                             value="#{msg['markAsReadyForShipment']}"
+                                             action="${ordersBean.markOrderAsReadyForShipment(order)}"
+                                             update=":ordersPendingPaymentsTable"/>
+
+                            <p:commandButton rendered="${order.status == 'SHIPPED'}"
+                                             value="#{msg['markAsCompleted']}"
+                                             action="${ordersBean.markOrderAsCompleted(order)}"
+                                             update=":ordersPendingPaymentsTable"/>
+                        </p:column>
+
                     </p:dataTable>
                 </div>
-            </div>
-        </sec:authorize>
+            </sec:authorize>
 
-        <sec:authorize ifAllGranted="ACCOUNTANT">
-            <p:commandButton id="register-payment" value="#{msg['registerPayment']}"/>
+            <sec:authorize ifAllGranted="SECURITY_OFFICER">
+                <h:form>
+                    <p:dataTable var="employee" value="${employeesBean.employees}" editable="true">
+                        <f:facet name="header">
+                            <h3>#{msg['employees']}</h3>
+                        </f:facet>
 
-            <div id="payment-registration">
-                <p:dataTable id="ordersPendingPaymentsTable" var="order" value="${ordersBean.ordersPendingPayments}">
-                    <f:facet name="header">
-                        <h3>#{msg['incompleteOrders']}</h3>
-                    </f:facet>
+                        <p:column headerText="#{msg['personName']}">
+                            <h:outputText value="${employee.name}"/>
+                        </p:column>
 
-                    <p:column headerText="#{msg['id']}">
-                        <h:outputText value="${order.id}"/>
-                    </p:column>
+                        <p:column headerText="#{msg['login']}">
+                            <h:outputText value="${employee.login}"/>
+                        </p:column>
 
-                    <p:column headerText="#{msg['dateOrdered']}">
-                        <h:outputText value="${order.created}">
-                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
-                        </h:outputText>
-                    </p:column>
+                        <p:column headerText="#{msg['role']}">
+                            <p:cellEditor>
+                                <f:facet name="output">
+                                    <h:outputText value="#{msg[employee.userRole.label]}"/>
+                                </f:facet>
+                                <f:facet name="input">
+                                    <p:selectOneMenu value="${employee.userRole}" styleClass="inside-table-select">
+                                        <f:selectItems value="${employeesBean.userRoles}" var="userRole"
+                                                       itemValue="${userRole}"
+                                                       itemLabel="#{msg[userRole.label]}"/>
+                                    </p:selectOneMenu>
+                                </f:facet>
+                            </p:cellEditor>
+                        </p:column>
 
-                    <p:column headerText="#{msg['orderStatus']}">
-                        <h:outputText value="#{msg[order.status.label]}"/>
-                    </p:column>
+                        <p:column style="width:32px">
+                            <p:rowEditor/>
+                        </p:column>
 
-                    <p:column headerText="#{msg['customerName']}">
-                        <h:outputText value="${order.customer.name}"/>
-                    </p:column>
-
-                    <p:column headerText="#{msg['prepaymentShareRequired']}">
-                        <h:outputText value="${order.customer.prepaymentShareRequired * 100}">
-                            <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
-                        </h:outputText>
-                        <h:outputText value="% ($"/>
-                        <h:outputText value="${order.requiredPrepaymentSum}">
-                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
-                        </h:outputText>
-                        <h:outputText value=")"/>
-                    </p:column>
-
-                    <p:column headerText="#{msg['paid']}">
-                        <h:outputText value="${order.percentagePaid}">
-                            <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
-                        </h:outputText>
-                        <h:outputText value="% ($"/>
-                        <h:outputText value="${order.totalPaymentSum}">
-                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
-                        </h:outputText>
-                        <h:outputText value=")"/>
-                    </p:column>
-
-                    <p:column headerText="#{msg['numberOfPayments']}">
-                        <h:outputText value="${order.payments.size()}"/>
-                    </p:column>
-
-                    <p:column>
-                        <p:commandButton value="#{msg['addPayment']}"
-                                         onclick="$(this).parent().find('.add-payment').toggle()"/>
-
-                        <div class="add-payment">
-                            <h:form>
-                                <p:spinner min="0" max="${order.totalPrice}" stepFactor="1" prefix="$"
-                                           value="${ordersBean.sum}" size="5"/>
-                                <p:commandButton value="#{msg['save']}" action="${ordersBean.addPaymentToOrder(order)}"
-                                                 onclick="$('#add-payment').hide()"
-                                                 update=":ordersPendingPaymentsTable"/>
-                            </h:form>
-                        </div>
-
-                        <p:commandButton rendered="${order.status == 'PENDING_PREPAYMENT'}"
-                                         value="#{msg['markAsReadyForShipment']}"
-                                         action="${ordersBean.markOrderAsReadyForShipment(order)}"
-                                         update=":ordersPendingPaymentsTable"/>
-
-                        <p:commandButton rendered="${order.status == 'SHIPPED'}"
-                                         value="#{msg['markAsCompleted']}"
-                                         action="${ordersBean.markOrderAsCompleted(order)}"
-                                         update=":ordersPendingPaymentsTable"/>
-                    </p:column>
-
-                </p:dataTable>
-            </div>
-        </sec:authorize>
-
-        <sec:authorize ifAllGranted="SECURITY_OFFICER">
-            <h:form>
-                <p:dataTable var="employee" value="${employeesBean.employees}" editable="true">
-                    <f:facet name="header">
-                        <h3>#{msg['employees']}</h3>
-                    </f:facet>
-
-                    <p:column headerText="#{msg['personName']}">
-                        <h:outputText value="${employee.name}"/>
-                    </p:column>
-
-                    <p:column headerText="#{msg['login']}">
-                        <h:outputText value="${employee.login}"/>
-                    </p:column>
-
-                    <p:column headerText="#{msg['role']}">
-                        <p:cellEditor>
-                            <f:facet name="output">
-                                <h:outputText value="#{msg[employee.userRole.label]}"/>
-                            </f:facet>
-                            <f:facet name="input">
-                                <p:selectOneMenu value="${employee.userRole}" styleClass="inside-table-select">
-                                    <f:selectItems value="${employeesBean.userRoles}" var="userRole"
-                                                   itemValue="${userRole}"
-                                                   itemLabel="#{msg[userRole.label]}"/>
-                                </p:selectOneMenu>
-                            </f:facet>
-                        </p:cellEditor>
-                    </p:column>
-
-                    <p:column style="width:32px">
-                        <p:rowEditor/>
-                    </p:column>
-
-                    <f:facet name="footer">
-                        <p:commandButton styleClass="save-role-changes-button" value="#{msg['saveChanges']}"
-                                         action="${employeesBean.saveChanges()}"/>
-                    </f:facet>
-                </p:dataTable>
-            </h:form>
-        </sec:authorize>
+                        <f:facet name="footer">
+                            <p:commandButton styleClass="save-role-changes-button" value="#{msg['saveChanges']}"
+                                             action="${employeesBean.saveChanges()}"/>
+                        </f:facet>
+                    </p:dataTable>
+                </h:form>
+            </sec:authorize>
         </main>
     </ui:define>
 </ui:composition>

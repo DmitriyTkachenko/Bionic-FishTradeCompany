@@ -2,6 +2,7 @@ package ftcApp.ui;
 
 import ftcApp.model.Item;
 import ftcApp.model.Parcel;
+import ftcApp.model.enums.ParcelStatus;
 import ftcApp.service.ItemService;
 import ftcApp.service.ParcelService;
 import ftcApp.service.TestService;
@@ -35,6 +36,8 @@ public class ItemsBean implements Serializable {
 
     private List<Item> items;
 
+    private boolean editable = false;
+
     @PostConstruct
     public void init() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -52,6 +55,7 @@ public class ItemsBean implements Serializable {
         for (Item item : items) {
             item.duplicateBoughtAndColdStoreProperties();
         }
+        editable = (parcel.getStatus() == ParcelStatus.REGISTERED_BY_GM);
     }
 
     public void fetchItems() {
@@ -75,6 +79,14 @@ public class ItemsBean implements Serializable {
     @PreDestroy
     public void destroy() {
         testService.removeItemsData();
+    }
+
+    public boolean isEditable() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
     }
 
     public List<ItemQuantity> getItemQuantities() {

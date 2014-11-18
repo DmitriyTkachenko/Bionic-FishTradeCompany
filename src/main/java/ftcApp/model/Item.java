@@ -17,7 +17,7 @@ public class Item implements Serializable {
     @Column(nullable = false)
     private double weightBought;
 
-    private double weightColdStore;
+    private Double weightColdStore;
 
     private String descriptionBought;
 
@@ -92,9 +92,15 @@ public class Item implements Serializable {
     }
 
     public void duplicateBoughtAndColdStoreProperties() {
-        nameColdStore = nameBought;
-        weightColdStore = weightBought;
-        descriptionColdStore = descriptionBought;
+        if (nameColdStore == null) {
+            nameColdStore = nameBought;
+        }
+        if (weightColdStore == null) {
+            weightColdStore = weightBought;
+        }
+        if (descriptionColdStore == null) {
+            descriptionColdStore = descriptionBought;
+        }
     }
 
     public void reduceWeightInColdStoreBy(double weight) {
@@ -124,11 +130,11 @@ public class Item implements Serializable {
         this.nameColdStore = nameColdStore;
     }
 
-    public double getWeightColdStore() {
+    public Double getWeightColdStore() {
         return weightColdStore;
     }
 
-    public void setWeightColdStore(double weightColdStore) {
+    public void setWeightColdStore(Double weightColdStore) {
         this.weightColdStore = weightColdStore;
     }
 

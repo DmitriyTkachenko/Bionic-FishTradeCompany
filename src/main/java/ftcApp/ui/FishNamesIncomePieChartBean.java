@@ -36,7 +36,7 @@ public class FishNamesIncomePieChartBean implements Serializable {
 
         pieModel.setTitle("Fish name share in total income");
         pieModel.setLegendPosition("e");
-        pieModel.setFill(false);
+//        pieModel.setFill(false);
         pieModel.setShowDataLabels(true);
     }
 
