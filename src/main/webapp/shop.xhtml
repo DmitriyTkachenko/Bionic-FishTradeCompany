@@ -27,9 +27,13 @@
 
                         <p:column headerText="#{msg['quantity']}">
                             <p:spinner value="${orderedItem.weight}" stepFactor="0.1" min="0" size="5"
-                                       suffix=" #{msg['t']}">
+                                       max="${orderedItem.item.weightColdStore}" suffix=" #{msg['t']}">
                                 <p:ajax update="total" process="@this"/>
                             </p:spinner>
+                        </p:column>
+
+                        <p:column headerText="#{msg['amountAvailable']}">
+                            <h:outputText value="${orderedItem.item.weightColdStore}"/>
                         </p:column>
 
                         <p:column headerText="#{msg['price']}" sortBy="${orderedItem.price}">
@@ -100,7 +104,8 @@
             </h:form>
 
             <p:socket channel="/itemsChanged">
-                <p:ajax event="message" listener="${itemsBean.fetchItems()}" update="chooseItemsForm:itemsOnSale" />
+                <p:ajax event="message" listener="${itemsBean.fetchItems()}"
+                        update="chooseItemsForm:itemsOnSale, cart-form:cart" />
             </p:socket>
         </main>
     </ui:define>

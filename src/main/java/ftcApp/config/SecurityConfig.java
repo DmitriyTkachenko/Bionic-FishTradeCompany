@@ -10,6 +10,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import java.util.HashMap;
 
 @Configuration
 @EnableWebSecurity
@@ -29,34 +32,50 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers("/dashboard/").hasAnyAuthority("GENERAL_MANAGER", "COLD_STORE_MANAGER", "ACCOUNTANT", "SECURITY_OFFICER")
+                .antMatchers("/dashboard/**").hasAnyAuthority("GENERAL_MANAGER", "COLD_STORE_MANAGER", "ACCOUNTANT", "SECURITY_OFFICER")
+                .antMatchers("/dashboard").hasAnyAuthority("GENERAL_MANAGER", "COLD_STORE_MANAGER", "ACCOUNTANT", "SECURITY_OFFICER");
+
         // protection from CSRF attacks
         http.csrf()
                 .disable()
-                        // rules for requests that define access for resources
+                // rules for requests that define access for resources
                 .authorizeRequests()
                 .antMatchers("/resources/**", "/**").permitAll()
                 .anyRequest().permitAll()
                 .and();
 
         http.formLogin()
-                .loginPage("/shop")
+                .loginPage("/login")
                 .loginProcessingUrl("/j_spring_security_check")
-                .defaultSuccessUrl("/shop")
                 .failureUrl("/index?error")
                 .usernameParameter("j_username")
                 .passwordParameter("j_password")
                         // allow everyone to have access to login form
-                .permitAll();
+                .permitAll()
+                .successHandler(getAuthenticationSuccessHandler());
 
         http.logout()
                 .permitAll()
                 .logoutUrl("/logout")
                 .logoutSuccessUrl("/")
                 .invalidateHttpSession(true);
-
     }
 
     @Bean
     public BCryptPasswordEncoder getBCryptPasswordEncoder() { return new BCryptPasswordEncoder(); }
 
+    @Bean
+    public AuthenticationSuccessHandler getAuthenticationSuccessHandler() {
+        RoleBasedAuthenticationSuccessHandler roleBasedAuthenticationSuccessHandler = new RoleBasedAuthenticationSuccessHandler();
+        HashMap<String, String> roleUrlMap = new HashMap<>();
+        roleUrlMap.put("CUSTOMER", "/shop/");
+        roleUrlMap.put("GENERAL_MANAGER", "/dashboard/");
+        roleUrlMap.put("COLD_STORE_MANAGER", "/dashboard/");
+        roleUrlMap.put("ACCOUNTANT", "/dashboard/");
+        roleUrlMap.put("SECURITY_OFFICER", "/dashboard/");
+        roleBasedAuthenticationSuccessHandler.setRoleUrlMap(roleUrlMap);
+        return roleBasedAuthenticationSuccessHandler;
+    }
 }
