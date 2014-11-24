@@ -2,12 +2,11 @@ package ftcApp.service;
 
 import ftcApp.repository.GenericRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 
 @Service
-@Transactional
+//@Transactional
 public class GenericServiceImpl<T, ID extends Serializable> implements GenericService<T, ID> {
     protected GenericRepository<T, ID> repository;
 
@@ -49,6 +48,11 @@ public class GenericServiceImpl<T, ID extends Serializable> implements GenericSe
     @Override
     public void deleteAll() {
         repository.deleteAll();
+    }
+
+    @Override
+    public void refresh(T entity) {
+        repository.refresh(entity);
     }
 
     @Override

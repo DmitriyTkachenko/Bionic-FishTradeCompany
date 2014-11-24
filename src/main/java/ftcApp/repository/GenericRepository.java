@@ -8,6 +8,7 @@ public interface GenericRepository<T, ID extends Serializable> {
     void delete(T entity);
     void delete(ID id);
     void deleteAll();
+    void refresh(T entity);
     Iterable<T> findAll();
     T findOne(ID id);
     boolean exists(ID id);

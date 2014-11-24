@@ -45,6 +45,11 @@ public class GenericRepositoryImpl<T, ID extends Serializable> implements Generi
     }
 
     @Override
+    public void refresh(T entity) {
+        em.refresh(entity);
+    }
+
+    @Override
     public Iterable<T> findAll() {
         Iterable<T> result = null;
         try {

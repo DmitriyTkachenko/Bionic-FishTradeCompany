@@ -9,6 +9,7 @@ public interface GenericService<T, ID extends Serializable> {
     void delete(ID id);
     void delete(T entity);
     void deleteAll();
+    void refresh(T entity);
     Iterable<T> findAll();
     T findOne(ID id);
     boolean exists(ID id);

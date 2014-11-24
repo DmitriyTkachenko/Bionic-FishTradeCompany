@@ -5,6 +5,7 @@ import ftcApp.model.OrderedItem;
 import ftcApp.service.OrderService;
 import ftcApp.service.TestService;
 import ftcApp.service.UserService;
+import org.primefaces.context.RequestContext;
 import org.primefaces.push.EventBus;
 import org.primefaces.push.EventBusFactory;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -32,6 +33,7 @@ public class CartBean implements Serializable {
     private transient UserService userService;
 
     private Order order;
+    private Integer orderId;
 
     @PostConstruct
     public void init() {
@@ -58,6 +60,14 @@ public class CartBean implements Serializable {
         this.order = order;
     }
 
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
+
     public void addItemToOrder(ItemQuantity itemQuantity) {
         if (order == null) {
             order = new Order();
@@ -68,6 +78,9 @@ public class CartBean implements Serializable {
     public void saveOrder() {
         String login = userService.getLoginOfCurrentlyLoggedUser();
         orderService.saveOrderForCustomerWithLogin(order, login);
+        orderId = order.getId();
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.execute("PF('orderSubmittedDialog').show();");
         order = null;
         EventBus eventBus = EventBusFactory.getDefault().eventBus();
         eventBus.publish("/itemsChanged", true);

@@ -26,9 +26,9 @@
                         </p:column>
 
                         <p:column headerText="#{msg['quantity']}">
-                            <p:spinner value="${orderedItem.weight}" stepFactor="0.1" min="0" size="5"
+                            <p:spinner value="${orderedItem.weight}" stepFactor="0.1" min="0" size="4"
                                        max="${orderedItem.item.weightColdStore}" suffix=" #{msg['t']}">
-                                <p:ajax update="total" process="@this"/>
+                                <p:ajax update="total, :cart-form:orderTotal" process="@this"/>
                             </p:spinner>
                         </p:column>
 
@@ -51,20 +51,43 @@
                         <p:column width="40">
                             <p:commandLink title="Delete"
                                            action="${cartBean.order.removeOrderedItem(orderedItem)}"
-                                           update="cart" styleClass="delete-button">
+                                           update="cart, :cart-form" styleClass="delete-button">
                                 <i class="fa fa-times centered"/>
                             </p:commandLink>
                         </p:column>
+                    </p:dataTable>
+
+                    <h:panelGroup layout="block" id="orderTotal" rendered="${cartBean.order != null}">
+                        <h:outputText value="#{msg['total']}: $"/>
+                        <h:outputText id="orderTotalPrice" value="${cartBean.order.totalPrice}">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                        </h:outputText>
+                        <br/>
+
+                        <h:outputText value="#{msg['totalWeight']}: "/>
+                        <h:outputText id="orderTotalWeight" value="${cartBean.order.totalWeight}">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                        </h:outputText>
+                        <h:outputText value=" #{msg['t']}"/>
+                        <br/>
 
                         <sec:authorize ifAllGranted="CUSTOMER">
-                            <f:facet name="footer">
-                                <p:commandButton styleClass="submit-order-button" value="#{msg['submitOrder']}"
-                                                 action="${cartBean.saveOrder()}" update="cart" onclick="$('#cartOverlayPanel').hide()"/>
-                            </f:facet>
+                            <p:commandButton styleClass="submit-order-button" value="#{msg['submitOrder']}"
+                                             action="${cartBean.saveOrder()}" update="cart, :order-submitted, :cart-form"
+                                             onclick="$('#cartOverlayPanel').hide();"/>
                         </sec:authorize>
-                    </p:dataTable>
+
+                        <sec:authorize ifNotGranted="CUSTOMER">
+                            <h:outputText value="#{msg['logInOrRegisterToSubmitOrder']}"/>
+                        </sec:authorize>
+                    </h:panelGroup>
                 </h:form>
             </p:overlayPanel>
+
+            <p:dialog widgetVar="orderSubmittedDialog" id="order-submitted" modal="true" height="100">
+                <h:outputText value="#{msg['orderIsSubmitted']}: "/>
+                <h:outputText value="${cartBean.orderId}."/>
+            </p:dialog>
 
             <h1>#{msg['onSale']}</h1>
             <h:form id="chooseItemsForm">
@@ -97,7 +120,7 @@
 
                     <p:column headerText="">
                         <p:commandButton value="#{msg['addToCart']}" action="${cartBean.addItemToOrder(itemQuantity)}"
-                                         update=":cart-form:cart"/>
+                                         update=":cart-form"/>
                     </p:column>
 
                 </p:dataTable>
@@ -105,7 +128,7 @@
 
             <p:socket channel="/itemsChanged">
                 <p:ajax event="message" listener="${itemsBean.fetchItems()}"
-                        update="chooseItemsForm:itemsOnSale, cart-form:cart" />
+                        update="chooseItemsForm:itemsOnSale, cart-form:cart"/>
             </p:socket>
         </main>
     </ui:define>

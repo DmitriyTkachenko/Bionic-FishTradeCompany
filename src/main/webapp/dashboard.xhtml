@@ -670,7 +670,7 @@
             </sec:authorize>
 
             <sec:authorize ifAllGranted="SECURITY_OFFICER">
-                <h:form>
+                <h:form id="role-editing">
                     <p:dataTable var="employee" value="${employeesBean.employees}" editable="true">
                         <f:facet name="header">
                             <h3>#{msg['employees']}</h3>

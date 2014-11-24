@@ -20,7 +20,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.framework.version>4.1.1.RELEASE</spring.framework.version>
+        <spring.framework.version>4.1.2.RELEASE</spring.framework.version>
         <spring.security.version>3.2.5.RELEASE</spring.security.version>
         <spring.webflow.version>2.4.1.RELEASE</spring.webflow.version>
         <jsf.version>2.2.8-02</jsf.version>
@@ -41,13 +41,6 @@
             <artifactId>eclipselink</artifactId>
             <version>2.5.2</version>
         </dependency>
-
-        <!-- Derby DB embedded driver -->
-        <!--<dependency>-->
-            <!--<groupId>org.apache.derby</groupId>-->
-            <!--<artifactId>derby</artifactId>-->
-            <!--<version>10.11.1.1</version>-->
-        <!--</dependency>-->
 
         <!-- MySQL Connector -->
         <dependency>

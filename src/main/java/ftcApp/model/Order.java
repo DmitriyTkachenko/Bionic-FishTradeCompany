@@ -72,9 +72,10 @@ public class Order implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = status.hashCode();
+        int result = status != null ? status.hashCode() : 0;
         result = 31 * result + (deliveryPrice != null ? deliveryPrice.hashCode() : 0);
-        result = 31 * result + created.hashCode();
+        result = 31 * result + (created != null ? created.hashCode() : 0);
+        result = 31 * result + (shipped != null ? shipped.hashCode() : 0);
         return result;
     }
 
