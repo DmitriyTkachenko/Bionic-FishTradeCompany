@@ -21,5 +21,9 @@ $( document ).ready(function() {
 
     $('#show-report').click(function() {
         $('#report').toggle();
+    });
+
+    $('#change-prepayment-mode').click(function() {
+        $('#prepayment-mode-editing').toggle();
     })
 });

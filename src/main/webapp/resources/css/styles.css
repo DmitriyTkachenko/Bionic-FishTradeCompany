@@ -31,7 +31,7 @@
 }
 
 .add-item-button, .add-parcel-button, .submit-order-button, .save-parcel-changes-button, .complete-registration-button,
-.save-role-changes-button
+.save-role-changes-button, .save-prepayment-changes-button
 {
     display: block;
     margin: 5px auto;
@@ -39,7 +39,7 @@
 }
 
 #parcel-registration, #parcel-editing, #parcel-items-editing, #parcel-items-show, #parcel-registration-cs, #parcel-items-editing-cs,
-#order-shipment-registration, #payment-registration, .add-payment, #report, #ordered-items {
+#order-shipment-registration, #payment-registration, .add-payment, #report, #ordered-items, #prepayment-mode-editing {
     display: none;
 }
 
@@ -66,12 +66,14 @@ table {
     border-style: none !important;
 }
 
-.delete-button, #register-parcel, #edit-parcel, #register-parcel-cs, #register-order-shipment, #show-report, #register-payment {
+.delete-button, #register-parcel, #edit-parcel, #register-parcel-cs, #register-order-shipment, #show-report,
+#register-payment, #change-prepayment-mode {
     display: block;
     width: 350px;
 }
 
-#register-parcel, #edit-parcel, #register-parcel-cs, #register-order-shipment, #show-report, #register-payment {
+#register-parcel, #edit-parcel, #register-parcel-cs, #register-order-shipment, #show-report, #register-payment,
+#change-prepayment-mode {
     margin: 10px auto;
 }
 

@@ -1,5 +1,6 @@
 package ftcApp.model;
 
+import ftcApp.model.enums.OrderStatus;
 import ftcApp.model.enums.UserRole;
 
 import javax.persistence.Column;
@@ -63,6 +64,36 @@ public class Customer extends User {
         return result;
     }
 
+    public int getNumberOfOrders() {
+        int numberOfOrders = 0;
+        for (Order order : orders) {
+            if (order.getStatus() == OrderStatus.COMPLETED) {
+                ++numberOfOrders;
+            }
+        }
+        return numberOfOrders;
+    }
+
+    public double getTotalMoneySpent() {
+        double totalMoneySpent = 0.0;
+        for (Order order : orders) {
+            if (order.getStatus() == OrderStatus.COMPLETED) {
+                totalMoneySpent += order.getTotalPrice();
+            }
+        }
+        return totalMoneySpent;
+    }
+
+    public double getTotalWeightOrdered() {
+        double totalWeightOrdered = 0.0;
+        for (Order order : orders) {
+            if (order.getStatus() == OrderStatus.COMPLETED) {
+                totalWeightOrdered += order.getTotalWeight();
+            }
+        }
+        return totalWeightOrdered;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -91,8 +122,14 @@ public class Customer extends User {
         return prepaymentShareRequired;
     }
 
+    public double getPrepaymentShareRequiredPercent() { return prepaymentShareRequired * 100.0; }
+
     public void setPrepaymentShareRequired(double prepaymentShareRequired) {
         this.prepaymentShareRequired = prepaymentShareRequired;
+    }
+
+    public void setPrepaymentShareRequiredPercent(double prepaymentShareRequired) {
+        this.prepaymentShareRequired = (prepaymentShareRequired / 100.0);
     }
 
     public List<Order> getOrders() {
