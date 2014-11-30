@@ -37,6 +37,9 @@ public class Order implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date shipped;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date completed;
+
     public Order() { }
 
     public Order(OrderStatus status, Customer customer, Double deliveryPrice, List<OrderedItem> orderedItems, List<Payment> payments, Date created) {
@@ -58,6 +61,7 @@ public class Order implements Serializable {
 
         Order order = (Order) o;
 
+        if (completed != null ? !completed.equals(order.completed) : order.completed != null) return false;
         if (created != null ? !created.equals(order.created) : order.created != null) return false;
         if (customer != null ? !customer.equals(order.customer) : order.customer != null) return false;
         if (deliveryPrice != null ? !deliveryPrice.equals(order.deliveryPrice) : order.deliveryPrice != null)
@@ -76,6 +80,7 @@ public class Order implements Serializable {
         result = 31 * result + (deliveryPrice != null ? deliveryPrice.hashCode() : 0);
         result = 31 * result + (created != null ? created.hashCode() : 0);
         result = 31 * result + (shipped != null ? shipped.hashCode() : 0);
+        result = 31 * result + (completed != null ? completed.hashCode() : 0);
         return result;
     }
 
@@ -114,6 +119,10 @@ public class Order implements Serializable {
         double totalPrice = this.getTotalPrice();
         double totalPaymentSum = this.getTotalPaymentSum();
         return (totalPaymentSum / totalPrice) * 100;
+    }
+
+    public boolean isPaidInFull() {
+        return Double.compare(this.getPercentagePaid(), 100.0) >= 0;
     }
 
     public Date getShipped() {
@@ -184,5 +193,11 @@ public class Order implements Serializable {
         return customer;
     }
 
+    public Date getCompleted() {
+        return completed;
+    }
 
+    public void setCompleted(Date completed) {
+        this.completed = completed;
+    }
 }

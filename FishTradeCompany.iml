@@ -7,7 +7,7 @@
         <setting name="provider-name" value="EclipseLink" />
         <datasource-mapping>
           <factory-entry name="CashM" />
-          <factory-entry name="FTC" value="dataSource" />
+          <factory-entry name="FTC" value="916ad6c5-8fb3-4fb8-b570-389a9458e81a" />
           <factory-entry name="NewPersistenceUnit" />
         </datasource-mapping>
         <deploymentDescriptor name="persistence.xml" url="file://$MODULE_DIR$/src/main/resources/META-INF/persistence.xml" />

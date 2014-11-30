@@ -45,9 +45,10 @@ public class Customer extends User {
         if (Double.compare(customer.prepaymentShareRequired, prepaymentShareRequired) != 0) return false;
         if (contactInfo != null ? !contactInfo.equals(customer.contactInfo) : customer.contactInfo != null)
             return false;
-        if (!email.equals(customer.email)) return false;
+        if (email != null ? !email.equals(customer.email) : customer.email != null) return false;
         if (orders != null ? !orders.equals(customer.orders) : customer.orders != null) return false;
-        if (!shippingAddress.equals(customer.shippingAddress)) return false;
+        if (shippingAddress != null ? !shippingAddress.equals(customer.shippingAddress) : customer.shippingAddress != null)
+            return false;
 
         return true;
     }
@@ -58,8 +59,8 @@ public class Customer extends User {
         long temp;
         temp = Double.doubleToLongBits(prepaymentShareRequired);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + shippingAddress.hashCode();
-        result = 31 * result + email.hashCode();
+        result = 31 * result + (shippingAddress != null ? shippingAddress.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (contactInfo != null ? contactInfo.hashCode() : 0);
         return result;
     }
@@ -139,6 +140,5 @@ public class Customer extends User {
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
-
 
 }

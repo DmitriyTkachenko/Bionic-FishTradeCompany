@@ -46,10 +46,11 @@ public class Parcel implements Serializable {
 
         Parcel parcel = (Parcel) o;
 
+        if (arrived != null ? !arrived.equals(parcel.arrived) : parcel.arrived != null) return false;
         if (deliveryCost != null ? !deliveryCost.equals(parcel.deliveryCost) : parcel.deliveryCost != null)
             return false;
         if (items != null ? !items.equals(parcel.items) : parcel.items != null) return false;
-        if (!purchased.equals(parcel.purchased)) return false;
+        if (purchased != null ? !purchased.equals(parcel.purchased) : parcel.purchased != null) return false;
         if (status != parcel.status) return false;
 
         return true;
@@ -57,8 +58,9 @@ public class Parcel implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = status.hashCode();
-        result = 31 * result + purchased.hashCode();
+        int result = status != null ? status.hashCode() : 0;
+        result = 31 * result + (purchased != null ? purchased.hashCode() : 0);
+        result = 31 * result + (arrived != null ? arrived.hashCode() : 0);
         result = 31 * result + (deliveryCost != null ? deliveryCost.hashCode() : 0);
         return result;
     }

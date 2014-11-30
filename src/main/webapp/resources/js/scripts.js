@@ -25,5 +25,5 @@ $( document ).ready(function() {
 
     $('#change-prepayment-mode').click(function() {
         $('#prepayment-mode-editing').toggle();
-    })
+    });
 });

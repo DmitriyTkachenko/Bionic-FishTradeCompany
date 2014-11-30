@@ -7,4 +7,6 @@ public interface TestService {
     void removeEmployees();
     void addCustomer();
     void removeCustomer();
+    void addOrders();
+    void removeOrders();
 }

@@ -6,7 +6,6 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:c="http://java.sun.com/jsp/jstl/core"
       xmlns:sec="http://www.springframework.org/security/tags">
 
 <ui:composition template="/templates/main.xhtml">
@@ -434,7 +433,7 @@
                             <p:column headerText="#{msg['totalMoneySpent']}">
                                 <h:outputText value="$"/>
                                 <h:outputText value="${customer.totalMoneySpent}">
-                                        <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                                    <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
                                 </h:outputText>
                             </p:column>
 
@@ -476,22 +475,40 @@
                     </h:form>
                 </div>
 
-                <p:commandButton id="show-report" update="daysIncomeBarChart, namesIncomeBarChart, namesIncomePieChart"
-                                 value="#{msg['showReports']}"/>
+                <p:commandButton id="show-report" value="#{msg['showReports']}"/>
 
                 <div id="report">
-                    <p:chart styleClass="chart" id="daysIncomeBarChart" type="bar"
-                             model="#{daysIncomeBarChartBean.barModel}" style="height:300px"/>
+                    <h:form>
+                        <p:panelGrid styleClass="yellow-background" columns="2">
+                            <p:outputLabel for="start" value="#{msg['startDate']}: "/>
+                            <p:calendar id="start" value="${reportsBean.start}" required="true"/>
 
-                    <br/>
+                            <p:outputLabel for="end" value="#{msg['endDate']}: "/>
+                            <p:calendar id="end" value="${reportsBean.end}" required="true"/>
+                        </p:panelGrid>
 
-                    <p:chart styleClass="chart" id="namesIncomeBarChart" type="bar"
-                             model="#{fishNamesIncomeBarChartBean.barModel}" style="height:300px"/>
+                        <p:commandButton id="show-charts" value="#{msg['show']}"
+                                         action="${reportsBean.loadOrdersForPeriod()}"
+                                         update=":charts"/>
+                    </h:form>
 
-                    <br/>
+                    <h:panelGroup id="charts" layout="block">
+                        <p:chart styleClass="chart" id="daysIncomeBarChart" type="bar"
+                                 model="#{reportsBean.daysIncomeBarModel}" style="height:300px"
+                                 rendered="${reportsBean.chartsReady}"/>
 
-                    <p:chart styleClass="chart" id="namesIncomePieChart" type="pie"
-                             model="#{fishNamesIncomePieChartBean.pieModel}" style="width:400px;height:300px"/>
+                        <br/>
+
+                        <p:chart styleClass="chart" id="namesIncomeBarChart" type="bar"
+                                 model="#{reportsBean.fishNamesIncomeBarModel}" style="height:300px"
+                                 rendered="${reportsBean.chartsReady}"/>
+
+                        <br/>
+
+                        <p:chart styleClass="chart" id="namesIncomePieChart" type="pie"
+                                 model="#{reportsBean.fishNamesIncomePieModel}" style="width:400px;height:300px"
+                                 rendered="${reportsBean.chartsReady}"/>
+                    </h:panelGroup>
                 </div>
             </sec:authorize>
 
@@ -618,7 +635,8 @@
                         <p:column>
                             <p:commandButton value="#{msg['markAsShipped']}"
                                              action="${ordersBean.markOrderAsShipped(order)}"
-                                             update="ordersPendingShipmentTable" onclick="$('#ordered-items').hide()"/>
+                                             update="ordersPendingShipmentTable"
+                                             styleClass="small-bottom-margin" onclick="$('#ordered-items').hide()"/>
 
                             <p:commandButton id="show-ordered-items" value="#{msg['showOrderedItems']}"
                                              action="${orderedItemsBean.loadOrderedItemsForOrder(order)}"
@@ -675,6 +693,13 @@
                             <h:outputText value="${order.customer.name}"/>
                         </p:column>
 
+                        <p:column headerText="#{msg['total']}">
+                            <h:outputText value="$"/>
+                            <h:outputText value="${order.totalPrice}">
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                            </h:outputText>
+                        </p:column>
+
                         <p:column headerText="#{msg['prepaymentShareRequired']}">
                             <h:outputText value="${order.customer.prepaymentShareRequired * 100}">
                                 <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
@@ -708,21 +733,25 @@
                             <div class="add-payment">
                                 <h:form>
                                     <p:spinner min="0" max="${order.totalPrice}" stepFactor="1" prefix="$"
-                                               value="${ordersBean.sum}" size="5"/>
+                                               value="${ordersBean.sum}"
+                                               styleClass="small-top-margin small-bottom-margin" size="5"/>
                                     <p:commandButton value="#{msg['save']}"
                                                      action="${ordersBean.addPaymentToOrder(order)}"
                                                      onclick="$('#add-payment').hide()"
-                                                     update=":ordersPendingPaymentsTable"/>
+                                                     update=":ordersPendingPaymentsTable"
+                                                     styleClass="small-bottom-margin"/>
                                 </h:form>
                             </div>
 
                             <p:commandButton rendered="${order.status == 'PENDING_PREPAYMENT'}"
                                              value="#{msg['markAsReadyForShipment']}"
                                              action="${ordersBean.markOrderAsReadyForShipment(order)}"
+                                             styleClass="small-top-margin"
                                              update=":ordersPendingPaymentsTable"/>
 
-                            <p:commandButton rendered="${order.status == 'SHIPPED'}"
+                            <p:commandButton rendered="${order.status == 'SHIPPED' and order.paidInFull}"
                                              value="#{msg['markAsCompleted']}"
+                                             styleClass="small-top-margin"
                                              action="${ordersBean.markOrderAsCompleted(order)}"
                                              update=":ordersPendingPaymentsTable"/>
                         </p:column>

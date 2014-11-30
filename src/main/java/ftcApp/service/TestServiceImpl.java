@@ -1,9 +1,6 @@
 package ftcApp.service;
 
-import ftcApp.model.Customer;
-import ftcApp.model.Employee;
-import ftcApp.model.Item;
-import ftcApp.model.Parcel;
+import ftcApp.model.*;
 import ftcApp.model.enums.ParcelStatus;
 import ftcApp.model.enums.UserRole;
 import org.springframework.stereotype.Service;
@@ -28,16 +25,29 @@ public class TestServiceImpl implements TestService {
     @Inject
     private CustomerService customerService;
 
+    @Inject
+    private ItemService itemService;
+
+    @Inject
+    private OrderService orderService;
+
     private Parcel parcel;
     private Employee employee1;
     private Employee employee2;
     private Employee employee3;
     private Employee employee4;
     private Customer customer;
+    private Order order1;
+    private Order order2;
+    private OrderedItem orderedItem11;
+    private OrderedItem orderedItem12;
+    private OrderedItem orderedItem21;
+    private OrderedItem orderedItem22;
 
     private boolean previousItemsDeleted = true;
     private boolean previousEmployeesDeleted = true;
     private boolean previousCustomerDeleted = true;
+    private boolean previousOrdersDeleted = true;
 
     @Override
     public void addItemsData() {
@@ -92,7 +102,7 @@ public class TestServiceImpl implements TestService {
             return;
         }
         customer = new Customer("WildSpirit", "pass", "Dmitriy", UserRole.CUSTOMER);
-        customer.setPrepaymentShareRequired(0.2);
+        customer.setPrepaymentShareRequired(0);
         customer.setShippingAddress("51 Predslavinskaya str.");
         customer.setEmail("wildspirit2009@gmail.com");
         userService.save(customer);
@@ -103,6 +113,33 @@ public class TestServiceImpl implements TestService {
     public void removeCustomer() {
         customerService.delete(customer);
         previousCustomerDeleted = true;
+    }
+
+    @Override
+    public void addOrders() {
+        if (!previousOrdersDeleted) {
+            return;
+        }
+        Item item1 = itemService.findOne(1);
+        Item item2 = itemService.findOne(2);
+        Item item3 = itemService.findOne(3);
+        order1 = new Order();
+        orderedItem11 = new OrderedItem(item1, 10, item1.getSellingPrice(), order1);
+        orderedItem12 = new OrderedItem(item2, 5, item2.getSellingPrice(), order1);
+        order2 = new Order();
+        orderedItem21 = new OrderedItem(item2, 15, item2.getSellingPrice(), order2);
+        orderedItem22 = new OrderedItem(item3, 17.5, item3.getSellingPrice(), order2);
+        orderService.saveOrderForCustomerWithLogin(order1, "WildSpirit");
+        orderService.saveOrderForCustomerWithLogin(order2, "WildSpirit");
+        orderService.markOrderAsCompleted(order1);
+        orderService.markOrderAsCompleted(order2);
+        previousOrdersDeleted = false;
+    }
+
+    @Override
+    public void removeOrders() {
+        orderService.delete(order1);
+        orderService.delete(order2);
     }
 
 }

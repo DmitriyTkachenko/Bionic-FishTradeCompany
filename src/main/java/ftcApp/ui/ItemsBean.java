@@ -50,6 +50,11 @@ public class ItemsBean implements Serializable {
         fetchItems();
     }
 
+    @PreDestroy
+    public void destroy() {
+        testService.removeItemsData();
+    }
+
     public void loadItemsForParcel(Parcel parcel) {
         items = parcel.getItems();
         for (Item item : items) {
@@ -74,11 +79,6 @@ public class ItemsBean implements Serializable {
 
     public void saveChangesColdStore() {
         parcelService.updateParcelColdStore(items.get(0).getParcel());
-    }
-
-    @PreDestroy
-    public void destroy() {
-        testService.removeItemsData();
     }
 
     public boolean isEditable() {

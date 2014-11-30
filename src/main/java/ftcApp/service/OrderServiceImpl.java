@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -51,12 +54,12 @@ public class OrderServiceImpl extends GenericServiceImpl<Order, Integer> impleme
 
     @Override
     public Iterable<Order> findOrdersPendingShipment() {
-        return ((OrderRepository)repository).findOrdersPendingShipment();
+        return ((OrderRepository) repository).findOrdersPendingShipment();
     }
 
     @Override
     public Iterable<Order> findOrdersNotPaidInFull() {
-        return ((OrderRepository)repository).findOrdersNotPaidInFull();
+        return ((OrderRepository) repository).findOrdersNotPaidInFull();
     }
 
     @Override
@@ -73,8 +76,23 @@ public class OrderServiceImpl extends GenericServiceImpl<Order, Integer> impleme
     }
 
     @Override
+    public void markOrderAsCompleted(Order order) {
+        order.setStatus(OrderStatus.COMPLETED);
+        order.setCompleted(new Date());
+        repository.update(order);
+    }
+
+    @Override
     public void addPaymentToOrder(Order order, double sum) {
         order.getPayments().add(new Payment(order, sum));
         repository.update(order);
+    }
+
+    @Override
+    public Iterable<Order> findCompletedOrdersBetweenDates(Date start, Date end) {
+        LocalDateTime endldt = LocalDateTime.ofInstant(Instant.ofEpochMilli(end.getTime()), ZoneId.systemDefault());
+        endldt = endldt.plusDays(1);
+        end = Date.from(endldt.atZone(ZoneId.systemDefault()).toInstant());
+        return ((OrderRepository) repository).findCompletedOrdersBetweenDates(start, end);
     }
 }

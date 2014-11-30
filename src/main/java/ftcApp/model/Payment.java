@@ -26,6 +26,25 @@ public class Payment implements Serializable {
         this.sum = sum;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Payment payment = (Payment) o;
+
+        if (Double.compare(payment.sum, sum) != 0) return false;
+        if (order != null ? !order.equals(payment.order) : payment.order != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        long temp = Double.doubleToLongBits(sum);
+        return (int) (temp ^ (temp >>> 32));
+    }
+
     public Integer getId() {
         return id;
     }
@@ -53,22 +72,4 @@ public class Payment implements Serializable {
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Payment payment = (Payment) o;
-
-        if (Double.compare(payment.sum, sum) != 0) return false;
-        if (!order.equals(payment.order)) return false;
-
-        return true;
-    }
-
-    @Override
-    public int hashCode() {
-        long temp = Double.doubleToLongBits(sum);
-        return (int) (temp ^ (temp >>> 32));
-    }
 }

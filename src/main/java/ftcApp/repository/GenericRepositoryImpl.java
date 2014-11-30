@@ -2,7 +2,9 @@ package ftcApp.repository;
 
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.io.Serializable;
 
 @Repository
@@ -63,14 +65,7 @@ public class GenericRepositoryImpl<T, ID extends Serializable> implements Generi
 
     @Override
     public T findOne(ID id) {
-        T result = null;
-        try {
-            TypedQuery<T> query = em.createQuery("SELECT e FROM " + entityClass.getName() + " e WHERE e.id = :identifier", entityClass).setParameter("identifier", id);
-            result = query.getSingleResult();
-        } catch (RuntimeException e) {
-            e.printStackTrace();
-        }
-        return result;
+        return em.find(entityClass, id);
     }
 
     @Override

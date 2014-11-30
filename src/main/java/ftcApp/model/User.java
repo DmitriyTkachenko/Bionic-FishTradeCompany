@@ -31,9 +31,9 @@ public abstract class User implements Serializable {
 
         User user = (User) o;
 
-        if (!login.equals(user.login)) return false;
-        if (!name.equals(user.name)) return false;
-        if (!password.equals(user.password)) return false;
+        if (login != null ? !login.equals(user.login) : user.login != null) return false;
+        if (name != null ? !name.equals(user.name) : user.name != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (userRole != user.userRole) return false;
 
         return true;
@@ -41,10 +41,10 @@ public abstract class User implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = login.hashCode();
-        result = 31 * result + password.hashCode();
-        result = 31 * result + name.hashCode();
-        result = 31 * result + userRole.hashCode();
+        int result = login != null ? login.hashCode() : 0;
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (userRole != null ? userRole.hashCode() : 0);
         return result;
     }
 

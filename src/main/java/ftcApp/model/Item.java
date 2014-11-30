@@ -57,18 +57,19 @@ public class Item implements Serializable {
         Item item = (Item) o;
 
         if (Double.compare(item.weightBought, weightBought) != 0) return false;
-        if (Double.compare(item.weightColdStore, weightColdStore) != 0) return false;
         if (writtenOff != item.writtenOff) return false;
-        if (!buyingPrice.equals(item.buyingPrice)) return false;
+        if (buyingPrice != null ? !buyingPrice.equals(item.buyingPrice) : item.buyingPrice != null) return false;
         if (descriptionBought != null ? !descriptionBought.equals(item.descriptionBought) : item.descriptionBought != null)
             return false;
         if (descriptionColdStore != null ? !descriptionColdStore.equals(item.descriptionColdStore) : item.descriptionColdStore != null)
             return false;
-        if (!nameBought.equals(item.nameBought)) return false;
+        if (nameBought != null ? !nameBought.equals(item.nameBought) : item.nameBought != null) return false;
         if (nameColdStore != null ? !nameColdStore.equals(item.nameColdStore) : item.nameColdStore != null)
             return false;
         if (parcel != null ? !parcel.equals(item.parcel) : item.parcel != null) return false;
         if (sellingPrice != null ? !sellingPrice.equals(item.sellingPrice) : item.sellingPrice != null) return false;
+        if (weightColdStore != null ? !weightColdStore.equals(item.weightColdStore) : item.weightColdStore != null)
+            return false;
 
         return true;
     }
@@ -77,15 +78,14 @@ public class Item implements Serializable {
     public int hashCode() {
         int result;
         long temp;
-        result = nameBought.hashCode();
+        result = nameBought != null ? nameBought.hashCode() : 0;
         result = 31 * result + (nameColdStore != null ? nameColdStore.hashCode() : 0);
         temp = Double.doubleToLongBits(weightBought);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(weightColdStore);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (weightColdStore != null ? weightColdStore.hashCode() : 0);
         result = 31 * result + (descriptionBought != null ? descriptionBought.hashCode() : 0);
         result = 31 * result + (descriptionColdStore != null ? descriptionColdStore.hashCode() : 0);
-        result = 31 * result + buyingPrice.hashCode();
+        result = 31 * result + (buyingPrice != null ? buyingPrice.hashCode() : 0);
         result = 31 * result + (sellingPrice != null ? sellingPrice.hashCode() : 0);
         result = 31 * result + (writtenOff ? 1 : 0);
         return result;
