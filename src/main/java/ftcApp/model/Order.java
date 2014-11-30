@@ -125,6 +125,10 @@ public class Order implements Serializable {
         return Double.compare(this.getPercentagePaid(), 100.0) >= 0;
     }
 
+    public boolean isPrepaymentPaid() {
+        return Double.compare(this.getTotalPaymentSum(), this.getRequiredPrepaymentSum()) >= 0;
+    }
+
     public Date getShipped() {
         return shipped;
     }

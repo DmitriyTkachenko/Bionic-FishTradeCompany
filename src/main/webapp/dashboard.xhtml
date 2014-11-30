@@ -732,7 +732,7 @@
 
                             <div class="add-payment">
                                 <h:form>
-                                    <p:spinner min="0" max="${order.totalPrice}" stepFactor="1" prefix="$"
+                                    <p:spinner min="0" max="${order.totalPrice}" stepFactor="0.01" prefix="$"
                                                value="${ordersBean.sum}"
                                                styleClass="small-top-margin small-bottom-margin" size="5"/>
                                     <p:commandButton value="#{msg['save']}"
@@ -743,17 +743,54 @@
                                 </h:form>
                             </div>
 
-                            <p:commandButton rendered="${order.status == 'PENDING_PREPAYMENT'}"
-                                             value="#{msg['markAsReadyForShipment']}"
-                                             action="${ordersBean.markOrderAsReadyForShipment(order)}"
-                                             styleClass="small-top-margin"
-                                             update=":ordersPendingPaymentsTable"/>
+                            <h:panelGroup layout="block" rendered="${order.prepaymentPaid}">
+                                <p:commandButton rendered="${order.status == 'PENDING_PREPAYMENT'}"
+                                                 value="#{msg['markAsReadyForShipment']}"
+                                                 action="${ordersBean.markOrderAsReadyForShipment(order)}"
+                                                 styleClass="small-top-margin"
+                                                 update=":ordersPendingPaymentsTable"/>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" rendered="${!order.prepaymentPaid}">
+                                <p:commandButton rendered="${order.status == 'PENDING_PREPAYMENT'}"
+                                                 value="#{msg['markAsReadyForShipment']}"
+                                                 action="${ordersBean.markOrderAsReadyForShipment(order)}"
+                                                 styleClass="small-top-margin"
+                                                 update=":ordersPendingPaymentsTable">
+                                    <p:confirm header="#{msg['confirmation']}" message="#{msg['prepaymentNotPaidConfirmation']}" icon="ui-icon-alert"/>
+                                </p:commandButton>
 
-                            <p:commandButton rendered="${order.status == 'SHIPPED' and order.paidInFull}"
-                                             value="#{msg['markAsCompleted']}"
-                                             styleClass="small-top-margin"
-                                             action="${ordersBean.markOrderAsCompleted(order)}"
-                                             update=":ordersPendingPaymentsTable"/>
+                                <p:confirmDialog global="true" showEffect="fade">
+                                    <p:commandButton value="#{msg['yes']}" type="button" styleClass="ui-confirmdialog-yes"
+                                                     icon="ui-icon-check"/>
+                                    <p:commandButton value="#{msg['no']}" type="button" styleClass="ui-confirmdialog-no"
+                                                     icon="ui-icon-close"/>
+                                </p:confirmDialog>
+                            </h:panelGroup>
+
+                            <h:panelGroup layout="block" rendered="${order.paidInFull}">
+                                <p:commandButton rendered="${order.status == 'SHIPPED'}"
+                                                 value="#{msg['markAsCompleted']}"
+                                                 styleClass="small-top-margin"
+                                                 action="${ordersBean.markOrderAsCompleted(order)}"
+                                                 update=":ordersPendingPaymentsTable"/>
+                            </h:panelGroup>
+                            <h:panelGroup layout="block" rendered="${!order.paidInFull}">
+                                <p:commandButton rendered="${order.status == 'SHIPPED'}"
+                                                 value="#{msg['markAsCompleted']}"
+                                                 styleClass="small-top-margin"
+                                                 action="${ordersBean.markOrderAsCompleted(order)}"
+                                                 update=":ordersPendingPaymentsTable">
+                                    <p:confirm header="#{msg['confirmation']}" message="#{msg['notPaidInFullConfirmation']}" icon="ui-icon-alert"/>
+                                </p:commandButton>
+
+                                <p:confirmDialog global="true" showEffect="fade">
+                                    <p:commandButton value="#{msg['yes']}" type="button" styleClass="ui-confirmdialog-yes"
+                                                     icon="ui-icon-check"/>
+                                    <p:commandButton value="#{msg['no']}" type="button" styleClass="ui-confirmdialog-no"
+                                                     icon="ui-icon-close"/>
+                                </p:confirmDialog>
+                            </h:panelGroup>
+
                         </p:column>
 
                     </p:dataTable>

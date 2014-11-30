@@ -168,17 +168,23 @@ public class ReportsBean implements Serializable {
         LocalDate current = this.start.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate end = this.end.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-        while (!current.equals(end)) {
+        do {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
             String date = dateTimeFormatter.format(current);
             Double incomeForDate = ordersData.get(date);
+
             if (incomeForDate == null) {
                 data.put(date, 0.0);
             } else {
                 data.put(date, incomeForDate);
             }
-            current = current.plusDays(1);
-        }
+
+            if (current.equals(end)) {
+                break;
+            } else {
+                current = current.plusDays(1);
+            }
+        } while (true);
 
         minIncomeDay = Collections.min(data.values());
         maxIncomeDay = Collections.max(data.values());

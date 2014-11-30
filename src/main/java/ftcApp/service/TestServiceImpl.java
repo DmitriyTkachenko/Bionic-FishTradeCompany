@@ -102,7 +102,7 @@ public class TestServiceImpl implements TestService {
             return;
         }
         customer = new Customer("WildSpirit", "pass", "Dmitriy", UserRole.CUSTOMER);
-        customer.setPrepaymentShareRequired(0);
+        customer.setPrepaymentShareRequired(0.2);
         customer.setShippingAddress("51 Predslavinskaya str.");
         customer.setEmail("wildspirit2009@gmail.com");
         userService.save(customer);
