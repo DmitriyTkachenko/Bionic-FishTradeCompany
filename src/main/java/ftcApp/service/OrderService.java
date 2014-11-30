@@ -1,5 +1,6 @@
 package ftcApp.service;
 
+import ftcApp.model.Customer;
 import ftcApp.model.Order;
 import ftcApp.model.enums.OrderStatus;
 
@@ -14,4 +15,5 @@ public interface OrderService extends GenericService<Order, Integer> {
     void markOrderAsCompleted(Order order);
     void addPaymentToOrder(Order order, double sum);
     Iterable<Order> findCompletedOrdersBetweenDates(Date start, Date end);
+    Iterable<Order> findOrdersByLoggedCustomer();
 }

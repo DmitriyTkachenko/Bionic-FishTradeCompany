@@ -644,8 +644,7 @@
                         </p:column>
                     </p:dataTable>
 
-
-                    <div id="ordered-items">
+                    <div id="ordered-items" class="small-top-margin">
                         <p:dataTable id="orderedItems" var="orderedItem" value="${orderedItemsBean.orderedItems}">
                             <p:column headerText="#{msg['name']}">
                                 <h:outputText value="${orderedItem.item.nameBought}"/>

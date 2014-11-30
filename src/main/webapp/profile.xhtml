@@ -4,8 +4,81 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
-<f:view>
-    <h:outputLabel value="Not implemented yet."/>
-</f:view>
+<ui:composition template="/templates/main.xhtml">
+    <ui:define name="title">Profile</ui:define>
+    <ui:define name="content">
+        <h2>#{msg['yourOrders']}</h2>
+        <p:dataTable id="orders" var="order" value="${profileBean.orders}">
+
+            <p:column headerText="#{msg['id']}">
+                <h:outputText value="${order.id}"/>
+            </p:column>
+
+            <p:column headerText="#{msg['dateOrdered']}">
+                <h:outputText value="${order.created}">
+                    <f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
+                </h:outputText>
+            </p:column>
+
+            <p:column headerText="#{msg['orderStatus']}">
+                <h:outputText value="#{msg[order.status.label]}"/>
+            </p:column>
+
+            <p:column headerText="#{msg['total']}">
+                <h:outputText value="$"/>
+                <h:outputText value="${order.totalPrice}">
+                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                </h:outputText>
+            </p:column>
+
+            <p:column headerText="#{msg['prepaymentShareRequired']}">
+                <h:outputText value="${order.customer.prepaymentShareRequired * 100}">
+                    <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                </h:outputText>
+                <h:outputText value="% ($"/>
+                <h:outputText value="${order.requiredPrepaymentSum}">
+                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                </h:outputText>
+                <h:outputText value=")"/>
+            </p:column>
+
+            <p:column headerText="#{msg['paid']}">
+                <h:outputText value="${order.percentagePaid}">
+                    <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                </h:outputText>
+                <h:outputText value="% ($"/>
+                <h:outputText value="${order.totalPaymentSum}">
+                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                </h:outputText>
+                <h:outputText value=")"/>
+            </p:column>
+
+            <p:column>
+                <p:commandButton id="show-ordered-items" value="#{msg['showOrderedItems']}"
+                                 action="${orderedItemsBean.loadOrderedItemsForOrder(order)}"
+                                 update=":orderedItems" onclick="$('#ordered-items').toggle()"/>
+            </p:column>
+        </p:dataTable>
+
+        <div id="ordered-items" class="small-top-margin">
+            <p:dataTable id="orderedItems" var="orderedItem" value="${orderedItemsBean.orderedItems}">
+                <p:column headerText="#{msg['name']}">
+                    <h:outputText value="${orderedItem.item.nameBought}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['description']}">
+                    <h:outputText value="${orderedItem.item.descriptionBought}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['quantity']}">
+                    <h:outputText value="${orderedItem.weight}">
+                        <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+        </div>
+    </ui:define>
+</ui:composition>
 </html>

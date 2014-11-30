@@ -25,6 +25,9 @@ public class OrderServiceImpl extends GenericServiceImpl<Order, Integer> impleme
     private ItemRepository itemRepository;
 
     @Inject
+    private UserService userService;
+
+    @Inject
     OrderServiceImpl(OrderRepository repository) {
         super(repository, Order.class);
     }
@@ -94,5 +97,12 @@ public class OrderServiceImpl extends GenericServiceImpl<Order, Integer> impleme
         endldt = endldt.plusDays(1);
         end = Date.from(endldt.atZone(ZoneId.systemDefault()).toInstant());
         return ((OrderRepository) repository).findCompletedOrdersBetweenDates(start, end);
+    }
+
+    @Override
+    public Iterable<Order> findOrdersByLoggedCustomer() {
+        String login = userService.getLoginOfCurrentlyLoggedUser();
+        Customer customer = customerRepository.findByLogin(login);
+        return ((OrderRepository) repository).findOrdersByCustomer(customer);
     }
 }

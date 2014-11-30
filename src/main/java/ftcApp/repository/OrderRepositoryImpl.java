@@ -1,5 +1,6 @@
 package ftcApp.repository;
 
+import ftcApp.model.Customer;
 import ftcApp.model.Order;
 import ftcApp.model.enums.OrderStatus;
 import org.springframework.stereotype.Repository;
@@ -51,4 +52,19 @@ public class OrderRepositoryImpl extends GenericRepositoryImpl<Order, Integer> i
         }
         return result;
     }
+
+    @Override
+    public Iterable<Order> findOrdersByCustomer(Customer customer) {
+        Iterable<Order> result = null;
+        try {
+            TypedQuery<Order> query = em.createQuery("SELECT o FROM Order o WHERE o.customer = :customer", entityClass)
+                    .setParameter("customer", customer);
+            result = query.getResultList();
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
 }
