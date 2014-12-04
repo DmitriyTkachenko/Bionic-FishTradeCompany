@@ -15,7 +15,7 @@ public class Parcel implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TINYINT")
     private ParcelStatus status;
 
     @Temporal(TemporalType.TIMESTAMP)

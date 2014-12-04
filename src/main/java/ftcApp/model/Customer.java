@@ -13,7 +13,7 @@ public class Customer extends User {
     @Column(nullable = false)
     private double prepaymentShareRequired = 1.0;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1000)
     private String shippingAddress;
 
     @Column(nullable = false)

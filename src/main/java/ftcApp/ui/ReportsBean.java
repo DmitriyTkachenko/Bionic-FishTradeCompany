@@ -93,6 +93,7 @@ public class ReportsBean implements Serializable {
         income.setData(nameData);
 
         model.addSeries(income);
+        model.setExtender("barChartExtender");
 
         return model;
     }
@@ -223,6 +224,7 @@ public class ReportsBean implements Serializable {
         income.setData(dayData);
 
         model.addSeries(income);
+        model.setExtender("barChartExtender");
 
         return model;
     }

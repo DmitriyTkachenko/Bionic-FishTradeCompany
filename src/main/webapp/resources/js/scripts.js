@@ -27,3 +27,9 @@ $( document ).ready(function() {
         $('#prepayment-mode-editing').toggle();
     });
 });
+
+function barChartExtender() {
+    this.cfg.seriesDefaults.rendererOptions = {
+        barWidth : 60
+    };
+}

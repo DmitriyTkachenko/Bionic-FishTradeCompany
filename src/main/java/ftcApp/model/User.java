@@ -15,13 +15,13 @@ public abstract class User implements Serializable {
     private String login;
 
     // bcrypt
-    @Column(nullable = false, length = 60)
+    @Column(nullable = false, columnDefinition = "CHAR(60)")
     private String password;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TINYINT")
     private UserRole userRole;
 
     @Override
