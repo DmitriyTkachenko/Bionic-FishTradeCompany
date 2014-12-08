@@ -84,9 +84,13 @@
                 </h:form>
             </p:overlayPanel>
 
-            <p:dialog widgetVar="orderSubmittedDialog" id="order-submitted" modal="true" height="100">
+            <p:dialog widgetVar="orderSubmittedDialog" id="order-submitted" modal="true">
                 <h:outputText value="#{msg['orderIsSubmitted']}: "/>
                 <h:outputText value="${cartBean.orderId}."/>
+            </p:dialog>
+
+            <p:dialog widgetVar="orderSubmitFailedDialog" id="order-failed" modal="true">
+                <h:outputText value="#{msg['orderSubmitFailed']}"/>
             </p:dialog>
 
             <h1>#{msg['onSale']}</h1>

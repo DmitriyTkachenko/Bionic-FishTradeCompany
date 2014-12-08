@@ -34,7 +34,6 @@ public class Payment implements Serializable {
         Payment payment = (Payment) o;
 
         if (Double.compare(payment.sum, sum) != 0) return false;
-        if (order != null ? !order.equals(payment.order) : payment.order != null) return false;
 
         return true;
     }

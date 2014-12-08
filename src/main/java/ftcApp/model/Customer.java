@@ -46,7 +46,6 @@ public class Customer extends User {
         if (contactInfo != null ? !contactInfo.equals(customer.contactInfo) : customer.contactInfo != null)
             return false;
         if (email != null ? !email.equals(customer.email) : customer.email != null) return false;
-        if (orders != null ? !orders.equals(customer.orders) : customer.orders != null) return false;
         if (shippingAddress != null ? !shippingAddress.equals(customer.shippingAddress) : customer.shippingAddress != null)
             return false;
 

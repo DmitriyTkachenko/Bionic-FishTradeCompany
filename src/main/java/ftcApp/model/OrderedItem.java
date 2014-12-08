@@ -43,8 +43,6 @@ public class OrderedItem implements Serializable {
 
         if (Double.compare(that.price, price) != 0) return false;
         if (Double.compare(that.weight, weight) != 0) return false;
-        if (item != null ? !item.equals(that.item) : that.item != null) return false;
-        if (order != null ? !order.equals(that.order) : that.order != null) return false;
 
         return true;
     }

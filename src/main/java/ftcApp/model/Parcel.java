@@ -49,7 +49,6 @@ public class Parcel implements Serializable {
         if (arrived != null ? !arrived.equals(parcel.arrived) : parcel.arrived != null) return false;
         if (deliveryCost != null ? !deliveryCost.equals(parcel.deliveryCost) : parcel.deliveryCost != null)
             return false;
-        if (items != null ? !items.equals(parcel.items) : parcel.items != null) return false;
         if (purchased != null ? !purchased.equals(parcel.purchased) : parcel.purchased != null) return false;
         if (status != parcel.status) return false;
 

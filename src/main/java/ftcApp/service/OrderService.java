@@ -1,13 +1,13 @@
 package ftcApp.service;
 
-import ftcApp.model.Customer;
+import ftcApp.exception.OrderSaveFailedException;
 import ftcApp.model.Order;
 import ftcApp.model.enums.OrderStatus;
 
 import java.util.Date;
 
 public interface OrderService extends GenericService<Order, Integer> {
-    void saveOrderForCustomerWithLogin(Order order, String login);
+    void saveOrderForCustomerWithLogin(Order order, String login) throws OrderSaveFailedException;
     Iterable<Order> findOrdersPendingShipment();
     Iterable<Order> findOrdersNotPaidInFull();
     void updateOrderStatus(Order order, OrderStatus status);

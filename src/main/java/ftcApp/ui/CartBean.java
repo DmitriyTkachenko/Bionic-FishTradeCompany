@@ -77,12 +77,18 @@ public class CartBean implements Serializable {
 
     public void saveOrder() {
         String login = userService.getLoginOfCurrentlyLoggedUser();
-        orderService.saveOrderForCustomerWithLogin(order, login);
-        orderId = order.getId();
         RequestContext context = RequestContext.getCurrentInstance();
-        context.execute("PF('orderSubmittedDialog').show();");
-        order = null;
         EventBus eventBus = EventBusFactory.getDefault().eventBus();
-        eventBus.publish("/itemsChanged", true);
+        try {
+            orderService.saveOrderForCustomerWithLogin(order, login);
+            orderId = order.getId();
+            context.execute("PF('orderSubmittedDialog').show();");
+            order = null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            context.execute("PF('orderSubmitFailedDialog').show();");
+        } finally {
+            eventBus.publish("/itemsChanged", true);
+        }
     }
 }

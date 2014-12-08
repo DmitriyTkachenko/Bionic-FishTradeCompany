@@ -54,18 +54,28 @@ public class GenericRepositoryImpl<T, ID extends Serializable> implements Generi
     @Override
     public Iterable<T> findAll() {
         Iterable<T> result = null;
+
         try {
             TypedQuery<T> query = em.createQuery("SELECT e FROM " + entityClass.getName() + " e", entityClass);
             result = query.getResultList();
         } catch (RuntimeException e) {
             e.printStackTrace();
         }
+
+        if (result != null) {
+            for (T t : result) {
+                em.refresh(t);
+            }
+        }
+
         return result;
     }
 
     @Override
     public T findOne(ID id) {
-        return em.find(entityClass, id);
+        T entity = em.find(entityClass, id);
+        em.refresh(entity);
+        return entity;
     }
 
     @Override

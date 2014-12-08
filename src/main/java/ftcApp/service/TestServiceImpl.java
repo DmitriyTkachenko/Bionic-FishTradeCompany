@@ -1,5 +1,6 @@
 package ftcApp.service;
 
+import ftcApp.exception.OrderSaveFailedException;
 import ftcApp.model.*;
 import ftcApp.model.enums.ParcelStatus;
 import ftcApp.model.enums.UserRole;
@@ -129,8 +130,12 @@ public class TestServiceImpl implements TestService {
         order2 = new Order();
         orderedItem21 = new OrderedItem(item2, 15, item2.getSellingPrice(), order2);
         orderedItem22 = new OrderedItem(item3, 17.5, item3.getSellingPrice(), order2);
-        orderService.saveOrderForCustomerWithLogin(order1, "WildSpirit");
-        orderService.saveOrderForCustomerWithLogin(order2, "WildSpirit");
+        try {
+            orderService.saveOrderForCustomerWithLogin(order1, "WildSpirit");
+            orderService.saveOrderForCustomerWithLogin(order2, "WildSpirit");
+        } catch (OrderSaveFailedException e) {
+            e.printStackTrace();
+        }
         orderService.markOrderAsCompleted(order1);
         orderService.markOrderAsCompleted(order2);
         previousOrdersDeleted = false;

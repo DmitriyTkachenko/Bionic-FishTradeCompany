@@ -1,5 +1,6 @@
 package ftcApp.service;
 
+import ftcApp.exception.OrderSaveFailedException;
 import ftcApp.model.*;
 import ftcApp.model.enums.OrderStatus;
 import ftcApp.repository.CustomerRepository;
@@ -33,7 +34,7 @@ public class OrderServiceImpl extends GenericServiceImpl<Order, Integer> impleme
     }
 
     @Override
-    public void saveOrderForCustomerWithLogin(Order order, String login) {
+    public void saveOrderForCustomerWithLogin(Order order, String login) throws OrderSaveFailedException {
         Customer customer = customerRepository.findByLogin(login);
         order.setCustomer(customer);
         if (Double.compare(customer.getPrepaymentShareRequired(), 0.0) > 0) {
@@ -46,10 +47,12 @@ public class OrderServiceImpl extends GenericServiceImpl<Order, Integer> impleme
         repository.save(order);
     }
 
-    private void updateItemsAccordingToOrderedQuantities(Order order) {
+    private void updateItemsAccordingToOrderedQuantities(Order order) throws OrderSaveFailedException {
         List<OrderedItem> orderedItems = order.getOrderedItems();
         for (OrderedItem orderedItem : orderedItems) {
             Item item = orderedItem.getItem();
+            item = itemRepository.findOne(item.getId());
+            orderedItem.setItem(item);
             item.reduceWeightInColdStoreBy(orderedItem.getWeight());
             itemRepository.update(item);
         }

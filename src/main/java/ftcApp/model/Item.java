@@ -1,5 +1,7 @@
 package ftcApp.model;
 
+import ftcApp.exception.OrderSaveFailedException;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -66,7 +68,6 @@ public class Item implements Serializable {
         if (nameBought != null ? !nameBought.equals(item.nameBought) : item.nameBought != null) return false;
         if (nameColdStore != null ? !nameColdStore.equals(item.nameColdStore) : item.nameColdStore != null)
             return false;
-        if (parcel != null ? !parcel.equals(item.parcel) : item.parcel != null) return false;
         if (sellingPrice != null ? !sellingPrice.equals(item.sellingPrice) : item.sellingPrice != null) return false;
         if (weightColdStore != null ? !weightColdStore.equals(item.weightColdStore) : item.weightColdStore != null)
             return false;
@@ -103,12 +104,12 @@ public class Item implements Serializable {
         }
     }
 
-    public boolean reduceWeightInColdStoreBy(double weight) {
-        if (Double.compare(weightColdStore, weight) > 0) {
+    public boolean reduceWeightInColdStoreBy(double weight) throws OrderSaveFailedException {
+        if (Double.compare(weightColdStore, weight) >= 0) {
             weightColdStore -= weight;
             return true;
         } else {
-            return false;
+            throw new OrderSaveFailedException("Requested quantity is not available.");
         }
     }
 
