@@ -15,7 +15,7 @@
             <h:panelGroup id="cartOverlayBlock">
                 <p:commandLink id="show-cart">
                     <i class="fa fa-shopping-cart fa-2x"></i>
-                    <h:outputText value="${cartBean.briefTotal}" id="brief-total"/>
+                    <h:outputText value="${cartBean.numberOfItems}" id="items-number"/>
                 </p:commandLink>
 
                 <p:overlayPanel for="show-cart" id="cartOverlayPanel" styleClass="overlay-cart" dismissable="true">
@@ -57,7 +57,7 @@
                             <p:column width="40">
                                 <p:commandLink title="Delete"
                                                action="${cartBean.order.removeOrderedItem(orderedItem)}"
-                                               update="cart, :cart-form, :brief-total" styleClass="delete-button">
+                                               update="cart, :cart-form, :items-number" styleClass="delete-button">
                                     <i class="fa fa-times centered"/>
                                 </p:commandLink>
                             </p:column>
@@ -80,7 +80,7 @@
                             <sec:authorize ifAllGranted="CUSTOMER">
                                 <p:commandButton styleClass="submit-order-button" value="#{msg['submitOrder']}"
                                                  action="${cartBean.saveOrder()}"
-                                                 update="cart, :order-submitted, :cart-form"
+                                                 update="cart, :order-submitted, :cart-form, :items-number"
                                                  onclick="$('#cartOverlayPanel').hide();"/>
                             </sec:authorize>
 
@@ -101,7 +101,7 @@
                 <h:outputText value="#{msg['orderSubmitFailed']}"/>
             </p:dialog>
 
-            <h1>#{msg['onSale']}</h1>
+            <h1 id="on-sale">#{msg['onSale']}</h1>
             <h:form id="chooseItemsForm">
                 <p:dataTable id="itemsOnSale" var="itemQuantity" value="${itemsBean.itemQuantities}">
                     <p:column headerText="#{msg['name']}" sortBy="${itemQuantity.item.nameColdStore}">

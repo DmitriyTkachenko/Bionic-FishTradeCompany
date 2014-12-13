@@ -23,7 +23,7 @@
                             </f:facet>
 
                             <p:outputLabel value="#{msg['name']}:"/>
-                            <p:inputText value="${parcelBean.item.nameBought}" size="22"/>
+                            <p:autoComplete value="${parcelBean.item.nameBought}" size="22" completeMethod="${parcelBean.completeFishName}"/>
 
                             <p:outputLabel value="#{msg['description']}:"/>
                             <p:inputTextarea value="#{parcelBean.item.descriptionBought}" rows="5" cols="24"/>

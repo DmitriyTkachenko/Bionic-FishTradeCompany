@@ -9,4 +9,6 @@ public interface TestService {
     void removeCustomer();
     void addOrders();
     void removeOrders();
+    void addFishNames();
+    void removeFishNames();
 }

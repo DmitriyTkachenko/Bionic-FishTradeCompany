@@ -1,7 +1,6 @@
 package ftcApp;
 
 import ftcApp.model.*;
-import ftcApp.model.enums.OrderStatus;
 import ftcApp.model.enums.ParcelStatus;
 import ftcApp.model.enums.UserRole;
 import ftcApp.service.*;

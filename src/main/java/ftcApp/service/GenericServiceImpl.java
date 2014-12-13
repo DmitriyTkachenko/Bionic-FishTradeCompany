@@ -52,18 +52,23 @@ public class GenericServiceImpl<T, ID extends Serializable> implements GenericSe
     }
 
     @Override
-    public void refresh(T entity) {
-        repository.refresh(entity);
-    }
-
-    @Override
     public Iterable<T> findAll() {
         return repository.findAll();
     }
 
     @Override
+    public Iterable<T> findAllAndRefresh() {
+        return repository.findAllAndRefresh();
+    }
+
+    @Override
     public T findOne(ID id) {
         return repository.findOne(id);
+    }
+
+    @Override
+    public T findOneAndRefresh(ID id) {
+        return repository.findOneAndRefresh(id);
     }
 
     @Override

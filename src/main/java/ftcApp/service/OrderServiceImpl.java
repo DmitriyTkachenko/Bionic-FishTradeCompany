@@ -51,7 +51,7 @@ public class OrderServiceImpl extends GenericServiceImpl<Order, Integer> impleme
         List<OrderedItem> orderedItems = order.getOrderedItems();
         for (OrderedItem orderedItem : orderedItems) {
             Item item = orderedItem.getItem();
-            item = itemRepository.findOne(item.getId());
+            item = itemRepository.findOneAndRefresh(item.getId());
             orderedItem.setItem(item);
             item.reduceWeightInColdStoreBy(orderedItem.getWeight());
             itemRepository.update(item);

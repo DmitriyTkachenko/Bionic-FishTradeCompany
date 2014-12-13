@@ -2,6 +2,7 @@ package ftcApp.ui;
 
 import ftcApp.model.Order;
 import ftcApp.model.OrderedItem;
+import ftcApp.service.ItemService;
 import ftcApp.service.OrderService;
 import ftcApp.service.TestService;
 import ftcApp.service.UserService;
@@ -95,7 +96,7 @@ public class CartBean implements Serializable {
         }
     }
 
-    public String getBriefTotal() {
+    public String getNumberOfItems() {
         if (order == null) {
             return "";
         } else {

@@ -2,6 +2,7 @@ package ftcApp.service;
 
 import ftcApp.model.Parcel;
 import ftcApp.model.enums.ParcelStatus;
+import ftcApp.repository.ItemRepository;
 import ftcApp.repository.ParcelRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,9 @@ import java.util.Date;
 @Service
 @Transactional
 public class ParcelServiceImpl extends GenericServiceImpl<Parcel, Integer> implements ParcelService {
+    @Inject
+    private ItemRepository itemRepository;
+
     @Inject
     ParcelServiceImpl(ParcelRepository repository) {
         super(repository, Parcel.class);
@@ -24,8 +28,11 @@ public class ParcelServiceImpl extends GenericServiceImpl<Parcel, Integer> imple
 
     @Override
     public void updateParcelColdStore(Parcel parcel) {
+        if (parcel == null) {
+            return;
+        }
         parcel.setStatus(ParcelStatus.REGISTERED_BY_CSM);
         parcel.setArrived(new Date());
-        this.update(parcel);
+        repository.update(parcel);
     }
 }

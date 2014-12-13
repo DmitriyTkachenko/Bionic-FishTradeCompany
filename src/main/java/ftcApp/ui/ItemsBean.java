@@ -64,7 +64,7 @@ public class ItemsBean implements Serializable {
     }
 
     public void fetchItems() {
-        Iterable<Item> items = itemService.findAll();
+        Iterable<Item> items = itemService.findAllAndRefresh();
 
         this.itemQuantities = new ArrayList<>();
         items.forEach((Item item) -> this.itemQuantities.add(new ItemQuantity(item, 0.0)));

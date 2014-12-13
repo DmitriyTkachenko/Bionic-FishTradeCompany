@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 @Service
 @Transactional
@@ -32,6 +34,9 @@ public class TestServiceImpl implements TestService {
     @Inject
     private OrderService orderService;
 
+    @Inject
+    private FishNameService fishNameService;
+
     private Parcel parcel;
     private Employee employee1;
     private Employee employee2;
@@ -44,11 +49,19 @@ public class TestServiceImpl implements TestService {
     private OrderedItem orderedItem12;
     private OrderedItem orderedItem21;
     private OrderedItem orderedItem22;
+    private List<String> fishNames;
 
     private boolean previousItemsDeleted = true;
     private boolean previousEmployeesDeleted = true;
     private boolean previousCustomerDeleted = true;
     private boolean previousOrdersDeleted = true;
+    private boolean previousFishNamesDeleted = true;
+
+    public TestServiceImpl() {
+        fishNames = Arrays.asList("Hake", "Plaice", "Mullet", "Pollock", "Haddock", "Wolffish", "Ling", "Saury",
+                "Coalfish", "Clupea", "Sardine", "Perch", "Scomber", "Blue marlin", "Tarpon", "Spiny dogfish", "Tuna",
+                "Halibut", "Atka mackerel", "Conger");
+    }
 
     @Override
     public void addItemsData() {
@@ -145,6 +158,23 @@ public class TestServiceImpl implements TestService {
     public void removeOrders() {
         orderService.delete(order1);
         orderService.delete(order2);
+    }
+
+    @Override
+    public void addFishNames() {
+        if (!previousFishNamesDeleted) {
+            return;
+        }
+        for (String name : fishNames) {
+            FishName fishName = new FishName();
+            fishName.setName(name);
+            fishNameService.save(fishName);
+        }
+    }
+
+    @Override
+    public void removeFishNames() {
+        fishNameService.deleteAll();
     }
 
 }
