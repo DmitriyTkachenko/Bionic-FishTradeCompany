@@ -15,17 +15,17 @@
         <nav>
             <ul>
                 <li>
-                    <h:link value="Shop" outcome="shop"/>
+                    <h:link value="#{msg['shop']}" outcome="shop"/>
                     <sec:authorize access="isAuthenticated()">
                         <div class="divider"></div>
                     </sec:authorize>
                 </li>
                 <li>
                     <sec:authorize ifAnyGranted="GENERAL_MANAGER, COLD_STORE_MANAGER, ACCOUNTANT, SECURITY_OFFICER">
-                        <h:link value="Dashboard" outcome="dashboard"/>
+                        <h:link value="#{msg['dashboard']}" outcome="dashboard"/>
                     </sec:authorize>
                     <sec:authorize ifAnyGranted="CUSTOMER">
-                        <h:link value="Profile" outcome="profile"/>
+                        <h:link value="#{msg['profile']}" outcome="profile"/>
                     </sec:authorize>
                 </li>
             </ul>

@@ -9,7 +9,7 @@
       xmlns:sec="http://www.springframework.org/security/tags">
 
 <ui:composition template="/templates/main.xhtml">
-    <ui:define name="title">Shop</ui:define>
+    <ui:define name="title">#{msg['shop']} - Fish Wholesale Trading Company</ui:define>
     <ui:define name="content">
         <main role="main" class="clearfix">
             <p:commandButton id="show-cart" value="#{msg['cart']}" type="button"/>

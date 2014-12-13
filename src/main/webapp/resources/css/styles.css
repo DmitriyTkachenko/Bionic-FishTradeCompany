@@ -19,7 +19,7 @@
 }
 
 .content-box, .content-box * {
-    box-sizing: content-box;
+    box-sizing: content-box !important;
 }
 
 .overlay-cart {
@@ -107,6 +107,10 @@ table {
     font-size: 16px;
 }
 
+.ui-selectonemenu .ui-selectonemenu-trigger .ui-icon {
+    margin-top: 7px;
+}
+
 .login-form label {
     text-align: left !important;
 }
@@ -160,7 +164,7 @@ a {
     display: inline-block;
     border: 3px solid #000;
     width: 267px;
-    height: 290px;
+    height: 310px;
     text-align: center;
     vertical-align:top;
     color: #000;
@@ -246,7 +250,7 @@ h1 {
 /* Go to shop button */
 .go-to-shop {
     background-color: #000000;
-    width: 250px;
+    width: 400px;
     height: 50px;
     border-radius: 10px;
     /* fix for possible issues with vertical centering */

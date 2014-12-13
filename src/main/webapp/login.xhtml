@@ -12,7 +12,7 @@
         <main role="main" class="clearfix">
             <form id="login-form" class="form-horizontal login-form" action="/j_spring_security_check" method="POST">
                 <div class="form-group">
-                    <label class="col-xs-2 control-label" for="j_username">Login:</label>
+                    <label class="col-xs-2 control-label" for="j_username">#{msg['login']}:</label>
 
                     <div class="col-xs-10">
                         <input class="form-control" id="j_username" name="j_username" type="text"
@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-xs-2 control-label" for="j_password">Password:</label>
+                    <label class="col-xs-2 control-label" for="j_password">#{msg['password']}:</label>
 
                     <div class="col-xs-10">
                         <input class="form-control" id="j_password" name="j_password" type="password"
@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div class="centered">
-                    <input class="btn btn-primary" type="submit" value="Login"/>
+                    <input class="btn btn-primary" type="submit" value="#{msg['log_in']}"/>
                 </div>
             </form>
         </main>

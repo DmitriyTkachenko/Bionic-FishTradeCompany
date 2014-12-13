@@ -7,37 +7,37 @@
       xmlns:sec="http://www.springframework.org/security/tags">
 
 <ui:composition template="/templates/main.xhtml">
-    <ui:define name="title">Index page</ui:define>
+    <ui:define name="title">Fish Wholesale Trading Company</ui:define>
     <ui:define name="content">
         <main role="main" class="clearfix">
         <div class="adv-wrapper">
             <div class="adv adv-1">
                 <i class="fa fa-thumbs-up fa-large"/>
-                <h2>Quality</h2>
-                <p>Our fish comes from carefully selected suppliers and undergoes a series of tests to ensure the best quality.</p>
+                <h2>#{msg['quality']}</h2>
+                <p>#{msg['qualityText']}</p>
             </div>
 
             <div class="adv adv-2">
                 <i class="fa fa-line-chart fa-large"/>
-                <h2>Reliability</h2>
-                <p>Our company is constantly growing since 2000, serving more and more happy customers every day.</p>
+                <h2>#{msg['reliability']}</h2>
+                <p>#{msg['reliabilityText']}</p>
             </div>
 
             <div class="adv adv-3">
                 <i class="fa fa-truck fa-large"/>
-                <h2>Best in class shipping</h2>
-                <p>Every order gets delivered in less than 72 hours using state-of-the-art trucks.</p>
+                <h2>#{msg['bestInClassShipping']}</h2>
+                <p>#{msg['shippingText']}</p>
             </div>
 
             <div class="adv">
                 <i class="fa fa-money fa-large"/>
-                <h2>Reasonable pricing</h2>
-                <p>We purchase our products directly from the fishing boats to assure the minimal markup.</p>
+                <h2>#{msg['reasonablePricing']}</h2>
+                <p>#{msg['pricingText']}</p>
             </div>
 
             <h:link styleClass="go-to-shop" outcome="shop">
                 <div class="go-to-shop">
-                    <p>Go to shop</p>
+                    <p>#{msg['goToShop']}</p>
                 </div>
             </h:link>
         </div>

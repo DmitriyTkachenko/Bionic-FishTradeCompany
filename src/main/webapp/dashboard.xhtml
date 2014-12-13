@@ -817,7 +817,7 @@
                                     <h:outputText value="#{msg[employee.userRole.label]}"/>
                                 </f:facet>
                                 <f:facet name="input">
-                                    <p:selectOneMenu value="${employee.userRole}" styleClass="inside-table-select">
+                                    <p:selectOneMenu  value="${employee.userRole}" styleClass="inside-table-select">
                                         <f:selectItems value="${employeesBean.userRoles}" var="userRole"
                                                        itemValue="${userRole}"
                                                        itemLabel="#{msg[userRole.label]}"/>
