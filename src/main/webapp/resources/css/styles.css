@@ -30,6 +30,14 @@
     color: red;
 }
 
+a {
+    color: #000 !important;
+}
+
+a:hover {
+    color:#adacac !important;
+}
+
 .add-item-button, .add-parcel-button, .submit-order-button, .save-parcel-changes-button, .complete-registration-button,
 .save-role-changes-button, .save-prepayment-changes-button
 {
@@ -72,6 +80,15 @@ table {
     width: 350px;
 }
 
+.centered-block {
+    display: block;
+    margin: 0 auto;
+}
+
+#report {
+    display: none;
+}
+
 #register-parcel, #edit-parcel, #register-parcel-cs, #register-order-shipment, #show-report, #register-payment,
 #change-prepayment-mode {
     margin: 10px auto;
@@ -88,6 +105,12 @@ table {
 #show-cart {
     float: right;
     margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+#brief-total {
+    font-family: "Proxima Nova Regular", Helvetica, Verdana, sans-serif;
+    font-size: 30px;
 }
 
 .inside-table-select {
@@ -248,7 +271,7 @@ h1 {
 }
 
 /* Go to shop button */
-.go-to-shop {
+.black-button {
     background-color: #000000;
     width: 400px;
     height: 50px;
@@ -258,11 +281,11 @@ h1 {
     margin: 20px auto 0;
 }
 
-a.go-to-shop {
+a.black-button {
     display: block;
 }
 
-.go-to-shop p {
+.black-button p {
     text-align: center;
     color: #ffffff;
     font-family: "Proxima Nova Bold", Helvetica, Verdana, sans-serif;

@@ -115,4 +115,14 @@
         <servlet-name>Push Servlet</servlet-name>
         <url-pattern>/primepush/*</url-pattern>
     </servlet-mapping>
+
+    <!-- Error pages -->
+    <error-page>
+        <location>/error.xhtml</location>
+    </error-page>
+    
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error-404.xhtml</location>
+    </error-page>
 </web-app>

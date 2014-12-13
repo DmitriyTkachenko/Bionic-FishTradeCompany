@@ -45,14 +45,17 @@ public class RepositoryTest {
     // User Story 8
     public void testParcelRegistration() throws Exception {
         Parcel parcel = new Parcel(ParcelStatus.REGISTERED_BY_GM, new Date(), new ArrayList<>(), 1000.0);
-        Item item1 = new Item("Cod", 300, "", parcel, 5000.0, null);
-        Item item2 = new Item("Tuna", 400, "", parcel, 3500.0, null);
-        Item item3 = new Item("Trout", 200, "", parcel, 6000.0, null);
+        Item item1 = new Item("Cod", 300, "Country of origin: Norway", parcel, 5000.0, 5100.0);
+        item1.duplicateBoughtAndColdStoreProperties();
+        Item item2 = new Item("Tuna", 400, "Country of origin: Thailand", parcel, 3500.0, 3580.0);
+        item2.duplicateBoughtAndColdStoreProperties();
+        Item item3 = new Item("Trout", 200, "Country of origin: Turkey", parcel, 6000.0, 6120.0);
+        item3.duplicateBoughtAndColdStoreProperties();
         parcelService.save(parcel);
         Parcel fetched = parcelService.findOne(parcel.getId());
 
-        assertEquals(parcel, fetched);
-        assertEquals(parcel.getItems(), fetched.getItems());
+        assertEquals(parcel.getStatus(), fetched.getStatus());
+        assertEquals(parcel.getItems().size(), fetched.getItems().size());
 
         itemService.deleteAll();
         parcelService.deleteAll();
@@ -95,6 +98,8 @@ public class RepositoryTest {
         customer.setLogin("johnsmith80");
         customer.setPassword("password80");
         customer.setName("John Smith");
+        customer.setEmail("johnsmith80@gmail.com");
+        customer.setShippingAddress("Denmark");
         Employee employee = new Employee();
         employee.setLogin("jenssecurity");
         employee.setPassword("strongPassword418");
@@ -129,22 +134,34 @@ public class RepositoryTest {
     @Test
     // User Story 2, 4, 22
     public void testSubmitOrder() throws Exception {
-        Parcel parcel = new Parcel(ParcelStatus.REGISTERED_BY_GM, new Date(), new ArrayList<>(), 500.0);
-        Item item1 = new Item("Cod", 300, "", parcel, 5000.0, 5200.0);
-        Item item2 = new Item("Tuna", 400, "", parcel, 3500.0, 3600.0);
+        Customer customer = new Customer();
+        customer.setLogin("johnsmith80");
+        customer.setPassword("password80");
+        customer.setName("John Smith");
+        customer.setEmail("johnsmith80@gmail.com");
+        customer.setShippingAddress("Denmark");
+        userService.save(customer);
+
+        Parcel parcel = new Parcel(ParcelStatus.REGISTERED_BY_GM, new Date(), new ArrayList<>(), 1000.0);
+        Item item1 = new Item("Cod", 300, "Country of origin: Norway", parcel, 5000.0, 5100.0);
+        item1.duplicateBoughtAndColdStoreProperties();
+        Item item2 = new Item("Tuna", 400, "Country of origin: Thailand", parcel, 3500.0, 3600.0);
+        item2.duplicateBoughtAndColdStoreProperties();
         parcelService.save(parcel);
-        Order order = new Order(OrderStatus.PENDING_PREPAYMENT, null, null, new ArrayList<>(), new ArrayList<>(), null);
+
+        Order order = new Order();
         OrderedItem orderedItem1 = new OrderedItem(item1, 100, item1.getSellingPrice(), order);
-        OrderedItem orderedItem2 = new OrderedItem(item2, 50, item1.getSellingPrice(), order);
+        OrderedItem orderedItem2 = new OrderedItem(item2, 50, item2.getSellingPrice(), order);
         Payment p1 = new Payment(order, 100000.0);
         Payment p2 = new Payment(order, 50000.0);
-        Payment p3 = new Payment(order, 25000.0);
-        orderService.save(order);
+        Payment p3 = new Payment(order, 22500.0);
+        orderService.saveOrderForCustomerWithLogin(order, "johnsmith80");
         Order fetched = orderService.findOne(order.getId());
 
-        assertEquals(order, fetched);
-        assertEquals(order.getOrderedItems(), fetched.getOrderedItems());
-        assertEquals(700000.0, order.getTotalPrice(), 0.001);
+        assertEquals(order.getOrderedItems().size(), fetched.getOrderedItems().size());
+        assertEquals(order.getPayments().size(), fetched.getPayments().size());
+        assertEquals(order.getStatus(), fetched.getStatus());
+        assertEquals(690000.0, order.getTotalPrice(), 0.001);
         assertEquals(150, order.getTotalWeight(), 0.001);
         assertEquals(25.0, order.getPercentagePaid(), 0.001);
 
@@ -153,5 +170,6 @@ public class RepositoryTest {
         itemService.deleteAll();
         parcelService.deleteAll();
         orderService.deleteAll();
+        customerService.deleteAll();
     }
 }

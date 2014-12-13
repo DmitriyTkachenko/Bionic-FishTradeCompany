@@ -12,77 +12,85 @@
     <ui:define name="title">#{msg['shop']} - Fish Wholesale Trading Company</ui:define>
     <ui:define name="content">
         <main role="main" class="clearfix">
-            <p:commandButton id="show-cart" value="#{msg['cart']}" type="button"/>
-            <p:overlayPanel for="show-cart" id="cartOverlayPanel" styleClass="overlay-cart" dismissable="true">
-                <h:form id="cart-form">
-                    <p:dataTable id="cart" var="orderedItem" value="${cartBean.order.orderedItems}" rows="5"
-                                 paginator="true">
-                        <p:column headerText="#{msg['name']}" sortBy="${orderedItem.item.nameColdStore}">
-                            <h:outputText value="${orderedItem.item.nameColdStore}"/>
-                        </p:column>
+            <h:panelGroup id="cartOverlayBlock">
+                <p:commandLink id="show-cart">
+                    <i class="fa fa-shopping-cart fa-2x"></i>
+                    <h:outputText value="${cartBean.briefTotal}" id="brief-total"/>
+                </p:commandLink>
 
-                        <p:column headerText="#{msg['description']}" sortBy="${orderedItem.item.descriptionColdStore}">
-                            <h:outputText value="${orderedItem.item.descriptionColdStore}"/>
-                        </p:column>
+                <p:overlayPanel for="show-cart" id="cartOverlayPanel" styleClass="overlay-cart" dismissable="true">
+                    <h:form id="cart-form">
+                        <p:dataTable id="cart" var="orderedItem" value="${cartBean.order.orderedItems}" rows="5"
+                                     paginator="true">
+                            <p:column headerText="#{msg['name']}" sortBy="${orderedItem.item.nameColdStore}">
+                                <h:outputText value="${orderedItem.item.nameColdStore}"/>
+                            </p:column>
 
-                        <p:column headerText="#{msg['quantity']}">
-                            <p:spinner value="${orderedItem.weight}" stepFactor="0.1" min="0" size="4"
-                                       max="${orderedItem.item.weightColdStore}" suffix=" #{msg['t']}">
-                                <p:ajax update="total, :cart-form:orderTotal" process="@this"/>
-                            </p:spinner>
-                        </p:column>
+                            <p:column headerText="#{msg['description']}"
+                                      sortBy="${orderedItem.item.descriptionColdStore}">
+                                <h:outputText value="${orderedItem.item.descriptionColdStore}"/>
+                            </p:column>
 
-                        <p:column headerText="#{msg['amountAvailable']}">
-                            <h:outputText value="${orderedItem.item.weightColdStore}"/>
-                        </p:column>
+                            <p:column headerText="#{msg['quantity']}">
+                                <p:spinner value="${orderedItem.weight}" stepFactor="0.1" min="0" size="4"
+                                           max="${orderedItem.item.weightColdStore}" suffix=" #{msg['t']}">
+                                    <p:ajax update="total, :cart-form:orderTotal" process="@this"/>
+                                </p:spinner>
+                            </p:column>
 
-                        <p:column headerText="#{msg['price']}" sortBy="${orderedItem.price}">
-                            <h:outputText value="${orderedItem.price}">
+                            <p:column headerText="#{msg['amountAvailable']}">
+                                <h:outputText value="${orderedItem.item.weightColdStore}"/>
+                            </p:column>
+
+                            <p:column headerText="#{msg['price']}" sortBy="${orderedItem.price}">
+                                <h:outputText value="${orderedItem.price}">
+                                    <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column headerText="#{msg['total']}">
+                                <h:outputText id="total" value="${orderedItem.weight * orderedItem.price}">
+                                    <f:convertNumber maxFractionDigits="2"/>
+                                </h:outputText>
+                            </p:column>
+
+                            <p:column width="40">
+                                <p:commandLink title="Delete"
+                                               action="${cartBean.order.removeOrderedItem(orderedItem)}"
+                                               update="cart, :cart-form, :brief-total" styleClass="delete-button">
+                                    <i class="fa fa-times centered"/>
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+
+                        <h:panelGroup layout="block" id="orderTotal" rendered="${cartBean.order != null}">
+                            <h:outputText value="#{msg['total']}: $"/>
+                            <h:outputText id="orderTotalPrice" value="${cartBean.order.totalPrice}">
                                 <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
                             </h:outputText>
-                        </p:column>
+                            <br/>
 
-                        <p:column headerText="#{msg['total']}">
-                            <h:outputText id="total" value="${orderedItem.weight * orderedItem.price}">
-                                <f:convertNumber maxFractionDigits="2"/>
+                            <h:outputText value="#{msg['totalWeight']}: "/>
+                            <h:outputText id="orderTotalWeight" value="${cartBean.order.totalWeight}">
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
                             </h:outputText>
-                        </p:column>
+                            <h:outputText value=" #{msg['t']}"/>
+                            <br/>
 
-                        <p:column width="40">
-                            <p:commandLink title="Delete"
-                                           action="${cartBean.order.removeOrderedItem(orderedItem)}"
-                                           update="cart, :cart-form" styleClass="delete-button">
-                                <i class="fa fa-times centered"/>
-                            </p:commandLink>
-                        </p:column>
-                    </p:dataTable>
+                            <sec:authorize ifAllGranted="CUSTOMER">
+                                <p:commandButton styleClass="submit-order-button" value="#{msg['submitOrder']}"
+                                                 action="${cartBean.saveOrder()}"
+                                                 update="cart, :order-submitted, :cart-form"
+                                                 onclick="$('#cartOverlayPanel').hide();"/>
+                            </sec:authorize>
 
-                    <h:panelGroup layout="block" id="orderTotal" rendered="${cartBean.order != null}">
-                        <h:outputText value="#{msg['total']}: $"/>
-                        <h:outputText id="orderTotalPrice" value="${cartBean.order.totalPrice}">
-                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
-                        </h:outputText>
-                        <br/>
-
-                        <h:outputText value="#{msg['totalWeight']}: "/>
-                        <h:outputText id="orderTotalWeight" value="${cartBean.order.totalWeight}">
-                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
-                        </h:outputText>
-                        <h:outputText value=" #{msg['t']}"/>
-                        <br/>
-
-                        <sec:authorize ifAllGranted="CUSTOMER">
-                            <p:commandButton styleClass="submit-order-button" value="#{msg['submitOrder']}"
-                                             action="${cartBean.saveOrder()}" update="cart, :order-submitted, :cart-form"
-                                             onclick="$('#cartOverlayPanel').hide();"/>
-                        </sec:authorize>
-
-                        <sec:authorize ifNotGranted="CUSTOMER">
-                            <h:outputText value="#{msg['logInOrRegisterToSubmitOrder']}"/>
-                        </sec:authorize>
-                    </h:panelGroup>
-                </h:form>
-            </p:overlayPanel>
+                            <sec:authorize ifNotGranted="CUSTOMER">
+                                <h:outputText value="#{msg['logInOrRegisterToSubmitOrder']}"/>
+                            </sec:authorize>
+                        </h:panelGroup>
+                    </h:form>
+                </p:overlayPanel>
+            </h:panelGroup>
 
             <p:dialog widgetVar="orderSubmittedDialog" id="order-submitted" modal="true">
                 <h:outputText value="#{msg['orderIsSubmitted']}: "/>
@@ -124,7 +132,7 @@
 
                     <p:column headerText="">
                         <p:commandButton value="#{msg['addToCart']}" action="${cartBean.addItemToOrder(itemQuantity)}"
-                                         update=":cart-form"/>
+                                         update=":cartOverlayBlock"/>
                     </p:column>
 
                 </p:dataTable>

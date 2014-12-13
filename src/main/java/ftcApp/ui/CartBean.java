@@ -69,6 +69,9 @@ public class CartBean implements Serializable {
     }
 
     public void addItemToOrder(ItemQuantity itemQuantity) {
+        if (Double.compare(itemQuantity.getWeight(), 0.0) == 0) {
+            return;
+        }
         if (order == null) {
             order = new Order();
         }
@@ -89,6 +92,19 @@ public class CartBean implements Serializable {
             context.execute("PF('orderSubmitFailedDialog').show();");
         } finally {
             eventBus.publish("/itemsChanged", true);
+        }
+    }
+
+    public String getBriefTotal() {
+        if (order == null) {
+            return "";
+        } else {
+            int numberOfOrderedItems = order.getNumberOfOrderedItems();
+            if (numberOfOrderedItems != 0) {
+                return " (" + numberOfOrderedItems + ")";
+            } else {
+                return "";
+            }
         }
     }
 }

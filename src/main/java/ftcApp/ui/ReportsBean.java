@@ -82,10 +82,6 @@ public class ReportsBean implements Serializable {
 
         ChartSeries income = new ChartSeries();
 
-//        for (int i = 1; i <= 31; ++i) {
-//            income.set("" + i, rand.nextInt(5000 + 1) + 5000);
-//        }
-
         if (!chartsReady) {
             return model;
         }

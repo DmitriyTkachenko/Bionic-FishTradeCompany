@@ -22,8 +22,6 @@ public class Order implements Serializable {
     @JoinColumn(name = "customerId", nullable = false)
     private Customer customer;
 
-    private Double deliveryPrice;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private List<OrderedItem> orderedItems = new ArrayList<>();
 
@@ -48,7 +46,6 @@ public class Order implements Serializable {
         if (!customer.getOrders().contains(this)) {
             customer.getOrders().add(this);
         }
-        this.deliveryPrice = deliveryPrice;
         this.orderedItems = orderedItems;
         this.payments = payments;
         this.created = created;
@@ -63,8 +60,6 @@ public class Order implements Serializable {
 
         if (completed != null ? !completed.equals(order.completed) : order.completed != null) return false;
         if (created != null ? !created.equals(order.created) : order.created != null) return false;
-        if (deliveryPrice != null ? !deliveryPrice.equals(order.deliveryPrice) : order.deliveryPrice != null)
-            return false;
         if (shipped != null ? !shipped.equals(order.shipped) : order.shipped != null) return false;
         if (status != order.status) return false;
 
@@ -74,7 +69,6 @@ public class Order implements Serializable {
     @Override
     public int hashCode() {
         int result = status != null ? status.hashCode() : 0;
-        result = 31 * result + (deliveryPrice != null ? deliveryPrice.hashCode() : 0);
         result = 31 * result + (created != null ? created.hashCode() : 0);
         result = 31 * result + (shipped != null ? shipped.hashCode() : 0);
         result = 31 * result + (completed != null ? completed.hashCode() : 0);
@@ -116,6 +110,10 @@ public class Order implements Serializable {
         double totalPrice = this.getTotalPrice();
         double totalPaymentSum = this.getTotalPaymentSum();
         return (totalPaymentSum / totalPrice) * 100;
+    }
+
+    public int getNumberOfOrderedItems() {
+        return orderedItems.size();
     }
 
     public boolean isPaidInFull() {
@@ -164,14 +162,6 @@ public class Order implements Serializable {
 
     public void setStatus(OrderStatus status) {
         this.status = status;
-    }
-
-    public Double getDeliveryPrice() {
-        return deliveryPrice;
-    }
-
-    public void setDeliveryPrice(Double deliveryPrice) {
-        this.deliveryPrice = deliveryPrice;
     }
 
     public List<Payment> getPayments() {

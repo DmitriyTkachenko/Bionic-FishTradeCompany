@@ -56,11 +56,11 @@ public class TestServiceImpl implements TestService {
             return;
         }
         parcel = new Parcel(ParcelStatus.REGISTERED_BY_GM, new Date(), new ArrayList<>(), 1000.0);
-        Item item1 = new Item("Cod", 300, "Country of origin: Norway", parcel, 5000.0, 305.0);
+        Item item1 = new Item("Cod", 300, "Country of origin: Norway", parcel, 5000.0, 5100.0);
         item1.duplicateBoughtAndColdStoreProperties();
-        Item item2 = new Item("Tuna", 400, "Country of origin: Thailand", parcel, 3500.0, 407.0);
+        Item item2 = new Item("Tuna", 400, "Country of origin: Thailand", parcel, 3500.0, 3580.0);
         item2.duplicateBoughtAndColdStoreProperties();
-        Item item3 = new Item("Trout", 200, "Country of origin: Turkey", parcel, 6000.0, 202.5);
+        Item item3 = new Item("Trout", 200, "Country of origin: Turkey", parcel, 6000.0, 6120.0);
         item3.duplicateBoughtAndColdStoreProperties();
         parcelService.save(parcel);
         previousItemsDeleted = false;
