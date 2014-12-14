@@ -1,6 +1,7 @@
 package ftcApp.model;
 
 import ftcApp.exception.OrderSaveFailedException;
+import ftcApp.model.enums.WriteOffStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -34,8 +35,8 @@ public class Item implements Serializable {
 
     private Double sellingPrice;
 
-    @Column(nullable = false)
-    boolean writtenOff = false;
+    @Column(nullable = false, columnDefinition = "TINYINT")
+    WriteOffStatus writeOffStatus = WriteOffStatus.NOT_WRITTEN_OFF;
 
     public Item() { }
 
@@ -59,7 +60,6 @@ public class Item implements Serializable {
         Item item = (Item) o;
 
         if (Double.compare(item.weightBought, weightBought) != 0) return false;
-        if (writtenOff != item.writtenOff) return false;
         if (buyingPrice != null ? !buyingPrice.equals(item.buyingPrice) : item.buyingPrice != null) return false;
         if (descriptionBought != null ? !descriptionBought.equals(item.descriptionBought) : item.descriptionBought != null)
             return false;
@@ -71,6 +71,7 @@ public class Item implements Serializable {
         if (sellingPrice != null ? !sellingPrice.equals(item.sellingPrice) : item.sellingPrice != null) return false;
         if (weightColdStore != null ? !weightColdStore.equals(item.weightColdStore) : item.weightColdStore != null)
             return false;
+        if (writeOffStatus != item.writeOffStatus) return false;
 
         return true;
     }
@@ -88,7 +89,7 @@ public class Item implements Serializable {
         result = 31 * result + (descriptionColdStore != null ? descriptionColdStore.hashCode() : 0);
         result = 31 * result + (buyingPrice != null ? buyingPrice.hashCode() : 0);
         result = 31 * result + (sellingPrice != null ? sellingPrice.hashCode() : 0);
-        result = 31 * result + (writtenOff ? 1 : 0);
+        result = 31 * result + (writeOffStatus != null ? writeOffStatus.hashCode() : 0);
         return result;
     }
 
@@ -200,11 +201,11 @@ public class Item implements Serializable {
         this.sellingPrice = sellingPrice;
     }
 
-    public boolean isWrittenOff() {
-        return writtenOff;
+    public WriteOffStatus getWriteOffStatus() {
+        return writeOffStatus;
     }
 
-    public void setWrittenOff(boolean writtenOff) {
-        this.writtenOff = writtenOff;
+    public void setWriteOffStatus(WriteOffStatus writeOffStatus) {
+        this.writeOffStatus = writeOffStatus;
     }
 }

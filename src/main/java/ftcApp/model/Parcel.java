@@ -4,6 +4,10 @@ import ftcApp.model.enums.ParcelStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -62,6 +66,16 @@ public class Parcel implements Serializable {
         result = 31 * result + (arrived != null ? arrived.hashCode() : 0);
         result = 31 * result + (deliveryCost != null ? deliveryCost.hashCode() : 0);
         return result;
+    }
+
+    public long getNumberOfDaysInColdStore() {
+        if (arrived == null) {
+            return 0;
+        }
+        Instant instant = Instant.ofEpochMilli(arrived.getTime());
+        LocalDateTime arrivedLdt = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        long days = ChronoUnit.DAYS.between(arrivedLdt, LocalDateTime.now());
+        return days;
     }
 
     public Date getArrived() {

@@ -3,6 +3,7 @@ package ftcApp.ui;
 import ftcApp.model.Item;
 import ftcApp.model.Parcel;
 import ftcApp.model.enums.ParcelStatus;
+import ftcApp.model.enums.WriteOffStatus;
 import ftcApp.service.ItemService;
 import ftcApp.service.ParcelService;
 import ftcApp.service.TestService;
@@ -35,6 +36,7 @@ public class ItemsBean implements Serializable {
     private List<ItemQuantity> itemQuantities;
 
     private List<Item> items;
+    private List<Item> itemsForWritingOff;
 
     private boolean editable = false;
 
@@ -48,6 +50,7 @@ public class ItemsBean implements Serializable {
 
         testService.addItemsData();
         fetchItems();
+        fetchItemsForWritingOff();
     }
 
     @PreDestroy
@@ -64,6 +67,16 @@ public class ItemsBean implements Serializable {
         Iterable<Item> items = itemService.findItemsOnSaleAndRefresh();
         this.itemQuantities = new ArrayList<>();
         items.forEach((Item item) -> this.itemQuantities.add(new ItemQuantity(item, 0.0)));
+    }
+
+    public void writeOffItem(Item item) {
+        item.setWriteOffStatus(WriteOffStatus.WRITTEN_OFF);
+        itemService.update(item);
+        itemsForWritingOff.remove(item);
+    }
+
+    public void fetchItemsForWritingOff() {
+        itemsForWritingOff = (List<Item>) itemService.findItemsDesignatedForWriteOff();
     }
 
     public void loadItemsForParcelForEditingByCsm(Parcel parcel) {
@@ -96,5 +109,13 @@ public class ItemsBean implements Serializable {
 
     public void setItems(List<Item> items) {
         this.items = items;
+    }
+
+    public Iterable<Item> getItemsForWritingOff() {
+        return itemsForWritingOff;
+    }
+
+    public void setItemsForWritingOff(List<Item> itemsForWritingOff) {
+        this.itemsForWritingOff = itemsForWritingOff;
     }
 }

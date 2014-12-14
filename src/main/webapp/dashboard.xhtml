@@ -180,19 +180,12 @@
                                 </h:outputText>
                             </p:column>
 
+                            <p:column headerText="#{msg['daysInColdStore']}" sortBy="${parcel.numberOfDaysInColdStore}">
+                                <h:outputText value="${parcel.numberOfDaysInColdStore}"/>
+                            </p:column>
+
                             <p:column headerText="#{msg['parcelStatus']}">
-                                <p:cellEditor>
-                                    <f:facet name="output">
-                                        <h:outputText value="#{msg[parcel.status.label]}"/>
-                                    </f:facet>
-                                    <f:facet name="input">
-                                        <p:selectOneMenu styleClass="inside-table-select" value="${parcel.status}">
-                                            <f:selectItems value="${parcelsBean.parcelStatuses}" var="status"
-                                                           itemValue="${status}"
-                                                           itemLabel="#{msg[status.label]}"/>
-                                        </p:selectOneMenu>
-                                    </f:facet>
-                                </p:cellEditor>
+                                <h:outputText value="#{msg[parcel.status.label]}"/>
                             </p:column>
 
                             <p:column headerText="#{msg['numberOfItems']}" sortBy="${parcel.items.size()}">
@@ -220,22 +213,16 @@
 
                             <p:column>
                                 <p:commandButton id="edit-parcel-items" value="#{msg['editItems']}"
-                                                 rendered="${parcel.status == 'REGISTERED_BY_GM'}"
+
                                                  action="${itemsBean.loadItemsForParcel(parcel)}"
                                                  update=":parcelItemsEditable"
-                                                 onclick="$('#parcel-items-editing').show(); $('#parcel-items-show').hide()"/>
+                                                 onclick="$('#parcel-items-editing').show()"/>
 
                                 <p:commandButton id="put-up-on-sale" value="#{msg['putUpOnSale']}"
                                                  rendered="${parcel.status == 'REGISTERED_BY_CSM'}"
                                                  update="parcelsEditTable">
                                     <f:setPropertyActionListener target="#{parcel.status}" value="PUT_UP_FOR_SALE"/>
                                 </p:commandButton>
-
-                                <p:commandButton id="show-items-info" value="#{msg['showItems']}" styleClass="small-top-margin"
-                                                 rendered="${parcel.status == 'REGISTERED_BY_CSM' or parcel.status == 'PUT_UP_FOR_SALE'}"
-                                                 action="${itemsBean.loadItemsForParcel(parcel)}"
-                                                 update=":parcelItemsShow"
-                                                 onclick="$('#parcel-items-show').show(); $('#parcel-items-editing').hide()"/>
                             </p:column>
 
                             <f:facet name="footer">
@@ -248,141 +235,94 @@
 
                     <br/>
 
-                    <h:panelGroup id="parcel-items-show">
-                        <h:form id="parcelItemsShow">
-                            <p:dataTable var="item" value="${itemsBean.items}">
-                                <f:facet name="header">
-                                    <h3>#{msg['parcelItems']}</h3>
-                                </f:facet>
-
-                                <p:column headerText="#{msg['name']}">
-                                    <h:outputText value="${item.nameBought}"/>
-                                    <h:panelGroup rendered="${item.nameBought != item.nameColdStore}">
-                                        <br/>
-                                        <h:outputText value="#{msg['inColdStore']}: "/>
-                                        <h:outputText value="${item.nameColdStore}"/>
-                                    </h:panelGroup>
-                                </p:column>
-
-                                <p:column headerText="#{msg['weight']}">
-                                    <h:outputText value="${item.weightBought}">
-                                        <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
-                                    </h:outputText>
-                                    <h:panelGroup rendered="${!item.weightsMatch()}">
-                                        <br/>
-                                        <h:outputText value="#{msg['inColdStore']}: "/>
-                                        <h:outputText value="${item.weightColdStore}">
-                                            <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
-                                        </h:outputText>
-                                    </h:panelGroup>
-                                </p:column>
-
-                                <p:column headerText="#{msg['description']}">
-                                    <h:outputText value="${item.descriptionBought}"/>
-                                    <h:panelGroup
-                                            rendered="${item.descriptionBought != item.descriptionColdStore}">
-                                        <br/>
-                                        <h:outputText value="#{msg['inColdStore']}: "/>
-                                        <h:outputText value="${item.descriptionColdStore}"/>
-                                    </h:panelGroup>
-                                </p:column>
-
-                                <p:column headerText="#{msg['buyingPrice']}">
-                                    <h:outputText value="$${item.buyingPrice}">
-                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
-                                    </h:outputText>
-                                </p:column>
-
-                                <p:column headerText="#{msg['sellingPrice']}">
-                                    <h:outputText value="$${item.sellingPrice}">
-                                        <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
-                                    </h:outputText>
-                                </p:column>
-                            </p:dataTable>
-                        </h:form>
-                    </h:panelGroup>
-
                     <h:panelGroup id="parcel-items-editing">
                         <h:form id="parcelItemsEditable">
-                            <p:dataTable var="item" value="${itemsBean.items}" editable="true">
+                            <p:dataTable id="parcelItemsEditableTable" var="item" value="${itemsBean.items}"
+                                         editable="true">
                                 <f:facet name="header">
                                     <h3>#{msg['parcelItems']}</h3>
                                 </f:facet>
 
                                 <p:column headerText="#{msg['name']}">
-                                    <p:cellEditor>
+                                    <h:panelGroup rendered="${item.parcel.status != 'REGISTERED_BY_GM'}">
+                                        <h:outputText value="${item.nameBought}"/>
+                                        <h:panelGroup rendered="${item.nameBought != item.nameColdStore}">
+                                            <br/>
+                                            <h:outputText value="#{msg['inColdStore']}: "/>
+                                            <h:outputText value="${item.nameColdStore}"/>
+                                        </h:panelGroup>
+                                    </h:panelGroup>
+
+                                    <p:cellEditor rendered="${item.parcel.status == 'REGISTERED_BY_GM'}">
                                         <f:facet name="output">
                                             <h:outputText value="${item.nameBought}"/>
-                                            <h:panelGroup rendered="${item.nameBought != item.nameColdStore}">
-                                                <br/>
-                                                <h:outputText value="#{msg['inColdStore']}: "/>
-                                                <h:outputText value="${item.nameColdStore}"/>
-                                            </h:panelGroup>
                                         </f:facet>
                                         <f:facet name="input">
                                             <p:inputText value="${item.nameBought}"/>
-                                            <h:panelGroup rendered="${item.nameBought != item.nameColdStore}">
-                                                <br/>
-                                                <h:outputText value="#{msg['inColdStore']}: "/>
-                                                <h:outputText value="${item.nameColdStore}"/>
-                                            </h:panelGroup>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
 
                                 <p:column headerText="#{msg['weight']}">
-                                    <p:cellEditor>
+                                    <h:panelGroup rendered="${item.parcel.status != 'REGISTERED_BY_GM'}">
+                                        <h:outputText value="${item.weightBought}">
+                                            <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                                        </h:outputText>
+                                        <h:panelGroup rendered="${!item.weightsMatch()}">
+                                            <br/>
+                                            <h:outputText value="#{msg['inColdStore']}: "/>
+                                            <h:outputText value="${item.weightColdStore}">
+                                                <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                                            </h:outputText>
+                                        </h:panelGroup>
+                                    </h:panelGroup>
+
+                                    <p:cellEditor rendered="${item.parcel.status == 'REGISTERED_BY_GM'}">
                                         <f:facet name="output">
                                             <h:outputText value="${item.weightBought}">
                                                 <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
                                             </h:outputText>
-                                            <h:panelGroup rendered="${!item.weightsMatch()}">
-                                                <br/>
-                                                <h:outputText value="#{msg['inColdStore']}: "/>
-                                                <h:outputText value="${item.weightColdStore}">
-                                                    <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
-                                                </h:outputText>
-                                            </h:panelGroup>
                                         </f:facet>
                                         <f:facet name="input">
                                             <p:spinner min="0" stepFactor="0.1" value="${item.weightBought}"
                                                        suffix=" #{msg['t']}"/>
-                                            <h:panelGroup rendered="${!item.weightsMatch()}">
-                                                <br/>
-                                                <h:outputText value="#{msg['inColdStore']}: "/>
-                                                <h:outputText value="${item.weightColdStore}">
-                                                    <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
-                                                </h:outputText>
-                                            </h:panelGroup>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
 
                                 <p:column headerText="#{msg['description']}">
-                                    <p:cellEditor>
+                                    <h:panelGroup rendered="${item.parcel.status != 'REGISTERED_BY_GM'}">
+                                        <h:outputText value="${item.descriptionBought}"/>
+                                        <h:panelGroup
+                                                rendered="${item.descriptionBought != item.descriptionColdStore}">
+                                            <br/>
+                                            <h:outputText value="#{msg['inColdStore']}: "/>
+                                            <h:outputText value="${item.descriptionColdStore}"/>
+                                        </h:panelGroup>
+                                    </h:panelGroup>
+
+                                    <p:cellEditor rendered="${item.parcel.status == 'REGISTERED_BY_GM'}">
                                         <f:facet name="output">
                                             <h:outputText value="${item.descriptionBought}"/>
-                                            <h:panelGroup
-                                                    rendered="${item.descriptionBought != item.descriptionColdStore}">
-                                                <br/>
-                                                <h:outputText value="#{msg['inColdStore']}: "/>
-                                                <h:outputText value="${item.descriptionColdStore}"/>
-                                            </h:panelGroup>
                                         </f:facet>
                                         <f:facet name="input">
                                             <p:inputText value="${item.descriptionBought}"/>
-                                            <h:panelGroup
-                                                    rendered="${item.descriptionBought != item.descriptionColdStore}">
-                                                <br/>
-                                                <h:outputText value="#{msg['inColdStore']}: "/>
-                                                <h:outputText value="${item.descriptionColdStore}"/>
-                                            </h:panelGroup>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
 
+                                <p:column headerText="#{msg['writeOffStatus']}">
+                                    <h:outputText value="#{msg[item.writeOffStatus.label]}"/>
+                                </p:column>
+
                                 <p:column headerText="#{msg['buyingPrice']}">
-                                    <p:cellEditor>
+                                    <h:panelGroup rendered="${item.parcel.status != 'REGISTERED_BY_GM'}">
+                                        <h:outputText value="$${item.buyingPrice}">
+                                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                                        </h:outputText>
+                                    </h:panelGroup>
+
+                                    <p:cellEditor rendered="${item.parcel.status == 'REGISTERED_BY_GM'}">
                                         <f:facet name="output">
                                             <h:outputText value="$${item.buyingPrice}">
                                                 <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
@@ -411,6 +351,15 @@
                                             </p:spinner>
                                         </f:facet>
                                     </p:cellEditor>
+                                </p:column>
+
+                                <p:column>
+                                    <p:commandButton value="#{msg['requestWriteOff']}"
+                                                     rendered="${item.writeOffStatus == 'NOT_WRITTEN_OFF'}"
+                                                     update="parcelItemsEditableTable">
+                                        <f:setPropertyActionListener value="DESIGNATED_FOR_WRITE_OFF"
+                                                                     target="#{item.writeOffStatus}"/>
+                                    </p:commandButton>
                                 </p:column>
 
                                 <p:column style="width:32px">
@@ -675,6 +624,46 @@
                             </p:column>
                         </p:dataTable>
                     </div>
+                </div>
+
+                <p:commandButton id="register-item-write-off" value="#{msg['registerItemWriteOff']}"/>
+
+                <div id="item-write-off-registration">
+                    <p:dataTable id="itemWriteOffTable" var="item" value="${itemsBean.itemsForWritingOff}">
+                        <f:facet name="header">
+                            <h3>#{msg['itemsDesignatedForWriteOff']}</h3>
+                        </f:facet>
+
+                        <p:column headerText="#{msg['id']}">
+                            <h:outputText value="${item.id}"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['arrivedToColdStore']}">
+                            <h:outputText value="${item.parcel.arrived}">
+                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="#{msg['name']}">
+                            <h:outputText value="${item.nameColdStore}"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['weight']}">
+                            <h:outputText value="${item.weightColdStore}">
+                                <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="#{msg['description']}">
+                            <h:outputText value="${item.descriptionColdStore}"/>
+                        </p:column>
+
+                        <p:column>
+                            <p:commandButton value="#{msg['confirmWriteOff']}"
+                                             action="${itemsBean.writeOffItem(item)}"
+                                             update="itemWriteOffTable"/>
+                        </p:column>
+                    </p:dataTable>
                 </div>
             </sec:authorize>
 

@@ -20,4 +20,9 @@ public class ItemServiceImpl extends GenericServiceImpl<Item, Integer> implement
         Iterable<Item> items = ((ItemRepository) repository).findItemsOnSale();
         return repository.refreshAll(items);
     }
+
+    @Override
+    public Iterable<Item> findItemsDesignatedForWriteOff() {
+        return ((ItemRepository) repository).findItemsDesignatedForWriteOff();
+    }
 }

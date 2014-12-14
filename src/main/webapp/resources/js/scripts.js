@@ -26,6 +26,10 @@ $( document ).ready(function() {
     $('#change-prepayment-mode').click(function() {
         $('#prepayment-mode-editing').toggle();
     });
+
+    $('#register-item-write-off').click(function () {
+        $('#item-write-off-registration').toggle();
+    });
 });
 
 function barChartExtender() {

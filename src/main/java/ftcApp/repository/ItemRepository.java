@@ -4,4 +4,5 @@ import ftcApp.model.Item;
 
 public interface ItemRepository extends GenericRepository<Item, Integer> {
     Iterable<Item> findItemsOnSale();
+    Iterable<Item> findItemsDesignatedForWriteOff();
 }

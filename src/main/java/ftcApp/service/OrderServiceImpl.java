@@ -4,7 +4,6 @@ import ftcApp.exception.OrderSaveFailedException;
 import ftcApp.model.*;
 import ftcApp.model.enums.OrderStatus;
 import ftcApp.repository.CustomerRepository;
-import ftcApp.repository.ItemRepository;
 import ftcApp.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

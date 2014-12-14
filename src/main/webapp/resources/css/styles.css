@@ -47,7 +47,7 @@ a:hover {
 }
 
 #parcel-registration, #parcel-editing, #parcel-items-editing, #parcel-items-show, #parcel-registration-cs, #parcel-items-editing-cs,
-#order-shipment-registration, #payment-registration, .add-payment, #ordered-items, #prepayment-mode-editing {
+#order-shipment-registration, #payment-registration, .add-payment, #ordered-items, #prepayment-mode-editing, #item-write-off-registration {
     display: none;
 }
 
@@ -75,7 +75,7 @@ table {
 }
 
 .delete-button, #register-parcel, #edit-parcel, #register-parcel-cs, #register-order-shipment, #show-report,
-#register-payment, #change-prepayment-mode {
+#register-payment, #change-prepayment-mode, #register-item-write-off {
     display: block;
     width: 350px;
 }
@@ -90,7 +90,7 @@ table {
 }
 
 #register-parcel, #edit-parcel, #register-parcel-cs, #register-order-shipment, #show-report, #register-payment,
-#change-prepayment-mode {
+#change-prepayment-mode, #register-item-write-off {
     margin: 10px auto;
 }
 
