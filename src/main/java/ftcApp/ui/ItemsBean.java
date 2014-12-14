@@ -7,6 +7,8 @@ import ftcApp.model.enums.WriteOffStatus;
 import ftcApp.service.ItemService;
 import ftcApp.service.ParcelService;
 import ftcApp.service.TestService;
+import org.primefaces.push.EventBus;
+import org.primefaces.push.EventBusFactory;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.annotation.PostConstruct;
@@ -73,6 +75,8 @@ public class ItemsBean implements Serializable {
         item.setWriteOffStatus(WriteOffStatus.WRITTEN_OFF);
         itemService.update(item);
         itemsForWritingOff.remove(item);
+        EventBus eventBus = EventBusFactory.getDefault().eventBus();
+        eventBus.publish("/itemsChanged", true);
     }
 
     public void fetchItemsForWritingOff() {

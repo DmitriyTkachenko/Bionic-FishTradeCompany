@@ -3,6 +3,8 @@ package ftcApp.ui;
 import ftcApp.model.Parcel;
 import ftcApp.model.enums.ParcelStatus;
 import ftcApp.service.ParcelService;
+import org.primefaces.push.EventBus;
+import org.primefaces.push.EventBusFactory;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.annotation.PostConstruct;
@@ -47,6 +49,8 @@ public class ParcelsBean implements Serializable {
 
     public void saveChanges() {
         parcelService.updateAll(parcels);
+        EventBus eventBus = EventBusFactory.getDefault().eventBus();
+        eventBus.publish("/itemsChanged", true);
     }
 
     public Iterable<Parcel> getParcels() {

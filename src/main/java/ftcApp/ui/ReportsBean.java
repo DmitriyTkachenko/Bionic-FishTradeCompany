@@ -38,7 +38,6 @@ public class ReportsBean implements Serializable {
     private double maxIncomeName;
     private double maxIncomeDay;
     private boolean chartsReady;
-    Random rand = new Random();
 
     @Inject
     private transient OrderService orderService;
@@ -122,13 +121,13 @@ public class ReportsBean implements Serializable {
 
         for (Order order : orders) {
             for (OrderedItem orderedItem : order.getOrderedItems()) {
-                double itemIncome = orderedItem.getPrice() * orderedItem.getWeight();
+                double itemNetIncome = orderedItem.getNetIncome();
                 String itemName = orderedItem.getItem().getNameColdStore();
                 Double previous = data.get(itemName);
                 if (previous == null) {
-                    data.put(itemName, itemIncome);
+                    data.put(itemName, itemNetIncome);
                 } else {
-                    data.put(itemName, previous + itemIncome);
+                    data.put(itemName, previous + itemNetIncome);
                 }
             }
         }
@@ -153,12 +152,12 @@ public class ReportsBean implements Serializable {
 
         for (Order order : orders) {
             String completed = new SimpleDateFormat("dd.MM.yyyy").format(order.getCompleted());
-            double income = order.getTotalPrice();
+            double netIncome = order.getNetIncome();
             Double previous = ordersData.get(completed);
             if (previous == null) {
-                ordersData.put(completed, income);
+                ordersData.put(completed, netIncome);
             } else {
-                ordersData.put(completed, income + previous);
+                ordersData.put(completed, netIncome + previous);
             }
         }
 
@@ -235,8 +234,8 @@ public class ReportsBean implements Serializable {
 
         Axis yAxis = daysIncomeBarModel.getAxis(AxisType.Y);
         yAxis.setLabel("Income, $");
-        yAxis.setMin(5000);
-        yAxis.setMax(15500);
+        yAxis.setMin(0.9 * minIncomeDay);
+        yAxis.setMax(1.1 * maxIncomeDay);
     }
 
     public BarChartModel getFishNamesIncomeBarModel() {

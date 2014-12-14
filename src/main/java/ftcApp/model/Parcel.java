@@ -34,6 +34,8 @@ public class Parcel implements Serializable {
 
     private Double deliveryCost;
 
+    private static final double STORAGE_COST_PER_DAY_PER_TONNE = 20.0;
+
     public Parcel(ParcelStatus status, Date purchased, List<Item> items, Double deliveryCost) {
         this.status = status;
         this.purchased = purchased;
@@ -76,6 +78,14 @@ public class Parcel implements Serializable {
         LocalDateTime arrivedLdt = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
         long days = ChronoUnit.DAYS.between(arrivedLdt, LocalDateTime.now());
         return days;
+    }
+
+    public double getTotalWeight() {
+        double totalWeight = 0.0;
+        for (Item item : items) {
+            totalWeight += item.getWeightBought();
+        }
+        return totalWeight;
     }
 
     public Date getArrived() {
@@ -124,5 +134,9 @@ public class Parcel implements Serializable {
 
     public void setDeliveryCost(Double deliveryPrice) {
         this.deliveryCost = deliveryPrice;
+    }
+
+    public static double getStorageCostPerDayPerTonne() {
+        return STORAGE_COST_PER_DAY_PER_TONNE;
     }
 }

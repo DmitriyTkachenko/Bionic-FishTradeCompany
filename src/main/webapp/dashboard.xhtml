@@ -213,12 +213,12 @@
 
                             <p:column>
                                 <p:commandButton id="edit-parcel-items" value="#{msg['editItems']}"
-
                                                  action="${itemsBean.loadItemsForParcel(parcel)}"
                                                  update=":parcelItemsEditable"
                                                  onclick="$('#parcel-items-editing').show()"/>
 
-                                <p:commandButton id="put-up-on-sale" value="#{msg['putUpOnSale']}"
+                                <p:commandButton id="put-up-for-sale" value="#{msg['putUpForSale']}"
+                                                 styleClass="small-top-margin"
                                                  rendered="${parcel.status == 'REGISTERED_BY_CSM'}"
                                                  update="parcelsEditTable">
                                     <f:setPropertyActionListener target="#{parcel.status}" value="PUT_UP_FOR_SALE"/>

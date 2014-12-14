@@ -40,7 +40,7 @@ public class Order implements Serializable {
 
     public Order() { }
 
-    public Order(OrderStatus status, Customer customer, Double deliveryPrice, List<OrderedItem> orderedItems, List<Payment> payments, Date created) {
+    public Order(OrderStatus status, Customer customer, List<OrderedItem> orderedItems, List<Payment> payments, Date created) {
         this.status = status;
         this.customer = customer;
         if (!customer.getOrders().contains(this)) {
@@ -73,6 +73,14 @@ public class Order implements Serializable {
         result = 31 * result + (shipped != null ? shipped.hashCode() : 0);
         result = 31 * result + (completed != null ? completed.hashCode() : 0);
         return result;
+    }
+
+    public double getNetIncome() {
+        double netIncome = 0.0;
+        for (OrderedItem orderedItem : orderedItems) {
+            netIncome += orderedItem.getNetIncome();
+        }
+        return netIncome;
     }
 
     public void setCustomer(Customer customer) {

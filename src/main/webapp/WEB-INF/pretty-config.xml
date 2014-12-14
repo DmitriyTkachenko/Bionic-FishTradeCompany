@@ -28,13 +28,13 @@
         <view-id value="/dashboard.xhtml"/>
     </url-mapping>
 
-    <url-mapping>
-        <pattern value="/profile/"></pattern>
+    <url-mapping id="profile">
+        <pattern value="/profile/"/>
         <view-id value="/profile.xhtml"/>
     </url-mapping>
 
     <url-mapping id="profile">
-        <pattern value="/profile"></pattern>
+        <pattern value="/profile"/>
         <view-id value="/profile.xhtml"/>
     </url-mapping>
 
@@ -46,6 +46,16 @@
     <url-mapping id="login">
         <pattern value="/login/"/>
         <view-id value="/login.xhtml"/>
+    </url-mapping>
+
+    <url-mapping id="log-in-error">
+        <pattern value="/log-in-error/"/>
+        <view-id value="/login-error.xhtml"/>
+    </url-mapping>
+
+    <url-mapping id="log-in-error">
+        <pattern value="/log-in-error"/>
+        <view-id value="/login-error.xhtml"/>
     </url-mapping>
 
 </pretty-config>

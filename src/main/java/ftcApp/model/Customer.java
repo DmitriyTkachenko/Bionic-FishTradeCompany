@@ -11,7 +11,7 @@ import java.util.List;
 @Entity
 public class Customer extends User {
     @Column(nullable = false)
-    private double prepaymentShareRequired = 1.0;
+    private double prepaymentShareRequired = 0.5;
 
     @Column(nullable = false, length = 1000)
     private String shippingAddress;

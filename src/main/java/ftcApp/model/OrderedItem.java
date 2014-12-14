@@ -2,6 +2,11 @@ package ftcApp.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 
 @Entity
 public class OrderedItem implements Serializable {
@@ -56,6 +61,40 @@ public class OrderedItem implements Serializable {
         temp = Double.doubleToLongBits(price);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+
+    public double getNetIncome() {
+        double expense = this.getDeliveryCost() + this.getStorageCost() + this.getPurchaseCost();
+        double income = this.getIncome();
+        return income - expense;
+    }
+
+    public double getIncome() {
+        return weight * price;
+    }
+
+    public double getStorageCost() {
+        return this.getNumberOfDaysInColdStore() * weight * Parcel.getStorageCostPerDayPerTonne();
+    }
+
+    public double getDeliveryCost() {
+        Parcel parcel = item.getParcel();
+        return (parcel.getDeliveryCost() / parcel.getTotalWeight()) * weight;
+    }
+
+    public long getNumberOfDaysInColdStore() {
+        Date beginning = item.getParcel().getArrived();
+        Date end = order.getShipped();
+        Instant beginningInstant = Instant.ofEpochMilli(beginning.getTime());
+        Instant endInstant = Instant.ofEpochMilli(end.getTime());
+        LocalDateTime beginningLdt = LocalDateTime.ofInstant(beginningInstant, ZoneId.systemDefault());
+        LocalDateTime endLdt = LocalDateTime.ofInstant(endInstant, ZoneId.systemDefault());
+        long days = ChronoUnit.DAYS.between(beginningLdt, endLdt);
+        return days;
+    }
+
+    public double getPurchaseCost() {
+        return item.getBuyingPrice() * weight;
     }
 
     public Order getOrder() {

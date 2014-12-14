@@ -1,6 +1,7 @@
 package ftcApp.repository;
 
 import ftcApp.model.User;
+import ftcApp.model.enums.UserRole;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
@@ -18,7 +19,10 @@ public class UserRepositoryImpl<T extends User, ID extends Serializable> extends
     public T findByLogin(String login) {
         T result = null;
         try {
-            TypedQuery<T> query = em.createQuery("SELECT u FROM " + entityClass.getName() + " u WHERE u.login = :li", entityClass).setParameter("li", login);
+            TypedQuery<T> query = em.createQuery("SELECT u FROM " + entityClass.getName() + " u " +
+                    "WHERE u.login = :li AND u.userRole != :blocked", entityClass)
+                    .setParameter("li", login)
+                    .setParameter("blocked", UserRole.BLOCKED);
             result = query.getSingleResult();
         } catch (RuntimeException e) {
             e.printStackTrace();

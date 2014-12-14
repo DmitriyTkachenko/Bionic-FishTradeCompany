@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -69,12 +72,15 @@ public class TestServiceImpl implements TestService {
             return;
         }
         parcel = new Parcel(ParcelStatus.PUT_UP_FOR_SALE, new Date(), new ArrayList<>(), 1000.0);
-        Item item1 = new Item("Cod", 300, "Country of origin: Norway", parcel, 5000.0, 5100.0);
+        Item item1 = new Item("Cod", 300, "Country of origin: Norway", parcel, 5000.0, 5200.0);
         item1.duplicateBoughtAndColdStoreProperties();
-        Item item2 = new Item("Tuna", 400, "Country of origin: Thailand", parcel, 3500.0, 3580.0);
+        Item item2 = new Item("Tuna", 400, "Country of origin: Thailand", parcel, 3500.0, 3700.0);
         item2.duplicateBoughtAndColdStoreProperties();
-        Item item3 = new Item("Coalfish", 200, "Country of origin: Turkey", parcel, 6000.0, 6120.0);
+        Item item3 = new Item("Coalfish", 200, "Country of origin: Turkey", parcel, 6000.0, 6250.0);
         item3.duplicateBoughtAndColdStoreProperties();
+        LocalDate arrived = LocalDate.of(2014, 12, 10);
+        Instant instant = arrived.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+        parcel.setArrived(Date.from(instant));
         parcelService.save(parcel);
         previousItemsDeleted = false;
     }
@@ -149,6 +155,8 @@ public class TestServiceImpl implements TestService {
         } catch (OrderSaveFailedException e) {
             e.printStackTrace();
         }
+        orderService.markOrderAsShipped(order1);
+        orderService.markOrderAsShipped(order2);
         orderService.markOrderAsCompleted(order1);
         orderService.markOrderAsCompleted(order2);
         previousOrdersDeleted = false;
