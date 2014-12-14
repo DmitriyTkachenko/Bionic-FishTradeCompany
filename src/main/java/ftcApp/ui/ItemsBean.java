@@ -57,24 +57,17 @@ public class ItemsBean implements Serializable {
 
     public void loadItemsForParcel(Parcel parcel) {
         items = parcel.getItems();
-        for (Item item : items) {
-            item.duplicateBoughtAndColdStoreProperties();
-        }
         editable = (parcel.getStatus() == ParcelStatus.REGISTERED_BY_GM);
     }
 
     public void fetchItems() {
-        Iterable<Item> items = itemService.findAllAndRefresh();
-
+        Iterable<Item> items = itemService.findItemsOnSaleAndRefresh();
         this.itemQuantities = new ArrayList<>();
         items.forEach((Item item) -> this.itemQuantities.add(new ItemQuantity(item, 0.0)));
     }
 
     public void loadItemsForParcelForEditingByCsm(Parcel parcel) {
         loadItemsForParcel(parcel);
-        for (Item item : items) {
-            item.duplicateBoughtAndColdStoreProperties();
-        }
     }
 
     public void saveChangesColdStore() {

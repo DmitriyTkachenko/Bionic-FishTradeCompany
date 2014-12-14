@@ -21,6 +21,7 @@ public class ParcelsBean implements Serializable {
     private transient ParcelService parcelService;
 
     private Iterable<Parcel> parcels;
+    private Iterable<Parcel> parcelsForCsm;
 
     @PostConstruct
     public void init() {
@@ -30,8 +31,15 @@ public class ParcelsBean implements Serializable {
                 getAutowireCapableBeanFactory().
                 autowireBean(this);
 
+        this.fetchParcels();
+        this.fetchParcelsForCsm();
+    }
+
+    public void fetchParcels() {
         parcels = parcelService.findAll();
     }
+
+    public void fetchParcelsForCsm() { parcelsForCsm = parcelService.findParcelsNotRegisteredInColdStore(); }
 
     public ParcelStatus[] getParcelStatuses() {
         return ParcelStatus.values();
@@ -47,5 +55,13 @@ public class ParcelsBean implements Serializable {
 
     public void setParcels(Iterable<Parcel> parcels) {
         this.parcels = parcels;
+    }
+
+    public Iterable<Parcel> getParcelsForCsm() {
+        return parcelsForCsm;
+    }
+
+    public void setParcelsForCsm(Iterable<Parcel> parcelsForCsm) {
+        this.parcelsForCsm = parcelsForCsm;
     }
 }

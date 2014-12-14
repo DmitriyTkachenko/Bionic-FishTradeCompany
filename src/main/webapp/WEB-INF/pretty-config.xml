@@ -28,6 +28,16 @@
         <view-id value="/dashboard.xhtml"/>
     </url-mapping>
 
+    <url-mapping>
+        <pattern value="/profile/"></pattern>
+        <view-id value="/profile.xhtml"/>
+    </url-mapping>
+
+    <url-mapping id="profile">
+        <pattern value="/profile"></pattern>
+        <view-id value="/profile.xhtml"/>
+    </url-mapping>
+
     <url-mapping id="login">
         <pattern value="/login"/>
         <view-id value="/login.xhtml"/>

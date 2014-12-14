@@ -32,6 +32,20 @@ public class GenericRepositoryImpl<T, ID extends Serializable> implements Generi
     }
 
     @Override
+    public T refresh(T entity) {
+        em.refresh(entity);
+        return entity;
+    }
+
+    @Override
+    public Iterable<T> refreshAll(Iterable<T> entities) {
+        for (T t : entities) {
+            em.refresh(t);
+        }
+        return entities;
+    }
+
+    @Override
     public void delete(T entity) {
         em.remove(entity);
     }
@@ -61,26 +75,8 @@ public class GenericRepositoryImpl<T, ID extends Serializable> implements Generi
     }
 
     @Override
-    public Iterable<T> findAllAndRefresh() {
-        Iterable<T> result = this.findAll();
-        if (result != null) {
-            for (T t : result) {
-                em.refresh(t);
-            }
-        }
-        return result;
-    }
-
-    @Override
     public T findOne(ID id) {
         return em.find(entityClass, id);
-    }
-
-    @Override
-    public T findOneAndRefresh(ID id) {
-        T entity = this.findOne(id);
-        em.refresh(entity);
-        return entity;
     }
 
     @Override

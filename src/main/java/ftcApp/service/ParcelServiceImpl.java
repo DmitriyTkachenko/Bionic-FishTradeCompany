@@ -35,4 +35,9 @@ public class ParcelServiceImpl extends GenericServiceImpl<Parcel, Integer> imple
         parcel.setArrived(new Date());
         repository.update(parcel);
     }
+
+    @Override
+    public Iterable<Parcel> findParcelsNotRegisteredInColdStore() {
+        return ((ParcelRepository) repository).findParcelsNotRegisteredInColdStore();
+    }
 }

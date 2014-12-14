@@ -35,7 +35,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/dashboard/").hasAnyAuthority("GENERAL_MANAGER", "COLD_STORE_MANAGER", "ACCOUNTANT", "SECURITY_OFFICER")
                 .antMatchers("/dashboard/**").hasAnyAuthority("GENERAL_MANAGER", "COLD_STORE_MANAGER", "ACCOUNTANT", "SECURITY_OFFICER")
-                .antMatchers("/dashboard").hasAnyAuthority("GENERAL_MANAGER", "COLD_STORE_MANAGER", "ACCOUNTANT", "SECURITY_OFFICER");
+                .antMatchers("/dashboard").hasAnyAuthority("GENERAL_MANAGER", "COLD_STORE_MANAGER", "ACCOUNTANT", "SECURITY_OFFICER")
+                .antMatchers("/profile/").hasAnyAuthority("CUSTOMER")
+                .antMatchers("/profile/**").hasAnyAuthority("CUSTOMER")
+                .antMatchers("/profile").hasAnyAuthority("CUSTOMER");
 
         // protection from CSRF attacks
         http.csrf()

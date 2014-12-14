@@ -15,4 +15,9 @@ public class ItemServiceImpl extends GenericServiceImpl<Item, Integer> implement
         super(repository, Item.class);
     }
 
+    @Override
+    public Iterable<Item> findItemsOnSaleAndRefresh() {
+        Iterable<Item> items = ((ItemRepository) repository).findItemsOnSale();
+        return repository.refreshAll(items);
+    }
 }

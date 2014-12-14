@@ -39,7 +39,9 @@
                             </p:column>
 
                             <p:column headerText="#{msg['amountAvailable']}">
-                                <h:outputText value="${orderedItem.item.weightColdStore}"/>
+                                <h:outputText value="${orderedItem.item.weightColdStore}">
+                                        <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
+                                </h:outputText>
                             </p:column>
 
                             <p:column headerText="#{msg['price']}" sortBy="${orderedItem.price}">

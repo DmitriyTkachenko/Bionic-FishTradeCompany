@@ -68,12 +68,12 @@ public class TestServiceImpl implements TestService {
         if (!previousItemsDeleted) {
             return;
         }
-        parcel = new Parcel(ParcelStatus.REGISTERED_BY_GM, new Date(), new ArrayList<>(), 1000.0);
+        parcel = new Parcel(ParcelStatus.PUT_UP_FOR_SALE, new Date(), new ArrayList<>(), 1000.0);
         Item item1 = new Item("Cod", 300, "Country of origin: Norway", parcel, 5000.0, 5100.0);
         item1.duplicateBoughtAndColdStoreProperties();
         Item item2 = new Item("Tuna", 400, "Country of origin: Thailand", parcel, 3500.0, 3580.0);
         item2.duplicateBoughtAndColdStoreProperties();
-        Item item3 = new Item("Trout", 200, "Country of origin: Turkey", parcel, 6000.0, 6120.0);
+        Item item3 = new Item("Coalfish", 200, "Country of origin: Turkey", parcel, 6000.0, 6120.0);
         item3.duplicateBoughtAndColdStoreProperties();
         parcelService.save(parcel);
         previousItemsDeleted = false;
@@ -158,6 +158,7 @@ public class TestServiceImpl implements TestService {
     public void removeOrders() {
         orderService.delete(order1);
         orderService.delete(order2);
+        previousOrdersDeleted = true;
     }
 
     @Override
@@ -170,11 +171,13 @@ public class TestServiceImpl implements TestService {
             fishName.setName(name);
             fishNameService.save(fishName);
         }
+        previousFishNamesDeleted = false;
     }
 
     @Override
     public void removeFishNames() {
         fishNameService.deleteAll();
+        previousFishNamesDeleted = true;
     }
 
 }

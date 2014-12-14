@@ -23,7 +23,7 @@ public class OrderServiceImpl extends GenericServiceImpl<Order, Integer> impleme
     private CustomerRepository customerRepository;
 
     @Inject
-    private ItemRepository itemRepository;
+    private ItemService itemService;
 
     @Inject
     private UserService userService;
@@ -51,10 +51,10 @@ public class OrderServiceImpl extends GenericServiceImpl<Order, Integer> impleme
         List<OrderedItem> orderedItems = order.getOrderedItems();
         for (OrderedItem orderedItem : orderedItems) {
             Item item = orderedItem.getItem();
-            item = itemRepository.findOneAndRefresh(item.getId());
+            item = itemService.findOneAndRefresh(item.getId());
             orderedItem.setItem(item);
             item.reduceWeightInColdStoreBy(orderedItem.getWeight());
-            itemRepository.update(item);
+            itemService.update(item);
         }
     }
 

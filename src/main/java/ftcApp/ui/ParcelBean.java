@@ -80,6 +80,9 @@ public class ParcelBean implements Serializable {
     }
 
     public void saveParcel() {
+        for (Item itemInParcel : parcel.getItems()) {
+            itemInParcel.duplicateBoughtAndColdStoreProperties();
+        }
         parcel.setStatus(ParcelStatus.REGISTERED_BY_GM);
         parcel.setPurchased(new Date());
         parcelService.save(parcel);
