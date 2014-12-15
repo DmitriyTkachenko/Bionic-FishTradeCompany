@@ -3,6 +3,7 @@ package ftcApp.model;
 import ftcApp.model.enums.ParcelStatus;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -96,6 +97,7 @@ public class Parcel implements Serializable {
         this.arrived = arrived;
     }
 
+    @XmlTransient
     public List<Item> getItems() {
         return items;
     }

@@ -4,9 +4,17 @@ import ftcApp.exception.OrderSaveFailedException;
 import ftcApp.model.enums.WriteOffStatus;
 
 import javax.persistence.*;
+import javax.ws.rs.Produces;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 import java.io.Serializable;
 
 @Entity
+@XmlRootElement
+@XmlType(propOrder = { "nameColdStore", "descriptionColdStore", "weightColdStore", "sellingPrice"})
+@Produces("application/json")
 public class Item implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -118,6 +126,7 @@ public class Item implements Serializable {
         return Double.compare(weightBought, weightColdStore) == 0;
     }
 
+    @XmlTransient
     public Parcel getParcel() {
         return parcel;
     }
@@ -129,6 +138,7 @@ public class Item implements Serializable {
         }
     }
 
+    @XmlElement(name = "name")
     public String getNameColdStore() {
         return nameColdStore;
     }
@@ -137,6 +147,7 @@ public class Item implements Serializable {
         this.nameColdStore = nameColdStore;
     }
 
+    @XmlElement(name = "available-quantity")
     public Double getWeightColdStore() {
         return weightColdStore;
     }
@@ -145,6 +156,7 @@ public class Item implements Serializable {
         this.weightColdStore = weightColdStore;
     }
 
+    @XmlElement(name = "description")
     public String getDescriptionColdStore() {
         return descriptionColdStore;
     }
@@ -153,6 +165,7 @@ public class Item implements Serializable {
         this.descriptionColdStore = descriptionColdStore;
     }
 
+    @XmlTransient
     public Integer getId() {
         return id;
     }
@@ -161,6 +174,7 @@ public class Item implements Serializable {
         this.id = id;
     }
 
+    @XmlTransient
     public String getNameBought() {
         return nameBought;
     }
@@ -169,6 +183,7 @@ public class Item implements Serializable {
         this.nameBought = name;
     }
 
+    @XmlTransient
     public double getWeightBought() {
         return weightBought;
     }
@@ -177,6 +192,7 @@ public class Item implements Serializable {
         this.weightBought = weight;
     }
 
+    @XmlTransient
     public String getDescriptionBought() {
         return descriptionBought;
     }
@@ -185,6 +201,7 @@ public class Item implements Serializable {
         this.descriptionBought = description;
     }
 
+    @XmlTransient
     public Double getBuyingPrice() {
         return buyingPrice;
     }
@@ -193,6 +210,7 @@ public class Item implements Serializable {
         this.buyingPrice = buyingPrice;
     }
 
+    @XmlElement(name = "price")
     public Double getSellingPrice() {
         return sellingPrice;
     }
@@ -201,6 +219,7 @@ public class Item implements Serializable {
         this.sellingPrice = sellingPrice;
     }
 
+    @XmlTransient
     public WriteOffStatus getWriteOffStatus() {
         return writeOffStatus;
     }

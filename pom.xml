@@ -24,6 +24,7 @@
         <spring.security.version>3.2.5.RELEASE</spring.security.version>
         <spring.webflow.version>2.4.1.RELEASE</spring.webflow.version>
         <jsf.version>2.2.8-02</jsf.version>
+        <cxf.version>3.0.2</cxf.version>
     </properties>
 
     <dependencies>
@@ -233,6 +234,52 @@
             <groupId>org.atmosphere</groupId>
             <artifactId>atmosphere-runtime</artifactId>
             <version>2.2.2</version>
+        </dependency>
+
+        <!-- WebService -->
+        <!-- Apache CXF -->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-core</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxrs</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-rs-extension-providers</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+
+        <!-- Jettison -->
+        <dependency>
+            <groupId>org.codehaus.jettison</groupId>
+            <artifactId>jettison</artifactId>
+            <version>1.3.6</version>
+        </dependency>
+
+        <!-- REST API -->
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>javax.ws.rs-api</artifactId>
+            <version>2.0.1</version>
         </dependency>
     </dependencies>
 
