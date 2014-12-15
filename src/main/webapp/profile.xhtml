@@ -12,28 +12,28 @@
         <h2>#{msg['yourOrders']}</h2>
         <p:dataTable id="orders" var="order" value="${profileBean.orders}">
 
-            <p:column headerText="#{msg['id']}">
+            <p:column headerText="#{msg['id']}" sortBy="${order.id}">
                 <h:outputText value="${order.id}"/>
             </p:column>
 
-            <p:column headerText="#{msg['dateOrdered']}">
+            <p:column headerText="#{msg['dateOrdered']}" sortBy="${order.created}">
                 <h:outputText value="${order.created}">
                     <f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
                 </h:outputText>
             </p:column>
 
-            <p:column headerText="#{msg['orderStatus']}">
+            <p:column headerText="#{msg['orderStatus']}" sortBy="#{msg[order.status.label]}">
                 <h:outputText value="#{msg[order.status.label]}"/>
             </p:column>
 
-            <p:column headerText="#{msg['total']}">
+            <p:column headerText="#{msg['total']}" sortBy="${order.totalPrice}">
                 <h:outputText value="$"/>
                 <h:outputText value="${order.totalPrice}">
                     <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
                 </h:outputText>
             </p:column>
 
-            <p:column headerText="#{msg['prepaymentShareRequired']}">
+            <p:column headerText="#{msg['prepaymentShareRequired']}" sortBy="${order.requiredPrepaymentSum}">
                 <h:outputText value="${order.customer.prepaymentShareRequired * 100}">
                     <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
                 </h:outputText>
@@ -44,7 +44,7 @@
                 <h:outputText value=")"/>
             </p:column>
 
-            <p:column headerText="#{msg['paid']}">
+            <p:column headerText="#{msg['paid']}" sortBy="${order.totalPaymentSum}">
                 <h:outputText value="${order.percentagePaid}">
                     <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
                 </h:outputText>

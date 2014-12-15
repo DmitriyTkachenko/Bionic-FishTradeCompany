@@ -91,6 +91,10 @@ public class ItemsBean implements Serializable {
         parcelService.updateParcelColdStore(items.get(0).getParcel());
     }
 
+    public int getNumberOfItemsForWritingOff() {
+        return ((List<Item>) itemsForWritingOff).size();
+    }
+
     public boolean isEditable() {
         return editable;
     }

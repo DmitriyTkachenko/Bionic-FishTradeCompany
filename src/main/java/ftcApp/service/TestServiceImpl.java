@@ -98,7 +98,7 @@ public class TestServiceImpl implements TestService {
         }
         employee1 = new Employee("GM", "pass", "John Smith", UserRole.GENERAL_MANAGER);
         employee2 = new Employee("CSM", "pass", "Jens Eriksson", UserRole.COLD_STORE_MANAGER);
-        employee3 = new Employee("ACC", "pass", "Jessica Logan", UserRole.ACCOUNTANT);
+        employee3 = new Employee("ACC", "pass", "Stefan Folberg", UserRole.ACCOUNTANT);
         employee4 = new Employee("SO", "pass", "Markus Rosenberg", UserRole.SECURITY_OFFICER);
         userService.save(employee1);
         userService.save(employee2);
@@ -121,10 +121,10 @@ public class TestServiceImpl implements TestService {
         if (!previousCustomerDeleted) {
             return;
         }
-        customer = new Customer("WildSpirit", "pass", "Dmitriy", UserRole.CUSTOMER);
+        customer = new Customer("john", "pass", "John Craft", UserRole.CUSTOMER);
         customer.setPrepaymentShareRequired(0.2);
-        customer.setShippingAddress("51 Predslavinskaya str.");
-        customer.setEmail("wildspirit2009@gmail.com");
+        customer.setShippingAddress("5 Central Boulevard");
+        customer.setEmail("johncraft@gmail.com");
         userService.save(customer);
         previousCustomerDeleted = false;
     }
@@ -150,8 +150,8 @@ public class TestServiceImpl implements TestService {
         orderedItem21 = new OrderedItem(item2, 15, item2.getSellingPrice(), order2);
         orderedItem22 = new OrderedItem(item3, 17.5, item3.getSellingPrice(), order2);
         try {
-            orderService.saveOrderForCustomerWithLogin(order1, "WildSpirit");
-            orderService.saveOrderForCustomerWithLogin(order2, "WildSpirit");
+            orderService.saveOrderForCustomerWithLogin(order1, "john");
+            orderService.saveOrderForCustomerWithLogin(order2, "john");
         } catch (OrderSaveFailedException e) {
             e.printStackTrace();
         }

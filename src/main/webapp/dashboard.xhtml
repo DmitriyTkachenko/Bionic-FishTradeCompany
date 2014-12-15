@@ -374,34 +374,38 @@
 
                 <div id="prepayment-mode-editing">
                     <h:form>
-                        <p:dataTable var="customer" value="${customersBean.customers}" editable="true">
+                        <p:dataTable var="customer" value="${customersBean.customers}" editable="true" rows="10"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,15">
                             <f:facet name="header">
                                 <h3>#{msg['customers']}</h3>
                             </f:facet>
 
-                            <p:column headerText="#{msg['personName']}">
+                            <p:column headerText="#{msg['personName']}" sortBy="${customer.name}">
                                 <h:outputText value="${customer.name}"/>
                             </p:column>
 
-                            <p:column headerText="#{msg['numberOfOrders']}">
+                            <p:column headerText="#{msg['numberOfOrders']}" sortBy="${customer.numberOfOrders}">
                                 <h:outputText value="${customer.numberOfOrders}"/>
                             </p:column>
 
-                            <p:column headerText="#{msg['totalMoneySpent']}">
+                            <p:column headerText="#{msg['totalMoneySpent']}" sortBy="${customer.totalMoneySpent}">
                                 <h:outputText value="$"/>
                                 <h:outputText value="${customer.totalMoneySpent}">
                                     <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
                                 </h:outputText>
                             </p:column>
 
-                            <p:column headerText="#{msg['totalWeightOrdered']}">
+                            <p:column headerText="#{msg['totalWeightOrdered']}" sortBy="${customer.totalWeightOrdered}">
                                 <h:outputText value="${customer.totalWeightOrdered}">
                                     <f:convertNumber maxFractionDigits="2" minFractionDigits="2"/>
                                 </h:outputText>
                                 <h:outputText value=" #{msg['t']}"/>
                             </p:column>
 
-                            <p:column headerText="#{msg['prepaymentShareRequired']}">
+                            <p:column headerText="#{msg['prepaymentShareRequired']}"
+                                      sortBy="${customer.prepaymentShareRequiredPercent}">
                                 <p:cellEditor>
                                     <f:facet name="output">
                                         <h:outputText value="${customer.prepaymentShareRequiredPercent}">
@@ -438,20 +442,55 @@
                     <h:form>
                         <p:panelGrid styleClass="yellow-background" columns="2">
                             <p:outputLabel for="start" value="#{msg['startDate']}: "/>
-                            <p:calendar id="start" value="${reportsBean.start}" required="true"/>
+                            <p:calendar id="start" value="${reportsBean.start}" required="true"
+                                        maxdate="${reportsBean.currentDate}"/>
 
                             <p:outputLabel for="end" value="#{msg['endDate']}: "/>
-                            <p:calendar id="end" value="${reportsBean.end}" required="true"/>
+                            <p:calendar id="end" value="${reportsBean.end}" required="true"
+                                        maxdate="${reportsBean.currentDate}"/>
                         </p:panelGrid>
 
                         <p:commandButton id="show-charts"
                                          styleClass="centered-block small-bottom-margin small-top-margin"
                                          value="#{msg['show']}"
                                          action="${reportsBean.loadOrdersForPeriod()}"
-                                         update=":charts"/>
+                                         update=":report-info"/>
                     </h:form>
 
-                    <h:panelGroup id="charts" layout="block">
+                    <h:panelGroup id="report-info" layout="block">
+                        <h:panelGroup id="report-text" layout="block">
+                            <h:outputText value="#{msg['numberOfCompletedOrders']}: "/>
+                            <h:outputText value="${reportsBean.numberOfOrders}"/>
+
+                            <br/>
+
+                            <h:outputText value="#{msg['totalNetIncome']}: $"/>
+                            <h:outputText value="${reportsBean.totalNetIncome}">
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                            </h:outputText>
+
+                            <br/>
+
+                            <h:outputText value="#{msg['totalPurchaseCost']}: $"/>
+                            <h:outputText value="${reportsBean.totalPurchaseCost}">
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                            </h:outputText>
+
+                            <br/>
+
+                            <h:outputText value="#{msg['totalStorageCost']}: $"/>
+                            <h:outputText value="${reportsBean.totalStorageCost}">
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                            </h:outputText>
+
+                            <br/>
+
+                            <h:outputText value="#{msg['totalDeliveryCost']}: $"/>
+                            <h:outputText value="${reportsBean.totalDeliveryCost}">
+                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                            </h:outputText>
+                        </h:panelGroup>
+
                         <p:chart styleClass="chart" id="daysIncomeBarChart" type="bar"
                                  model="#{reportsBean.daysIncomeBarModel}" style="height:300px"
                                  rendered="${reportsBean.chartsReady}"/>
@@ -472,6 +511,13 @@
             </sec:authorize>
 
             <sec:authorize ifAllGranted="COLD_STORE_MANAGER">
+                <h:panelGroup id="number-of-parcels-for-csm" layout="block" styleClass="notification small-top-margin">
+                    <h:outputText rendered="${parcelsBean.numberOfParcelsForCsm > 1}"
+                                  value="${parcelsBean.numberOfParcelsForCsm} ${msg['parcelsAreInbound']}."/>
+                    <h:outputText rendered="${parcelsBean.numberOfParcelsForCsm == 1}"
+                                  value="${parcelsBean.numberOfParcelsForCsm} ${msg['parcelIsInbound']}."/>
+                </h:panelGroup>
+
                 <p:commandButton id="register-parcel-cs" value="#{msg['registerParcel']}"/>
 
                 <div id="parcel-registration-cs">
@@ -558,7 +604,8 @@
                                 <f:facet name="footer">
                                     <p:commandButton styleClass="save-parcel-changes-button"
                                                      action="${parcelsBean.fetchParcelsForCsm()}"
-                                                     value="#{msg['registerParcel']}" update=":parcelsTable"
+                                                     value="#{msg['registerParcel']}"
+                                                     update=":parcelsTable, :number-of-parcels-for-csm"
                                                      onclick="$('#parcel-items-editing-cs').hide()">
                                         <f:actionListener binding="${itemsBean.saveChangesColdStore()}"/>
                                     </p:commandButton>
@@ -567,6 +614,14 @@
                         </h:form>
                     </h:panelGroup>
                 </div>
+
+                <h:panelGroup id="number-of-orders-pending-shipment" layout="block"
+                              styleClass="notification small-top-margin">
+                    <h:outputText rendered="${ordersBean.numberOfOrdersPendingShipment > 1}"
+                                  value="${ordersBean.numberOfOrdersPendingShipment} ${msg['ordersArePendingShipment']}."/>
+                    <h:outputText rendered="${ordersBean.numberOfOrdersPendingShipment == 1}"
+                                  value="${ordersBean.numberOfOrdersPendingShipment} ${msg['orderIsPendingShipment']}."/>
+                </h:panelGroup>
 
                 <p:commandButton id="register-order-shipment" value="#{msg['registerOrderShipment']}"/>
 
@@ -598,7 +653,7 @@
                         <p:column>
                             <p:commandButton value="#{msg['markAsShipped']}"
                                              action="${ordersBean.markOrderAsShipped(order)}"
-                                             update="ordersPendingShipmentTable"
+                                             update="ordersPendingShipmentTable, :number-of-orders-pending-shipment"
                                              styleClass="small-bottom-margin" onclick="$('#ordered-items').hide()"/>
 
                             <p:commandButton id="show-ordered-items" value="#{msg['showOrderedItems']}"
@@ -609,6 +664,10 @@
 
                     <div id="ordered-items" class="small-top-margin">
                         <p:dataTable id="orderedItems" var="orderedItem" value="${orderedItemsBean.orderedItems}">
+                            <p:column headerText="#{msg['id']}">
+                                <h:outputText value="${orderedItem.item.id}"/>
+                            </p:column>
+
                             <p:column headerText="#{msg['name']}">
                                 <h:outputText value="${orderedItem.item.nameBought}"/>
                             </p:column>
@@ -625,6 +684,14 @@
                         </p:dataTable>
                     </div>
                 </div>
+
+                <h:panelGroup styleClass="notification small-top-margin" layout="block"
+                              id="number-of-items-for-write-off">
+                    <h:outputText rendered="${itemsBean.numberOfItemsForWritingOff > 1}"
+                                  value="${itemsBean.numberOfItemsForWritingOff} ${msg['itemsAreDesignatedForWriteOff']}."/>
+                    <h:outputText rendered="${itemsBean.numberOfItemsForWritingOff == 1}"
+                                  value="${itemsBean.numberOfItemsForWritingOff} ${msg['itemIsDesignatedForWriteOff']}."/>
+                </h:panelGroup>
 
                 <p:commandButton id="register-item-write-off" value="#{msg['registerItemWriteOff']}"/>
 
@@ -661,146 +728,141 @@
                         <p:column>
                             <p:commandButton value="#{msg['confirmWriteOff']}"
                                              action="${itemsBean.writeOffItem(item)}"
-                                             update="itemWriteOffTable"/>
+                                             update="itemWriteOffTable, :number-of-items-for-write-off"/>
                         </p:column>
                     </p:dataTable>
                 </div>
             </sec:authorize>
 
             <sec:authorize ifAllGranted="ACCOUNTANT">
-                <p:commandButton id="register-payment" value="#{msg['registerPayment']}"/>
+                <p:dataTable id="ordersPendingPaymentsTable" var="order"
+                             value="${ordersBean.ordersPendingPayments}">
+                    <f:facet name="header">
+                        <h3>#{msg['incompleteOrders']}</h3>
+                    </f:facet>
 
-                <div id="payment-registration">
-                    <p:dataTable id="ordersPendingPaymentsTable" var="order"
-                                 value="${ordersBean.ordersPendingPayments}">
-                        <f:facet name="header">
-                            <h3>#{msg['incompleteOrders']}</h3>
-                        </f:facet>
+                    <p:column headerText="#{msg['id']}">
+                        <h:outputText value="${order.id}"/>
+                    </p:column>
 
-                        <p:column headerText="#{msg['id']}">
-                            <h:outputText value="${order.id}"/>
-                        </p:column>
+                    <p:column headerText="#{msg['dateOrdered']}">
+                        <h:outputText value="${order.created}">
+                            <f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
+                        </h:outputText>
+                    </p:column>
 
-                        <p:column headerText="#{msg['dateOrdered']}">
-                            <h:outputText value="${order.created}">
-                                <f:convertDateTime pattern="dd.MM.yyyy HH:mm"/>
-                            </h:outputText>
-                        </p:column>
+                    <p:column headerText="#{msg['orderStatus']}">
+                        <h:outputText value="#{msg[order.status.label]}"/>
+                    </p:column>
 
-                        <p:column headerText="#{msg['orderStatus']}">
-                            <h:outputText value="#{msg[order.status.label]}"/>
-                        </p:column>
+                    <p:column headerText="#{msg['customerName']}">
+                        <h:outputText value="${order.customer.name}"/>
+                    </p:column>
 
-                        <p:column headerText="#{msg['customerName']}">
-                            <h:outputText value="${order.customer.name}"/>
-                        </p:column>
+                    <p:column headerText="#{msg['total']}">
+                        <h:outputText value="$"/>
+                        <h:outputText value="${order.totalPrice}">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                        </h:outputText>
+                    </p:column>
 
-                        <p:column headerText="#{msg['total']}">
-                            <h:outputText value="$"/>
-                            <h:outputText value="${order.totalPrice}">
-                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
-                            </h:outputText>
-                        </p:column>
+                    <p:column headerText="#{msg['prepaymentShareRequired']}">
+                        <h:outputText value="${order.customer.prepaymentShareRequired * 100}">
+                            <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                        </h:outputText>
+                        <h:outputText value="% ($"/>
+                        <h:outputText value="${order.requiredPrepaymentSum}">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                        </h:outputText>
+                        <h:outputText value=")"/>
+                    </p:column>
 
-                        <p:column headerText="#{msg['prepaymentShareRequired']}">
-                            <h:outputText value="${order.customer.prepaymentShareRequired * 100}">
-                                <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
-                            </h:outputText>
-                            <h:outputText value="% ($"/>
-                            <h:outputText value="${order.requiredPrepaymentSum}">
-                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
-                            </h:outputText>
-                            <h:outputText value=")"/>
-                        </p:column>
+                    <p:column headerText="#{msg['paid']}">
+                        <h:outputText value="${order.percentagePaid}">
+                            <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
+                        </h:outputText>
+                        <h:outputText value="% ($"/>
+                        <h:outputText value="${order.totalPaymentSum}">
+                            <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
+                        </h:outputText>
+                        <h:outputText value=")"/>
+                    </p:column>
 
-                        <p:column headerText="#{msg['paid']}">
-                            <h:outputText value="${order.percentagePaid}">
-                                <f:convertNumber minFractionDigits="1" maxFractionDigits="1"/>
-                            </h:outputText>
-                            <h:outputText value="% ($"/>
-                            <h:outputText value="${order.totalPaymentSum}">
-                                <f:convertNumber minFractionDigits="2" maxFractionDigits="2"/>
-                            </h:outputText>
-                            <h:outputText value=")"/>
-                        </p:column>
+                    <p:column headerText="#{msg['numberOfPayments']}">
+                        <h:outputText value="${order.payments.size()}"/>
+                    </p:column>
 
-                        <p:column headerText="#{msg['numberOfPayments']}">
-                            <h:outputText value="${order.payments.size()}"/>
-                        </p:column>
+                    <p:column>
+                        <p:commandButton value="#{msg['addPayment']}"
+                                         onclick="$(this).parent().find('.add-payment').toggle()"/>
 
-                        <p:column>
-                            <p:commandButton value="#{msg['addPayment']}"
-                                             onclick="$(this).parent().find('.add-payment').toggle()"/>
+                        <div class="add-payment">
+                            <h:form>
+                                <p:spinner min="0" max="${order.totalPrice}" stepFactor="0.01" prefix="$"
+                                           value="${ordersBean.sum}"
+                                           styleClass="small-top-margin small-bottom-margin" size="5"/>
+                                <p:commandButton value="#{msg['save']}"
+                                                 action="${ordersBean.addPaymentToOrder(order)}"
+                                                 onclick="$('#add-payment').hide()"
+                                                 update=":ordersPendingPaymentsTable"
+                                                 styleClass="small-bottom-margin"/>
+                            </h:form>
+                        </div>
 
-                            <div class="add-payment">
-                                <h:form>
-                                    <p:spinner min="0" max="${order.totalPrice}" stepFactor="0.01" prefix="$"
-                                               value="${ordersBean.sum}"
-                                               styleClass="small-top-margin small-bottom-margin" size="5"/>
-                                    <p:commandButton value="#{msg['save']}"
-                                                     action="${ordersBean.addPaymentToOrder(order)}"
-                                                     onclick="$('#add-payment').hide()"
-                                                     update=":ordersPendingPaymentsTable"
-                                                     styleClass="small-bottom-margin"/>
-                                </h:form>
-                            </div>
+                        <h:panelGroup layout="block" rendered="${order.prepaymentPaid}">
+                            <p:commandButton rendered="${order.status == 'PENDING_PREPAYMENT'}"
+                                             value="#{msg['markAsReadyForShipment']}"
+                                             action="${ordersBean.markOrderAsReadyForShipment(order)}"
+                                             styleClass="small-top-margin"
+                                             update=":ordersPendingPaymentsTable"/>
+                        </h:panelGroup>
+                        <h:panelGroup layout="block" rendered="${!order.prepaymentPaid}">
+                            <p:commandButton rendered="${order.status == 'PENDING_PREPAYMENT'}"
+                                             value="#{msg['markAsReadyForShipment']}"
+                                             action="${ordersBean.markOrderAsReadyForShipment(order)}"
+                                             styleClass="small-top-margin"
+                                             update=":ordersPendingPaymentsTable">
+                                <p:confirm header="#{msg['confirmation']}"
+                                           message="#{msg['prepaymentNotPaidConfirmation']}" icon="ui-icon-alert"/>
+                            </p:commandButton>
 
-                            <h:panelGroup layout="block" rendered="${order.prepaymentPaid}">
-                                <p:commandButton rendered="${order.status == 'PENDING_PREPAYMENT'}"
-                                                 value="#{msg['markAsReadyForShipment']}"
-                                                 action="${ordersBean.markOrderAsReadyForShipment(order)}"
-                                                 styleClass="small-top-margin"
-                                                 update=":ordersPendingPaymentsTable"/>
-                            </h:panelGroup>
-                            <h:panelGroup layout="block" rendered="${!order.prepaymentPaid}">
-                                <p:commandButton rendered="${order.status == 'PENDING_PREPAYMENT'}"
-                                                 value="#{msg['markAsReadyForShipment']}"
-                                                 action="${ordersBean.markOrderAsReadyForShipment(order)}"
-                                                 styleClass="small-top-margin"
-                                                 update=":ordersPendingPaymentsTable">
-                                    <p:confirm header="#{msg['confirmation']}"
-                                               message="#{msg['prepaymentNotPaidConfirmation']}" icon="ui-icon-alert"/>
-                                </p:commandButton>
+                            <p:confirmDialog global="true" showEffect="fade">
+                                <p:commandButton value="#{msg['yes']}" type="button"
+                                                 styleClass="ui-confirmdialog-yes"
+                                                 icon="ui-icon-check"/>
+                                <p:commandButton value="#{msg['no']}" type="button" styleClass="ui-confirmdialog-no"
+                                                 icon="ui-icon-close"/>
+                            </p:confirmDialog>
+                        </h:panelGroup>
 
-                                <p:confirmDialog global="true" showEffect="fade">
-                                    <p:commandButton value="#{msg['yes']}" type="button"
-                                                     styleClass="ui-confirmdialog-yes"
-                                                     icon="ui-icon-check"/>
-                                    <p:commandButton value="#{msg['no']}" type="button" styleClass="ui-confirmdialog-no"
-                                                     icon="ui-icon-close"/>
-                                </p:confirmDialog>
-                            </h:panelGroup>
+                        <h:panelGroup layout="block" rendered="${order.paidInFull}">
+                            <p:commandButton rendered="${order.status == 'SHIPPED'}"
+                                             value="#{msg['markAsCompleted']}"
+                                             styleClass="small-top-margin"
+                                             action="${ordersBean.markOrderAsCompleted(order)}"
+                                             update=":ordersPendingPaymentsTable"/>
+                        </h:panelGroup>
+                        <h:panelGroup layout="block" rendered="${!order.paidInFull}">
+                            <p:commandButton rendered="${order.status == 'SHIPPED'}"
+                                             value="#{msg['markAsCompleted']}"
+                                             styleClass="small-top-margin"
+                                             action="${ordersBean.markOrderAsCompleted(order)}"
+                                             update=":ordersPendingPaymentsTable">
+                                <p:confirm header="#{msg['confirmation']}"
+                                           message="#{msg['notPaidInFullConfirmation']}" icon="ui-icon-alert"/>
+                            </p:commandButton>
 
-                            <h:panelGroup layout="block" rendered="${order.paidInFull}">
-                                <p:commandButton rendered="${order.status == 'SHIPPED'}"
-                                                 value="#{msg['markAsCompleted']}"
-                                                 styleClass="small-top-margin"
-                                                 action="${ordersBean.markOrderAsCompleted(order)}"
-                                                 update=":ordersPendingPaymentsTable"/>
-                            </h:panelGroup>
-                            <h:panelGroup layout="block" rendered="${!order.paidInFull}">
-                                <p:commandButton rendered="${order.status == 'SHIPPED'}"
-                                                 value="#{msg['markAsCompleted']}"
-                                                 styleClass="small-top-margin"
-                                                 action="${ordersBean.markOrderAsCompleted(order)}"
-                                                 update=":ordersPendingPaymentsTable">
-                                    <p:confirm header="#{msg['confirmation']}"
-                                               message="#{msg['notPaidInFullConfirmation']}" icon="ui-icon-alert"/>
-                                </p:commandButton>
+                            <p:confirmDialog global="true" showEffect="fade">
+                                <p:commandButton value="#{msg['yes']}" type="button"
+                                                 styleClass="ui-confirmdialog-yes"
+                                                 icon="ui-icon-check"/>
+                                <p:commandButton value="#{msg['no']}" type="button" styleClass="ui-confirmdialog-no"
+                                                 icon="ui-icon-close"/>
+                            </p:confirmDialog>
+                        </h:panelGroup>
 
-                                <p:confirmDialog global="true" showEffect="fade">
-                                    <p:commandButton value="#{msg['yes']}" type="button"
-                                                     styleClass="ui-confirmdialog-yes"
-                                                     icon="ui-icon-check"/>
-                                    <p:commandButton value="#{msg['no']}" type="button" styleClass="ui-confirmdialog-no"
-                                                     icon="ui-icon-close"/>
-                                </p:confirmDialog>
-                            </h:panelGroup>
-
-                        </p:column>
-
-                    </p:dataTable>
-                </div>
+                    </p:column>
+                </p:dataTable>
             </sec:authorize>
 
             <sec:authorize ifAllGranted="SECURITY_OFFICER">

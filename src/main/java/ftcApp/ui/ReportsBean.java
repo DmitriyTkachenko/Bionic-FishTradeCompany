@@ -30,6 +30,7 @@ public class ReportsBean implements Serializable {
     private BarChartModel daysIncomeBarModel;
     private Date start;
     private Date end;
+    private Date currentDate;
     private Iterable<Order> orders;
     private Map<Object, Number> nameData;
     private Map<Object, Number> dayData;
@@ -55,6 +56,7 @@ public class ReportsBean implements Serializable {
 
         start = new Date();
         end = new Date();
+        currentDate = new Date();
         chartsReady = false;
         testService.addOrders();
         createFishNamesIncomeBarModel();
@@ -238,6 +240,75 @@ public class ReportsBean implements Serializable {
         yAxis.setMax(1.1 * maxIncomeDay);
     }
 
+    public int getNumberOfOrders() {
+        if (orders == null) {
+            return 0;
+        } else {
+            return ((List<Order>) orders).size();
+        }
+    }
+
+    public double getTotalNetIncome() {
+        if (orders == null) {
+            return 0.0;
+        }
+        double totalNetIncome = 0.0;
+        for (Order order : orders) {
+            totalNetIncome += order.getNetIncome();
+        }
+        return totalNetIncome;
+    }
+
+    public double getTotalWeight() {
+        if (orders == null) {
+            return 0.0;
+        }
+        double totalWeight = 0.0;
+        for (Order order : orders) {
+            totalWeight += order.getTotalWeight();
+        }
+        return totalWeight;
+    }
+
+    public double getTotalDeliveryCost() {
+        if (orders == null) {
+            return 0.0;
+        }
+        double totalDeliveryCost = 0.0;
+        for (Order order : orders) {
+            for (OrderedItem orderedItem : order.getOrderedItems()) {
+                totalDeliveryCost += orderedItem.getDeliveryCost();
+            }
+        }
+        return totalDeliveryCost;
+    }
+
+    public double getTotalPurchaseCost() {
+        if (orders == null) {
+            return 0.0;
+        }
+        double totalPurchaseCost = 0.0;
+        for (Order order : orders) {
+            for (OrderedItem orderedItem : order.getOrderedItems()) {
+                totalPurchaseCost += orderedItem.getPurchaseCost();
+            }
+        }
+        return totalPurchaseCost;
+    }
+
+    public double getTotalStorageCost() {
+        if (orders == null) {
+            return 0.0;
+        }
+        double totalStorageCost = 0.0;
+        for (Order order : orders) {
+            for (OrderedItem orderedItem : order.getOrderedItems()) {
+                totalStorageCost += orderedItem.getStorageCost();
+            }
+        }
+        return totalStorageCost;
+    }
+
     public BarChartModel getFishNamesIncomeBarModel() {
         return fishNamesIncomeBarModel;
     }
@@ -304,5 +375,13 @@ public class ReportsBean implements Serializable {
 
     public void setMaxIncomeDay(double maxIncomeDay) {
         this.maxIncomeDay = maxIncomeDay;
+    }
+
+    public Date getCurrentDate() {
+        return currentDate;
+    }
+
+    public void setCurrentDate(Date currentDate) {
+        this.currentDate = currentDate;
     }
 }

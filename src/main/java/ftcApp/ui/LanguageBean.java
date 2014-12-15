@@ -27,7 +27,8 @@ public class LanguageBean implements Serializable {
     }
 
     public LanguageBean() {
-        this.localeCode = FacesContext.getCurrentInstance().getViewRoot().getLocale().toString();
+//        this.localeCode = FacesContext.getCurrentInstance().getViewRoot().getLocale().toString();
+        this.localeCode = countries.get("English").toString();
     }
 
     public Map<String, Object> getCountriesInMap() {

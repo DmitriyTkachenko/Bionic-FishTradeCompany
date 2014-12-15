@@ -13,6 +13,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import java.io.Serializable;
+import java.util.List;
 
 @ManagedBean
 @ViewScoped
@@ -54,6 +55,10 @@ public class OrdersBean implements Serializable {
         orderService.addPaymentToOrder(order, sum);
         sum = 0.0;
         ordersPendingPayments = orderService.findOrdersNotPaidInFull();
+    }
+
+    public int getNumberOfOrdersPendingShipment() {
+        return ((List<Order>) ordersPendingShipment).size();
     }
 
     public Iterable<Order> getOrdersPendingShipment() {

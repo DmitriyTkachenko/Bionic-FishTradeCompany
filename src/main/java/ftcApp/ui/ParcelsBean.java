@@ -15,6 +15,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import java.io.Serializable;
+import java.util.List;
 
 @ManagedBean
 @ViewScoped
@@ -51,6 +52,10 @@ public class ParcelsBean implements Serializable {
         parcelService.updateAll(parcels);
         EventBus eventBus = EventBusFactory.getDefault().eventBus();
         eventBus.publish("/itemsChanged", true);
+    }
+
+    public int getNumberOfParcelsForCsm() {
+        return ((List<Parcel>) parcelsForCsm).size();
     }
 
     public Iterable<Parcel> getParcels() {
