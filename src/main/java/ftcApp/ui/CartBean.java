@@ -42,8 +42,8 @@ public class CartBean implements Serializable {
         WebApplicationContextUtils.getRequiredWebApplicationContext(servletContext).
                 getAutowireCapableBeanFactory().
                 autowireBean(this);
-        testService.addEmployees();
-        testService.addCustomer();
+//        testService.addEmployees();
+//        testService.addCustomer();
     }
 
     @PreDestroy

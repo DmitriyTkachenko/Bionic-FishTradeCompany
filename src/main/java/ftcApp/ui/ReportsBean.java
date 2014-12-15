@@ -58,7 +58,7 @@ public class ReportsBean implements Serializable {
         end = new Date();
         currentDate = new Date();
         chartsReady = false;
-        testService.addOrders();
+//        testService.addOrders();
         createFishNamesIncomeBarModel();
         createFishNamesIncomePieModel();
         createDaysIncomeBarModel();

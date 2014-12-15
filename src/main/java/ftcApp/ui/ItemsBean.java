@@ -50,7 +50,7 @@ public class ItemsBean implements Serializable {
                 getAutowireCapableBeanFactory().
                 autowireBean(this);
 
-        testService.addItemsData();
+//        testService.addItemsData();
         fetchItems();
         fetchItemsForWritingOff();
     }

@@ -258,7 +258,7 @@
                                             <h:outputText value="${item.nameBought}"/>
                                         </f:facet>
                                         <f:facet name="input">
-                                            <p:inputText value="${item.nameBought}"/>
+                                            <p:inputText value="${item.nameBought}" size="15"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -285,7 +285,7 @@
                                         </f:facet>
                                         <f:facet name="input">
                                             <p:spinner min="0" stepFactor="0.1" value="${item.weightBought}"
-                                                       suffix=" #{msg['t']}"/>
+                                                       suffix=" #{msg['t']}" size="13"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -306,7 +306,7 @@
                                             <h:outputText value="${item.descriptionBought}"/>
                                         </f:facet>
                                         <f:facet name="input">
-                                            <p:inputText value="${item.descriptionBought}"/>
+                                            <p:inputText value="${item.descriptionBought}" size="15"/>
                                         </f:facet>
                                     </p:cellEditor>
                                 </p:column>
@@ -329,7 +329,7 @@
                                             </h:outputText>
                                         </f:facet>
                                         <f:facet name="input">
-                                            <p:spinner min="0" stepFactor="1" value="${item.buyingPrice}" prefix="$">
+                                            <p:spinner min="0" stepFactor="1" value="${item.buyingPrice}" prefix="$" size="13">
                                                 <f:convertNumber minFractionDigits="2" maxFractionDigits="2"
                                                                  groupingUsed="false"/>
                                             </p:spinner>
@@ -345,7 +345,7 @@
                                             </h:outputText>
                                         </f:facet>
                                         <f:facet name="input">
-                                            <p:spinner min="0" stepFactor="1" value="${item.sellingPrice}" prefix="$">
+                                            <p:spinner min="0" stepFactor="1" value="${item.sellingPrice}" prefix="$" size="13">
                                                 <f:convertNumber minFractionDigits="2" maxFractionDigits="2"
                                                                  groupingUsed="false"/>
                                             </p:spinner>
@@ -353,7 +353,7 @@
                                     </p:cellEditor>
                                 </p:column>
 
-                                <p:column>
+                                <p:column rendered="${item.parcel.status != 'REGISTERED_BY_GM'}">
                                     <p:commandButton value="#{msg['requestWriteOff']}"
                                                      rendered="${item.writeOffStatus == 'NOT_WRITTEN_OFF'}"
                                                      update="parcelItemsEditableTable">
@@ -365,6 +365,7 @@
                                 <p:column style="width:32px">
                                     <p:rowEditor/>
                                 </p:column>
+
                             </p:dataTable>
                         </h:form>
                     </h:panelGroup>

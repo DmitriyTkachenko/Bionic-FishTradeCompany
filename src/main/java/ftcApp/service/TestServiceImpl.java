@@ -78,6 +78,8 @@ public class TestServiceImpl implements TestService {
         item2.duplicateBoughtAndColdStoreProperties();
         Item item3 = new Item("Coalfish", 200, "Country of origin: Turkey", parcel, 6000.0, 6250.0);
         item3.duplicateBoughtAndColdStoreProperties();
+        Item item4 = new Item("Conger", 150, "600 g / unit", parcel, 7000.0, 7450.0);
+        item4.duplicateBoughtAndColdStoreProperties();
         LocalDate arrived = LocalDate.of(2014, 12, 10);
         Instant instant = arrived.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
         parcel.setArrived(Date.from(instant));
@@ -146,9 +148,11 @@ public class TestServiceImpl implements TestService {
         order1 = new Order();
         orderedItem11 = new OrderedItem(item1, 10, item1.getSellingPrice(), order1);
         orderedItem12 = new OrderedItem(item2, 5, item2.getSellingPrice(), order1);
+        Payment payment1 = new Payment(order1, 93000.0);
         order2 = new Order();
         orderedItem21 = new OrderedItem(item2, 15, item2.getSellingPrice(), order2);
         orderedItem22 = new OrderedItem(item3, 17.5, item3.getSellingPrice(), order2);
+        Payment payment2 = new Payment(order2, 164875.0);
         try {
             orderService.saveOrderForCustomerWithLogin(order1, "john");
             orderService.saveOrderForCustomerWithLogin(order2, "john");
