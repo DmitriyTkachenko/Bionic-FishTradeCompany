@@ -66,7 +66,7 @@ public class ReportsBean implements Serializable {
 
     @PreDestroy
     public void destroy() {
-        testService.removeOrders();
+//        testService.removeOrders();
     }
 
     public void loadOrdersForPeriod() {

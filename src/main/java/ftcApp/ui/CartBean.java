@@ -48,8 +48,8 @@ public class CartBean implements Serializable {
 
     @PreDestroy
     public void destroy() {
-        testService.removeEmployees();
-        testService.removeCustomer();
+//        testService.removeEmployees();
+//        testService.removeCustomer();
     }
 
     public Order getOrder() {

@@ -48,13 +48,13 @@ public class ParcelBean implements Serializable {
 
         initParcel();
         initItem();
-        testService.addFishNames();
+//        testService.addFishNames();
         fishNames = fishNameService.findAll();
     }
 
     @PreDestroy
     public void destroy() {
-        testService.removeFishNames();
+//        testService.removeFishNames();
     }
 
     public void addItemToParcel() {

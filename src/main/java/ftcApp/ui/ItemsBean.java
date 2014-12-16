@@ -57,7 +57,7 @@ public class ItemsBean implements Serializable {
 
     @PreDestroy
     public void destroy() {
-        testService.removeItemsData();
+//        testService.removeItemsData();
     }
 
     public void loadItemsForParcel(Parcel parcel) {
@@ -69,6 +69,11 @@ public class ItemsBean implements Serializable {
         Iterable<Item> items = itemService.findItemsOnSaleAndRefresh();
         this.itemQuantities = new ArrayList<>();
         items.forEach((Item item) -> this.itemQuantities.add(new ItemQuantity(item, 0.0)));
+    }
+
+    public void registerWriteOff(Item item) {
+        item.setWriteOffStatus(WriteOffStatus.DESIGNATED_FOR_WRITE_OFF);
+        itemService.update(item);
     }
 
     public void writeOffItem(Item item) {

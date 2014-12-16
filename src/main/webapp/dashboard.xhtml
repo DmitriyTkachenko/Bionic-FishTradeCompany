@@ -219,10 +219,9 @@
 
                                 <p:commandButton id="put-up-for-sale" value="#{msg['putUpForSale']}"
                                                  styleClass="small-top-margin"
+                                                 action="${parcelsBean.putUpForSale(parcel)}"
                                                  rendered="${parcel.status == 'REGISTERED_BY_CSM'}"
-                                                 update="parcelsEditTable">
-                                    <f:setPropertyActionListener target="#{parcel.status}" value="PUT_UP_FOR_SALE"/>
-                                </p:commandButton>
+                                                 update="parcelsEditTable"/>
                             </p:column>
 
                             <f:facet name="footer">
@@ -355,11 +354,9 @@
 
                                 <p:column rendered="${item.parcel.status != 'REGISTERED_BY_GM'}">
                                     <p:commandButton value="#{msg['requestWriteOff']}"
+                                                     action="${itemsBean.registerWriteOff(item)}"
                                                      rendered="${item.writeOffStatus == 'NOT_WRITTEN_OFF'}"
-                                                     update="parcelItemsEditableTable">
-                                        <f:setPropertyActionListener value="DESIGNATED_FOR_WRITE_OFF"
-                                                                     target="#{item.writeOffStatus}"/>
-                                    </p:commandButton>
+                                                     update="parcelItemsEditableTable"/>
                                 </p:column>
 
                                 <p:column style="width:32px">

@@ -58,6 +58,13 @@ public class ParcelsBean implements Serializable {
         return ((List<Parcel>) parcelsForCsm).size();
     }
 
+    public void putUpForSale(Parcel parcel) {
+        parcel.setStatus(ParcelStatus.PUT_UP_FOR_SALE);
+        parcelService.update(parcel);
+        EventBus eventBus = EventBusFactory.getDefault().eventBus();
+        eventBus.publish("/itemsChanged", true);
+    }
+
     public Iterable<Parcel> getParcels() {
         return parcels;
     }
